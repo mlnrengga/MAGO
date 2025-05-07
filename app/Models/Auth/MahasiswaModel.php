@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class MahasiswaModel extends Model
+{
+    use HasFactory;
+
+    // m mahasiswa
+    // + id_mahasiswa: String (PK)
+    // + id_user. int (FK)
+    // + nim: String
+    // + program_studi: String
+    // + id_bidang_keahlian: String (FK)
+    // + id_lokasi_magang: String (FK)
+    // + id_jenis_magang: String (FK)
+    // + status_pengajuan_magang: String
+
+    protected $table = 'm_mahasiswa';
+    protected $primaryKey = 'id_mahasiswa';
+    protected $fillable = [
+        'id_user',
+        'nim',
+        'program_studi',
+        'status_pengajuan_magang',
+    ];
+    protected $hidden = [
+        'id_user',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class, 'id_user');
+    }
+
+    public function preferensi()
+    {
+        return $this->hasOne(PreferensiMahasiswaModel::class, 'id_mahasiswa');
+    }
+
+}
