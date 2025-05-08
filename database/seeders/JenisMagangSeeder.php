@@ -14,16 +14,16 @@ class JenisMagangSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['nama_jenis_magang' => 'Magang Industri'],
-            ['nama_jenis_magang' => 'Magang Kampus Merdeka'],
-            ['nama_jenis_magang' => 'Magang Penelitian'],
-            ['nama_jenis_magang' => 'Magang Startup'],
-            ['nama_jenis_magang' => 'PKL Mandiri'],
-            ['nama_jenis_magang' => 'Magang Pemerintahan'],
-            ['nama_jenis_magang' => 'Magang Sosial Teknologi'],
-            ['nama_jenis_magang' => 'Magang Remote'],
-            ['nama_jenis_magang' => 'Magang Freelance'],
-            ['nama_jenis_magang' => 'Magang Teaching Assistant'],
+            ['id_jenis_magang' => 1, 'nama_jenis_magang' => 'Magang Industri'],
+            ['id_jenis_magang' => 2, 'nama_jenis_magang' => 'Magang Kampus Merdeka'],
+            ['id_jenis_magang' => 3, 'nama_jenis_magang' => 'Magang Penelitian'],
+            ['id_jenis_magang' => 4, 'nama_jenis_magang' => 'Magang Startup'],
+            ['id_jenis_magang' => 5, 'nama_jenis_magang' => 'PKL Mandiri'],
+            ['id_jenis_magang' => 6, 'nama_jenis_magang' => 'Magang Pemerintahan'],
+            ['id_jenis_magang' => 7, 'nama_jenis_magang' => 'Magang Sosial Teknologi'],
+            ['id_jenis_magang' => 8, 'nama_jenis_magang' => 'Magang Remote'],
+            ['id_jenis_magang' => 9, 'nama_jenis_magang' => 'Magang Freelance'],
+            ['id_jenis_magang' => 10, 'nama_jenis_magang' => 'Magang Teaching Assistant'],
         ];
 
         DB::table('m_jenis_magang')->insert($data);
