@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
     {
         $data = [
             [
+                'id_user' => 1,
                 'nama' => 'Admin',
                 'password' => bcrypt('admin123'),
                 'alamat' => 'Jl. Admin No. 1',
@@ -22,6 +23,7 @@ class UserSeeder extends Seeder
                 'role' => 'admin',
             ],
             [
+                'id_user' => 2,
                 'nama' => 'Mahasiswa',
                 'password' => bcrypt('mahasiswa123'),
                 'alamat' => 'Jl. Mahasiswa No. 2',
@@ -29,6 +31,7 @@ class UserSeeder extends Seeder
                 'role' => 'mahasiswa',
             ],
             [
+                'id_user' => 3,
                 'nama' => 'Dosen Pembimbing',
                 'password' => bcrypt('dosen123'),
                 'alamat' => 'Jl. Dosen No. 3',

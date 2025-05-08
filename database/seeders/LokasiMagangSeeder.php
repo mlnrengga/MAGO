@@ -14,10 +14,10 @@ class LokasiMagangSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['kota_lokasi_magang' => 'Jakarta'],
-            ['kota_lokasi_magang' => 'Surabaya'],
-            ['kota_lokasi_magang' => 'Malang'],
-            ['kota_lokasi_magang' => 'Bandung'],
+            ['id_lokasi_magang' => 1, 'kota_lokasi_magang' => 'Jakarta'],
+            ['id_lokasi_magang' => 2, 'kota_lokasi_magang' => 'Surabaya'],
+            ['id_lokasi_magang' => 3, 'kota_lokasi_magang' => 'Malang'],
+            ['id_lokasi_magang' => 4, 'kota_lokasi_magang' => 'Bandung'],
         ];
 
         DB::table('m_lokasi_magang')->insert($data);

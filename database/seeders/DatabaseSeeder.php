@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
             JenisMagangSeeder::class,
             LokasiMagangSeeder::class,
             UserSeeder::class,
+            DosenPembimbingSeeder::class,
+            AdminSeeder::class,
+            MahasiswaSeeder::class,
+            PreferensiMahasiswaSeeder::class,
         ]);
     }
 }
