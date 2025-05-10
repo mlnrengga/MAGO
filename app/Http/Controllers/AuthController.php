@@ -37,7 +37,7 @@ class AuthController extends Controller
         $dosen = DosenPembimbingModel::where('nip', $request->identifier)->first();
         if ($dosen && Hash::check($request->password, $dosen->user->password)) {
             $user = $dosen->user;
-            $user->assignRole('dosen');
+            $user->assignRole('dosen_pembimbing');
             $role = 'dosen';
         }
 
@@ -63,7 +63,7 @@ class AuthController extends Controller
             case 'mahasiswa':
                 return redirect()->intended('/mahasiswa');
             case 'dosen':
-                return redirect()->intended('/dosen');
+                return redirect()->intended('/pembimbing');
             case 'admin':
                 return redirect()->intended('/admin'); 
             default:

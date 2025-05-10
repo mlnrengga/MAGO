@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,5 +31,10 @@ class DatabaseSeeder extends Seeder
             MahasiswaSeeder::class,
             PreferensiMahasiswaSeeder::class,
         ]);
+
+        // Create spatie roles
+        foreach (['mahasiswa', 'dosen_pembimbing', 'admin'] as $roleName) {
+            Role::firstOrCreate(['name' => $roleName]);
+        }
     }
 }

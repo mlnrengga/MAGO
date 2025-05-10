@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             [
                 'id_user' => 1,
                 'nama' => 'Admin',
-                'password' => bcrypt('admin123'),
+                'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Admin No. 1',
                 'no_telepon' => '081234567890',
                 'role' => 'admin',
@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             [
                 'id_user' => 2,
                 'nama' => 'Mahasiswa',
-                'password' => bcrypt('mahasiswa123'),
+                'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Mahasiswa No. 2',
                 'no_telepon' => '081234567891',
                 'role' => 'mahasiswa',
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             [
                 'id_user' => 3,
                 'nama' => 'Dosen Pembimbing',
-                'password' => bcrypt('dosen123'),
+                'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Dosen No. 3',
                 'no_telepon' => '081234567892',
                 'role' => 'dosen_pembimbing',
