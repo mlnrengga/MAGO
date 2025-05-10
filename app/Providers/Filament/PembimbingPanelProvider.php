@@ -34,7 +34,7 @@ class PembimbingPanelProvider extends PanelProvider
         return $panel
             ->id('pembimbing')
             ->path('pembimbing')
-            ->login()
+            ->login(false)
             ->colors([
                 'primary' => Color::Amber,
             ])

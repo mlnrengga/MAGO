@@ -34,7 +34,7 @@ class MahasiswaPanelProvider extends PanelProvider
         return $panel
             ->id('mahasiswa')
             ->path('mahasiswa')
-            ->login()
+            ->login(false)
             ->colors([
                 'primary' => Color::Amber,
             ])
