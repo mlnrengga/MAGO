@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Reference;
 
+use App\Models\Pivot\PreferensiMahasiswaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

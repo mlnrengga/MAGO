@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Auth\AdminModel;
+use App\Models\Auth\DosenPembimbingModel;
+use App\Models\Auth\MahasiswaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
