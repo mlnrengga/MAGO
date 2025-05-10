@@ -82,11 +82,11 @@
     <h1>404</h1>
     <p>Oops! Halaman yang kamu cari tidak ditemukan.</p>
 
-    <?php 
+    @php
     use Filament\Facades\Filament;
     
     $redirectPath = Filament::getUrl();
-    ?>
+    @endphp
     @auth
         <a href="{{ $redirectPath }}">Kembali ke Halaman Utama</a>
     @else
