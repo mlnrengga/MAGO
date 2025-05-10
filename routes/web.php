@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [AuthController::class, 'index']);
+Route::get('/login', [AuthController::class, 'index'])->middleware('guest.redirect.to.panel');
 Route::post('/login', [AuthController::class, 'login'])->name('login');

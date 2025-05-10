@@ -11,23 +11,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    
     public function index()
     {
-        if (auth()->check()) {
-            $user = auth()->user();
-
-            // Redirect sesuai role
-            if ($user->hasRole('admin')) {
-                return redirect()->intended('/admin');
-            } elseif ($user->hasRole('dosen_pembimbing')) {
-                return redirect()->intended('/pembimbing');
-            } elseif ($user->hasRole('mahasiswa')) {
-                return redirect()->intended('/mahasiswa');
-            }
-        }
-
-        // Kalau belum login, tampilkan halaman login
         return view('login');
     }
 
