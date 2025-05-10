@@ -13,7 +13,7 @@ Magang On The GO - Information Technology Student Internship Information System
 ### 📚 Preparation
 1. **Clone this repo**
 2. **Set up the .env**
-3. **Set up the mysql database** _(*create database only, ex: mago_db)_
+3. **Set up the MySQL database** _(*create database only, ex: mago_db)_
 4. **Run** `php artisan key:generate`
 5. **Run** `php artisan serve`
 > [!CAUTION]
