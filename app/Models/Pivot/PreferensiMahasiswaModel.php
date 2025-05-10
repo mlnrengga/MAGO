@@ -1,7 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Pivot;
 
+use App\Models\Auth\MahasiswaModel;
+use App\Models\Reference\BidangKeahlianModel;
+use App\Models\Reference\JenisMagangModel;
+use App\Models\Reference\LokasiMagangModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

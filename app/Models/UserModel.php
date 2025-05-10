@@ -2,12 +2,30 @@
 
 namespace App\Models;
 
+use App\Models\Auth\AdminModel;
+use App\Models\Auth\DosenPembimbingModel;
+use App\Models\Auth\MahasiswaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
+use Spatie\Permission\Traits\HasRoles;
 
-class UserModel extends Model
+class UserModel extends Authenticatable implements FilamentUser, HasName
 {
-    use HasFactory;
+    use HasFactory, HasRoles;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true; // atau bisa pakai role check
+    }
+    
+    public function getFilamentName(): string
+    {
+        return $this->nama;
+    }
 
     // m_user 
     // + id_user: int (PK)
