@@ -37,12 +37,7 @@
                 <p id="identifier-error" class="text-red-500 text-sm mt-1 hidden">NIM/NIP harus berupa angka dan tidak boleh kosong.</p>
             </div>
 
-            {{-- <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-                <input type="password" name="password" id="password" required
-                       class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm placeholder:text-sm leading-tight py-2 px-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                <p id="password-error" class="text-red-500 text-sm mt-1 hidden">Password minimal 6 karakter.</p>
-            </div> --}}
+            
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
                 <div class="mt-1 relative">
