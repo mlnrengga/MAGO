@@ -15,6 +15,7 @@ class AdminSeeder extends Seeder
     {
         $data = [
             [
+                'id_admin' => 1,
                 'id_user' => 1, 
                 'nip' => '12345678901234567890',
                 'created_at' => now(),

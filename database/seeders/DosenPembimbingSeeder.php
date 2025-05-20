@@ -15,6 +15,7 @@ class DosenPembimbingSeeder extends Seeder
     {
         $data = [
             [
+                'id_dosen' => 1,
                 'id_user' => 3, 
                 'nip' => '198804162011031001',
                 'id_lokasi_magang' => 1, 

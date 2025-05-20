@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('alamat', 255);
             $table->string('no_telepon', 20);
+            $table->string('profile_picture', 255);
             $table->enum('role', ['admin', 'mahasiswa', 'dosen_pembimbing']);
             $table->timestamps();
         });
