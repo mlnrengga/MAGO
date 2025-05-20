@@ -3,97 +3,83 @@
 namespace App\Filament\Mahasiswa\Resources;
 
 use App\Filament\Mahasiswa\Resources\MahasiswaResource\Pages;
-use App\Filament\Mahasiswa\Resources\MahasiswaResource\RelationManagers;
 use App\Models\Auth\MahasiswaModel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\EditAction;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MahasiswaResource extends Resource
 {
     protected static ?string $model = MahasiswaModel::class;
-
-
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationLabel = 'Profil Saya';
-    protected static ?string $pluralModelLabel = 'Profil';
-    
+    protected static ?string $modelLabel = 'Profil Mahasiswa';
+    protected static ?string $pluralModelLabel = 'Profil Saya';
+
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Forms\Components\TextInput::make('nim')
-                ->required()
-                ->unique(ignoreRecord: true),
-            Forms\Components\TextInput::make('program_studi')
-                ->required(),
-            Forms\Components\Select::make('user_id')
-                ->relationship('user', 'name')
-                ->required(),
-            Forms\Components\Textarea::make('riwayat_kesehatan'),
-            Forms\Components\Select::make('bidang_keahlian_id')
-                ->relationship('bidangKeahlian', 'nama_bidang')
-                ->required(),
-            Forms\Components\Select::make('lokasi_preferensi_id')
-                ->relationship('lokasiPreferensi', 'nama_lokasi')
-                ->required(),
-            Forms\Components\Select::make('jenis_magang_preferensi_id')
-                ->relationship('jenisMagangPreferensi', 'nama_jenis')
-                ->required(),
-            Forms\Components\Select::make('dosen_pembimbing_id')
-                ->relationship('dosen', 'nip')
-                ->label('Dosen Pembimbing')
-                ->searchable(),
-            Forms\Components\Select::make('status_pengajuan_magang')
-                ->options([
-                    'belum' => 'Belum',
-                    'diajukan' => 'Diajukan',
-                    'diterima' => 'Diterima',
-                    'ditolak' => 'Ditolak'
-                ])
-                ->required(),
-        ]);
+            ->schema([
+                Forms\Components\TextInput::make('nim')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->length(15)
+                    ->numeric()
+                    ->placeholder('Masukkan NIM tanpa spasi'),
+
+                Forms\Components\TextInput::make('program_studi')
+                    ->required()
+                    ->placeholder('Contoh: Teknik Informatika'),
+
+                Forms\Components\Textarea::make('riwayat_kesehatan')
+                    ->placeholder('Masukkan riwayat kesehatan (jika ada)')
+                    ->columnSpanFull(),
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->query(static::getTableQuery())
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')->label('Nama'),
-                Tables\Columns\TextColumn::make('nim')->searchable(),
-                Tables\Columns\TextColumn::make('program_studi'),
-                Tables\Columns\TextColumn::make('bidangKeahlian.nama_bidang')->label('Bidang'),
-                Tables\Columns\TextColumn::make('status_pengajuan_magang')->label('Status'),
-            ])
-            ->filters([
-                //
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Nama')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('nim')
+                    ->label('NIM')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('program_studi')
+                    ->label('Program Studi')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make()
+                    ->label('Edit Profil')
+                    ->visible(fn($record) => $record->user_id === auth()->id()),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([])
+            ->emptyStateActions([]);
     }
 
-    public static function getRelations(): array
+    protected static function getTableQuery(): Builder
     {
-        return [
-            //
-        ];
+        return parent::getEloquentQuery()
+            ->where('id_user', auth()->id());
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMahasiswas::route('/'),
-            'create' => Pages\CreateMahasiswa::route('/create'),
+            'index' => Pages\ListMahasiswa::route('/'),
             'edit' => Pages\EditMahasiswa::route('/{record}/edit'),
         ];
     }
@@ -102,6 +88,4 @@ class MahasiswaResource extends Resource
     {
         return auth()->user()?->role === 'mahasiswa';
     }
-    
-    
 }
