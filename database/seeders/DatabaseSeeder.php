@@ -21,16 +21,16 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // Calling all the seeder ~khip
-        $this->call([
-            BidangKeahlianSeeder::class,
-            JenisMagangSeeder::class,
-            LokasiMagangSeeder::class,
-            UserSeeder::class,
-            DosenPembimbingSeeder::class,
-            AdminSeeder::class,
-            MahasiswaSeeder::class,
-            PreferensiMahasiswaSeeder::class,
-        ]);
+        // $this->call([
+        //     BidangKeahlianSeeder::class,
+        //     JenisMagangSeeder::class,
+        //     LokasiMagangSeeder::class,
+        //     UserSeeder::class,
+        //     DosenPembimbingSeeder::class,
+        //     AdminSeeder::class,
+        //     MahasiswaSeeder::class,
+        //     PreferensiMahasiswaSeeder::class,
+        // ]);
 
         // Create spatie roles
         foreach (['mahasiswa', 'dosen_pembimbing', 'admin'] as $roleName) {
