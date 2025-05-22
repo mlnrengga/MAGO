@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('m_role', function (Blueprint $table) {
             $table->id('id_role');
+            $table->string('name', 50); // spatie default role_name
+            $table->string('guard_name', 50); // spatie default guard_name
             $table->string('nama_role', 50);
             $table->char('kode_role', 3)->unique();
             $table->timestamps();
