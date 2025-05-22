@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Auth\RoleModel;
+use Illuminate\Support\Facades\App;
+
 return [
 
     'models' => [
@@ -24,7 +27,7 @@ return [
          * `Spatie\Permission\Contracts\Role` contract.
          */
 
-        'role' => Spatie\Permission\Models\Role::class,
+        'role' => RoleModel::class,
 
     ],
 
@@ -36,8 +39,8 @@ return [
          * default value but you may easily change it to any table you like.
          */
 
-        'roles' => 'roles',
-
+        'roles' => 'm_role', // change default to my table name ~khip
+        // 'roles' => 'roles',
         /*
          * When using the "HasPermissions" trait from this package, we need to know which
          * table should be used to retrieve your permissions. We have chosen a basic
@@ -75,7 +78,8 @@ return [
         /*
          * Change this if you want to name the related pivots other than defaults
          */
-        'role_pivot_key' => null, // default 'role_id',
+        // 'role_pivot_key' => null, // default 'role_id',
+        'role_pivot_key' => 'id_role', // default 'role_id' to custom role id ~khip,
         'permission_pivot_key' => null, // default 'permission_id',
 
         /*

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // Calling all the seeder ~khip
+
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
