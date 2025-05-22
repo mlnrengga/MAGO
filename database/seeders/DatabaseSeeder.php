@@ -22,19 +22,24 @@ class DatabaseSeeder extends Seeder
 
         // Calling all the seeder ~khip
         $this->call([
+            RoleSeeder::class,
+            UserSeeder::class,
+            ProdiSeeder::class,
             BidangKeahlianSeeder::class,
             JenisMagangSeeder::class,
             LokasiMagangSeeder::class,
-            UserSeeder::class,
             DosenPembimbingSeeder::class,
             AdminSeeder::class,
             MahasiswaSeeder::class,
-            PreferensiMahasiswaSeeder::class,
+            PerusahaanSeeder::class,
+            PeriodeSeeder::class,
+            WaktuMagangSeeder::class,
+            InsentifSeeder::class,
         ]);
 
         // Create spatie roles
-        foreach (['mahasiswa', 'dosen_pembimbing', 'admin'] as $roleName) {
-            Role::firstOrCreate(['name' => $roleName]);
-        }
+        // foreach (['mahasiswa', 'dosen_pembimbing', 'admin'] as $roleName) {
+        //     Role::firstOrCreate(['name' => $roleName]);
+        // }
     }
 }

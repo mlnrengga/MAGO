@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class JenisMagangSeeder extends Seeder
+class PeriodeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,10 +14,13 @@ class JenisMagangSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['id_jenis_magang' => 1, 'nama_jenis_magang' => 'Magang Mandiri'],
-            ['id_jenis_magang' => 2, 'nama_jenis_magang' => 'Magang Kampus Merdeka'],
+            [
+                'id_periode' => 1,
+                'nama_periode' => '2024/2025 Genap',
+                'created_at' => now(),
+            ],
         ];
 
-        DB::table('m_jenis_magang')->insert($data);
+        DB::table('m_periode')->insert($data);
     }
 }

@@ -15,14 +15,13 @@ return new class extends Migration
             $table->id('id_mahasiswa');
             $table->unsignedBigInteger('id_user');
             $table->string('nim', 20)->unique();
-            $table->string('program_studi', 100);
-            $table->string('status_pengajuan_magang', 50);
+            $table->unsignedBigInteger('id_prodi')->index();
+            $table->decimal('ipk', 4, 2);
+            $table->unsignedTinyInteger('semester');
             $table->timestamps();
             
             $table->foreign('id_user')->references('id_user')->on('m_user');
-
-            // Optional constraint untuk status (kalau kamu mau pakai ENUM-style check)
-            // $table->check("status_pengajuan_magang IN ('belum', 'diproses', 'diterima', 'ditolak', 'selesai')");
+            $table->foreign('id_prodi')->references('id_prodi')->on('m_prodi');
         });
     }
 

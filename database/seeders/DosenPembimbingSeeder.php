@@ -15,16 +15,13 @@ class DosenPembimbingSeeder extends Seeder
     {
         $data = [
             [
-                'id_dosen' => 1,
+                'id_dospem' => 1,
                 'id_user' => 3, 
                 'nip' => '198804162011031001',
-                'id_lokasi_magang' => 1, 
-                'id_jenis_magang' => 1,
                 'created_at' => now(),
-                'updated_at' => now(),
             ],
         ];
 
-        DB::table('m_dosen_pembimbing')->insert($data);
+        DB::table('m_dospem')->insert($data);
     }
 }
