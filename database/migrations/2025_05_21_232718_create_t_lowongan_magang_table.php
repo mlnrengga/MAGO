@@ -24,8 +24,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_periode')->index();
             $table->unsignedBigInteger('id_waktu_magang')->index();
             $table->unsignedBigInteger('id_insentif')->index();
-            $table->decimal('ipk', 5, 2);
-            $table->unsignedTinyInteger('semester');
             $table->timestamps();
 
             $table->foreign('id_jenis_magang')->references('id_jenis_magang')->on('m_jenis_magang');
