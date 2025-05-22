@@ -19,13 +19,11 @@ class DosenPembimbingModel extends Model
     // + id_lokasi_magang, int (FK)
     // + id_jenis_magang: int (FK)
 
-    protected $table = 'm_dosen_pembimbing';
+    protected $table = 'm_dospem';
     protected $primaryKey = 'id_dosen';
     protected $fillable = [
         'id_user',
         'nip',
-        'id_lokasi_magang',
-        'id_jenis_magang',
     ];
     protected $hidden = [
         'id_user',
@@ -35,16 +33,4 @@ class DosenPembimbingModel extends Model
     {
         return $this->belongsTo(UserModel::class, 'id_user');
     }
-
-    public function lokasiMagang()
-    {
-        return $this->belongsTo(LokasiMagangModel::class, 'id_lokasi_magang');
-    }
-
-    public function jenisMagang()
-    {
-        return $this->belongsTo(JenisMagangModel::class, 'id_jenis_magang');
-    }
-
-
 }

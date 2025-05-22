@@ -26,8 +26,9 @@ class MahasiswaModel extends Model
     protected $fillable = [
         'id_user',
         'nim',
-        'program_studi',
-        'status_pengajuan_magang',
+        'id_prodi',
+        'ipk',
+        'semester'
     ];
     protected $hidden = [
         'id_user',
