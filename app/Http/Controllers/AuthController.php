@@ -61,11 +61,11 @@ class AuthController extends Controller
         // Redirect berdasarkan role user
         switch ($role) {
             case 'mahasiswa':
-                return redirect()->intended('/mahasiswa');
+                return redirect('/mahasiswa');
             case 'dosen':
-                return redirect()->intended('/pembimbing');
+                return redirect('/pembimbing');
             case 'admin':
-                return redirect()->intended('/admin'); 
+                return redirect('/admin'); 
             default:
                 return redirect('/login')->withErrors(['identifier' => 'Kredensial tidak valid']);
         }
