@@ -12,14 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('m_user', function (Blueprint $table) {
-            $table->id("id_user");
-            $table->string('nama', 100);
-            $table->string('password', 255);
-            $table->string('alamat', 255);
+            $table->id('id_user');
+            $table->unsignedBigInteger('id_role')->index();
+            $table->string('nama');
+            $table->string('password');
+            $table->string('alamat');
             $table->string('no_telepon', 20);
-            $table->string('profile_picture', 255);
-            $table->enum('role', ['admin', 'mahasiswa', 'dosen_pembimbing']);
+            $table->string('profile_picture')->nullable();
             $table->timestamps();
+
+            $table->foreign('id_role')->references('id_role')->on('m_role');
         });
     }
 

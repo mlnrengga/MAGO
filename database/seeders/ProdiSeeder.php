@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class MahasiswaSeeder extends Seeder
+class ProdiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,17 +15,19 @@ class MahasiswaSeeder extends Seeder
     {
         $data = [
             [
-                'id_mahasiswa' => 1,
-                'id_user' => 2, 
-                'nim' => '2341720111',
                 'id_prodi' => 1,
-                'ipk' => 3.5,
-                'semester' => 6,
+                'nama_prodi' => 'D4 Teknik Informatika',
+                'kode_prodi' => 'D4-TI',
+                'created_at' => now(),
+            ],
+            [
+                'id_prodi' => 2,
+                'nama_prodi' => 'D4 Sistem Informasi Bisnis',
+                'kode_prodi' => 'D4-SIB',
                 'created_at' => now(),
             ],
         ];
 
-        DB::table('m_mahasiswa')->insert($data);
-
+        DB::table('m_prodi')->insert($data);
     }
 }

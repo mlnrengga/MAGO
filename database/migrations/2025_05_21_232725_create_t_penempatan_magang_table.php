@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('t_penempatan_magang', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('pengajuan_id')->constrained('t_pengajuan_magang');
-            $table->foreignId('lokasi_id')->constrained('m_lokasi_magang', 'id_lokasi_magang'); // Merujuk ke kolom id_lokasi_magang
-            $table->date('tanggal_mulai'); 
-            $table->date('tanggal_selesai'); 
-            $table->timestamps(); 
+            $table->id('id_penempatan');
+            $table->unsignedBigInteger('id_mahasiswa')->index();
+            $table->unsignedBigInteger('id_pengajuan')->index();
+            $table->enum('status', ['Berlangsung', 'Selesai']);
+            $table->timestamps();
+            
+            $table->foreign('id_mahasiswa')->references('id_mahasiswa')->on('m_mahasiswa');
+            $table->foreign('id_pengajuan')->references('id_pengajuan')->on('t_pengajuan_magang');
         });
     }
 
