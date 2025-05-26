@@ -26,7 +26,7 @@ class PreferensiMahasiswaResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('id_bidang_keahlian')
+                Select::make('id_bidang')
                     ->label('Bidang Keahlian')
                     ->relationship('bidangKeahlian', 'nama_bidang_keahlian')
                     ->required()
