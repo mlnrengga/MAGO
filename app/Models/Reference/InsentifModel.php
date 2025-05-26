@@ -2,6 +2,7 @@
 
 namespace App\Models\Reference;
 
+use App\Models\Pivot\PreferensiMahasiswaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -12,6 +13,7 @@ class InsentifModel extends Model
 
     protected $table = 'm_insentif';
     protected $primaryKey = 'id_insentif';
+
     protected $fillable = [
         'keterangan',
     ];
@@ -19,5 +21,10 @@ class InsentifModel extends Model
     public function lowonganMagang(): HasOne
     {
         return $this->hasOne(LowonganMagangModel::class, 'id_insentif', 'id_insentif');
+    }
+
+    public function preferensiMahasiswa()
+    {
+        return $this->hasMany(PreferensiMahasiswaModel::class, 'id_insentif');
     }
 }
