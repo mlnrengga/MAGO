@@ -5,12 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LowonganResource\Pages;
 use App\Filament\Resources\LowonganResource\RelationManagers;
 use App\Models\Reference\BidangKeahlianModel;
+use App\Models\Reference\DaerahMagangModel;
 use App\Models\Reference\InsentifModel;
 use App\Models\Reference\JenisMagangModel;
 use App\Models\Reference\LokasiMagangModel;
 use App\Models\Reference\LowonganMagangModel;
 use App\Models\Reference\PeriodeModel;
 use App\Models\Reference\PerusahaanModel;
+use App\Models\Reference\ProvinsiModel;
 use App\Models\Reference\WaktuMagangModel;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -61,11 +63,28 @@ class LowonganResource extends Resource
                             ->searchable()
                             ->required(),
 
-                        Forms\Components\Select::make('id_lokasi_magang')
-                            ->label('Lokasi Magang')
-                            ->options(LokasiMagangModel::all()->pluck('nama_lokasi', 'id_lokasi_magang'))
+                        Forms\Components\Select::make('id_provinsi')
+                            ->label('Provinsi')
+                            ->options(ProvinsiModel::all()->pluck('nama_provinsi', 'id_provinsi'))
                             ->searchable()
+                            ->reactive() // TRIGGER DROPDOWN DAERAH 
                             ->required(),
+                            
+                        Forms\Components\Select::make('id_daerah_magang')
+                            ->label('Daerah (Kota/Kabupaten)')
+                            ->options(function (callable $get) {
+                                $provinsiId = $get('id_provinsi');
+                                if (!$provinsiId) {
+                                    return [];
+                                }
+                                return DaerahMagangModel::where('id_provinsi', $provinsiId)
+                                    ->get()
+                                    ->pluck('namaLengkap', 'id_daerah_magang');
+                            })
+                            ->searchable()
+                            ->required()
+                            ->disabled(fn (callable $get) => !$get('id_provinsi')) // Disable jika belum pilih provinsi
+                            ->reactive(),
 
                         Forms\Components\Select::make('id_periode')
                             ->label('Periode')
