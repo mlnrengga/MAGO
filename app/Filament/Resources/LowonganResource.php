@@ -30,7 +30,7 @@ class LowonganResource extends Resource
     protected static ?string $slug = 'manajemen-lowongan';
     protected static ?string $modelLabel = 'Lowongan';
     protected static ?string $pluralModelLabel = 'Data Lowongan Magang';
-    // protected static ?string $navigationGroup = 'Magang';
+    protected static ?string $navigationGroup = 'Magang';
 
     public static function form(Form $form): Form
     {
