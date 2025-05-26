@@ -2,7 +2,6 @@
 
 namespace App\Models\Reference;
 
-use App\Models\Pivot\LowonganBidangModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +17,7 @@ class LowonganMagangModel extends Model
     protected $fillable = [
         'id_jenis_magang',
         'id_perusahaan',
-        'id_lokasi_magang',
+        'id_daerah_magang',
         'judul_lowongan',
         'deskripsi_lowongan',
         'tanggal_posting',
@@ -64,9 +63,9 @@ class LowonganMagangModel extends Model
         return $this->belongsTo(JenisMagangModel::class, 'id_jenis_magang', 'id_jenis_magang');
     }
 
-    public function lokasiMagang(): BelongsTo
+    public function daerahMagang(): BelongsTo
     {
-        return $this->belongsTo(LokasiMagangModel::class, 'id_lokasi_magang', 'id_lokasi_magang');
+        return $this->belongsTo(DaerahMagangModel::class, 'id_daerah_magang', 'id_daerah_magang');
     }
 
     public function insentif(): BelongsTo
