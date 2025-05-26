@@ -6,6 +6,7 @@ use App\Models\Auth\DosenPembimbingModel;
 use App\Models\Pivot\PreferensiMahasiswaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class JenisMagangModel extends Model
 {
@@ -26,8 +27,8 @@ class JenisMagangModel extends Model
         return $this->hasMany(PreferensiMahasiswaModel::class, 'id_jenis_magang');
     }
 
-    public function dosenPembimbing()
+    public function lowonganMagang(): HasOne
     {
-        return $this->hasMany(DosenPembimbingModel::class, 'id_jenis_magang');
+        return $this->hasOne(LowonganMagangModel::class, 'id_jenis_magang', 'id_jenis_magang');
     }
 }

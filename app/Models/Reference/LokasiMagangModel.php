@@ -6,6 +6,7 @@ use App\Models\Auth\DosenPembimbingModel;
 use App\Models\Pivot\PreferensiMahasiswaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LokasiMagangModel extends Model
 {
@@ -18,7 +19,7 @@ class LokasiMagangModel extends Model
     protected $table = 'm_lokasi_magang';
     protected $primaryKey = 'id_lokasi_magang';
     protected $fillable = [
-        "kota_lokasi_magang",
+        "nama_lokasi",
     ];
 
     public function preferensiMahasiswa()
@@ -26,8 +27,8 @@ class LokasiMagangModel extends Model
         return $this->hasMany(PreferensiMahasiswaModel::class, 'id_lokasi_magang');
     }
 
-    public function dosenPembimbing()
+    public function lowonganMagang(): HasOne
     {
-        return $this->hasMany(DosenPembimbingModel::class, 'id_lokasi_magang');
+        return $this->hasOne(LowonganMagangModel::class, 'id_lokasi_magang', 'id_lokasi_magang');
     }
 }
