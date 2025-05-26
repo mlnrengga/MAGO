@@ -24,20 +24,20 @@ class MahasiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nim')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->length(15)
-                    ->numeric()
-                    ->placeholder('Masukkan NIM tanpa spasi'),
+                // Forms\Components\TextInput::make('nim')
+                //     ->required()
+                //     ->unique(ignoreRecord: true)
+                //     ->length(15)
+                //     ->numeric()
+                //     ->placeholder('Masukkan NIM tanpa spasi'),
 
-                Forms\Components\TextInput::make('program_studi')
-                    ->required()
-                    ->placeholder('Contoh: Teknik Informatika'),
+                // Forms\Components\TextInput::make('program_studi')
+                //     ->required()
+                //     ->placeholder('Contoh: Teknik Informatika'),
 
-                Forms\Components\Textarea::make('riwayat_kesehatan')
-                    ->placeholder('Masukkan riwayat kesehatan (jika ada)')
-                    ->columnSpanFull(),
+                // Forms\Components\Textarea::make('riwayat_kesehatan')
+                //     ->placeholder('Masukkan riwayat kesehatan (jika ada)')
+                //     ->columnSpanFull(),
             ]);
     }
 
