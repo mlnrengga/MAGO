@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             return auth()->check() && auth()->user()->hasRole('admin');
         });
     }
-    
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -37,8 +37,18 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(false)
             ->colors([
-                'primary' => Color::Amber,
+                'danger' => Color::Red,
+                'gray' => Color::Slate,
+                'info' => Color::Indigo,
+                'primary' => Color::Blue,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
+            ->font('Poppins')
+            ->brandLogo(asset('images/logo1.png'))
+            ->brandLogoHeight('1.5rem')
+            ->darkModeBrandLogo(asset('images/logo2.png'))
+            ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -62,7 +72,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                RoleMiddleware::class.':admin',
+                RoleMiddleware::class . ':admin',
             ]);
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Models\Auth;
 
+use App\Models\Reference\PerusahaanModel;
 use App\Models\UserModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AdminModel extends Model
 {
@@ -30,4 +32,8 @@ class AdminModel extends Model
         return $this->belongsTo(UserModel::class, 'id_user');
     }
 
+    public function perusahaan(): HasMany
+    {
+        return $this->hasMany(PerusahaanModel::class, 'id_admin', 'id_admin');
+    }
 }
