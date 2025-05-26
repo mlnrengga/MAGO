@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class AdminSeeder extends Seeder
+class PerusahaanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,14 +15,16 @@ class AdminSeeder extends Seeder
     {
         $data = [
             [
+                'id_perusahaan' => 1,
                 'id_admin' => 1,
-                'id_user' => 1, 
-                'nip' => '12345678901234567890',
+                'nama' => 'PT. Maju Mundur',
+                'alamat' => 'Jl. Raya No. 1',
+                'no_telepon' => '08123456789',
+                'email' => 'qNw0s@example.com',
+                'website' => 'www.maju-mundur.com',
                 'created_at' => now(),
-                'updated_at' => now(),
             ],
         ];
-
-        DB::table('m_admin')->insert($data);
+        DB::table('m_perusahaan')->insert($data);
     }
 }

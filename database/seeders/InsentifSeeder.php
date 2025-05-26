@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class AdminSeeder extends Seeder
+class InsentifSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,14 +15,17 @@ class AdminSeeder extends Seeder
     {
         $data = [
             [
-                'id_admin' => 1,
-                'id_user' => 1, 
-                'nip' => '12345678901234567890',
+                'id_insentif' => 1,
+                'keterangan' => 'Ada',
                 'created_at' => now(),
-                'updated_at' => now(),
+            ],
+            [
+                'id_insentif' => 2,
+                'keterangan' => 'Tidak Ada',
+                'created_at' => now(),
             ],
         ];
 
-        DB::table('m_admin')->insert($data);
+        DB::table('m_insentif')->insert($data);
     }
 }
