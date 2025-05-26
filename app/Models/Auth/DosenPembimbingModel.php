@@ -19,11 +19,7 @@ class DosenPembimbingModel extends Model
     // + id_lokasi_magang, int (FK)
     // + id_jenis_magang: int (FK)
 
-<<<<<<< HEAD
-     protected $table = 'm_dosen_pembimbing';
-=======
     protected $table = 'm_dospem';
->>>>>>> 0b719061a021423d6a20aa2149f2fbe9ec70f151
     protected $primaryKey = 'id_dosen';
     protected $fillable = [
         'id_user',

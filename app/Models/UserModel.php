@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Auth\AdminModel;
 use App\Models\Auth\DosenPembimbingModel;
 use App\Models\Auth\MahasiswaModel;
+use App\Models\Auth\RoleModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,7 +42,7 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
         'password',
         'alamat',
         'no_telepon',
-        'role',
+        'id_role',
     ];
     protected $hidden = [
         'password',
@@ -68,5 +69,10 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
     public function admin()
     {
         return $this->hasOne(AdminModel::class, 'id_user');
+    } 
+    
+    public function role()
+    {
+        return $this->hasOne(RoleModel::class, 'id_role', 'id_role');
     }
 }
