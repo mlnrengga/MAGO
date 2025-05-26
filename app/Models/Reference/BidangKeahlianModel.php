@@ -2,9 +2,11 @@
 
 namespace App\Models\Reference;
 
+use App\Models\Pivot\LowonganBidangModel;
 use App\Models\Pivot\PreferensiMahasiswaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class BidangKeahlianModel extends Model
 {
@@ -25,4 +27,13 @@ class BidangKeahlianModel extends Model
         return $this->hasMany(PreferensiMahasiswaModel::class, 'id_bidang');
     }
     
+    public function lowonganMagang(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            LowonganMagangModel::class,
+            'r_lowongan_bidang',
+            'id_bidang',
+            'id_lowongan'
+        );
+    }
 }
