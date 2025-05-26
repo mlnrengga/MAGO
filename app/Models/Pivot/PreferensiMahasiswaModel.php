@@ -4,9 +4,9 @@ namespace App\Models\Pivot;
 
 use App\Models\Auth\MahasiswaModel;
 use App\Models\Reference\BidangKeahlianModel;
+use App\Models\Reference\DaerahMagangModel;
 use App\Models\Reference\InsentifModel;
 use App\Models\Reference\JenisMagangModel;
-use App\Models\Reference\LokasiMagangModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,10 +40,10 @@ class PreferensiMahasiswaModel extends Model
         return $this->belongsTo(BidangKeahlianModel::class, 'id_bidang');
     }
 
-    // Relasi ke lokasi magang
-    public function lokasiMagang()
+    // Relasi ke daerah magang
+    public function daerahMagang()
     {
-        return $this->belongsTo(LokasiMagangModel::class, 'id_lokasi_magang');
+        return $this->belongsTo(DaerahMagangModel::class, 'id_daerah_magang');
     }
 
     // Relasi ke jenis magang

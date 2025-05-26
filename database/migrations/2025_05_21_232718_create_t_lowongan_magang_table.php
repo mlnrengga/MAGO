@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_lowongan');
             $table->unsignedBigInteger('id_jenis_magang')->index();
             $table->unsignedBigInteger('id_perusahaan')->index();
-            $table->unsignedBigInteger('id_lokasi_magang')->index();
+            $table->unsignedBigInteger('id_daerah_magang')->index();
             $table->string('judul_lowongan', 150);
             $table->text('deskripsi_lowongan');
             $table->date('tanggal_posting');
@@ -28,7 +28,7 @@ return new class extends Migration
 
             $table->foreign('id_jenis_magang')->references('id_jenis_magang')->on('m_jenis_magang');
             $table->foreign('id_perusahaan')->references('id_perusahaan')->on('m_perusahaan');
-            $table->foreign('id_lokasi_magang')->references('id_lokasi_magang')->on('m_lokasi_magang');
+            $table->foreign('id_daerah_magang')->references('id_daerah_magang')->on('m_daerah_magang');
             $table->foreign('id_periode')->references('id_periode')->on('m_periode');
             $table->foreign('id_waktu_magang')->references('id_waktu_magang')->on('m_waktu_magang');
             $table->foreign('id_insentif')->references('id_insentif')->on('m_insentif');

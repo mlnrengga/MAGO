@@ -19,7 +19,8 @@ class ProdiResource extends Resource
 {
     protected static ?string $model = ProdiModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'fluentui-hat-graduation-24';
+    protected static ?string $navigationGroup = 'Reference Data';
 
     public static function form(Form $form): Form
     {
