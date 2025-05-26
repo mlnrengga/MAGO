@@ -4,6 +4,7 @@ namespace App\Models\Pivot;
 
 use App\Models\Auth\MahasiswaModel;
 use App\Models\Reference\BidangKeahlianModel;
+use App\Models\Reference\InsentifModel;
 use App\Models\Reference\JenisMagangModel;
 use App\Models\Reference\LokasiMagangModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,12 +18,14 @@ class PreferensiMahasiswaModel extends Model
     protected $primaryKey = 'id_preferensi';
     protected $fillable = [
         'id_mahasiswa',
-        'id_bidang_keahlian',
+        'id_bidang',
         'ranking_bidang',
         'id_lokasi_magang',
         'ranking_lokasi',
         'id_jenis_magang',
         'ranking_jenis',
+        'id_insentif',
+        'ranking_insentif',
     ];
 
     // Relasi ke mahasiswa
@@ -34,7 +37,7 @@ class PreferensiMahasiswaModel extends Model
     // Relasi ke bidang keahlian
     public function bidangKeahlian()
     {
-        return $this->belongsTo(BidangKeahlianModel::class, 'id_bidang_keahlian');
+        return $this->belongsTo(BidangKeahlianModel::class, 'id_bidang');
     }
 
     // Relasi ke lokasi magang
@@ -47,5 +50,11 @@ class PreferensiMahasiswaModel extends Model
     public function jenisMagang()
     {
         return $this->belongsTo(JenisMagangModel::class, 'id_jenis_magang');
+    }
+
+    // Relasi ke insentif
+    public function insentif()
+    {
+        return $this->belongsTo(InsentifModel::class, 'id_insentif');
     }
 }

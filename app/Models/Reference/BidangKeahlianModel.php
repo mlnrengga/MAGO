@@ -15,14 +15,14 @@ class BidangKeahlianModel extends Model
     // + nama_bidang_keahlian: String
 
     protected $table = 'm_bidang_keahlian';
-    protected $primaryKey = 'id_bidang_keahlian';
+    protected $primaryKey = 'id_bidang';
     protected $fillable = [
         'nama_bidang_keahlian',
     ];
 
     public function preferensiMahasiswa()
     {
-        return $this->hasMany(PreferensiMahasiswaModel::class, 'id_bidang_keahlian');
+        return $this->hasMany(PreferensiMahasiswaModel::class, 'id_bidang');
     }
     
 }
