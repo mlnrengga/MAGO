@@ -4,6 +4,7 @@ namespace App\Models\Auth;
 
 use App\Models\UserModel;
 use App\Models\Pivot\PreferensiMahasiswaModel;
+use App\Models\Reference\PengajuanMagangModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,4 +45,8 @@ class MahasiswaModel extends Model
         return $this->hasOne(PreferensiMahasiswaModel::class, 'id_mahasiswa');
     }
 
+    public function pengajuanMagang()
+    {
+        return $this->hasMany(PengajuanMagangModel::class, 'id_mahasiswa', 'id_mahasiswa');
+    }
 }

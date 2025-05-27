@@ -156,7 +156,7 @@ class LowonganResource extends Resource
                     ->label('Jenis Magang')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('lokasiMagang.nama_lokasi')
+                Tables\Columns\TextColumn::make('daerahMagang.namaLengkap')
                     ->label('Lokasi')
                     ->sortable(),
 
