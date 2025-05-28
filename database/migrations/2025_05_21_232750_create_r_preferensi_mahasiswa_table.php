@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id('id_preferensi');
             $table->unsignedBigInteger('id_mahasiswa')->unique();
         
-            $table->unsignedBigInteger('id_lokasi_magang');
-            $table->unsignedTinyInteger('ranking_lokasi');
+            $table->unsignedBigInteger('id_daerah_magang');
+            $table->unsignedTinyInteger('ranking_daerah');
         
             $table->unsignedBigInteger('id_jenis_magang');
             $table->unsignedTinyInteger('ranking_jenis');
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_mahasiswa')->references('id_mahasiswa')->on('m_mahasiswa');
-            $table->foreign('id_lokasi_magang')->references('id_lokasi_magang')->on('m_lokasi_magang');
+            $table->foreign('id_daerah_magang')->references('id_daerah_magang')->on('m_daerah_magang');
             $table->foreign('id_jenis_magang')->references('id_jenis_magang')->on('m_jenis_magang');
             $table->foreign('id_waktu_magang')->references('id_waktu_magang')->on('m_waktu_magang');
             $table->foreign('id_insentif')->references('id_insentif')->on('m_insentif');

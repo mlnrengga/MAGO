@@ -19,14 +19,18 @@ class ProdiResource extends Resource
 {
     protected static ?string $model = ProdiModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static ?string $navigationGroup = 'Reference Data';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('nama_prodi'),
-                TextInput::make('kode_prodi'),
+                TextInput::make('nama_prodi')
+                    ->label('Nama Program Studi'),
+                TextInput::make('kode_prodi')
+                    ->label('Kode Program Studi')
+                    ->placeholder('Contoh: D4-TI'),
             ]);
     }
 
@@ -34,14 +38,19 @@ class ProdiResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama_prodi'),
-                TextColumn::make('kode_prodi'),
+                TextColumn::make('nama_prodi')
+                    ->label('Nama Program Studi')
+                    ->searchable(),
+                TextColumn::make('kode_prodi')
+                    ->label('Kode Program Studi')
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
