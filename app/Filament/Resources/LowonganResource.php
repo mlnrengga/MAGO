@@ -173,7 +173,8 @@ class LowonganResource extends Resource
                     ->date()
                     ->sortable(),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->colors([
                         'success' => 'Aktif',
                         'danger' => 'Selesai',
