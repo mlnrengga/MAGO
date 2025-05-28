@@ -160,8 +160,20 @@ class LowonganResource extends Resource
                 Tables\Columns\TextColumn::make('daerahMagang.namaLengkap')
                     ->label('Lokasi')
                     ->limit(10)
-                    ->searchable()
+                    // ->searchable()
                     ->sortable(),
+
+                // Kolom tersembunyi untuk pencarian
+                Tables\Columns\TextColumn::make('daerahMagang.nama_daerah')
+                    ->label('Nama Daerah')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan secara default
+
+                // Kolom tersembunyi untuk pencarian jenis daerah
+                Tables\Columns\TextColumn::make('daerahMagang.jenis_daerah')
+                    ->label('Jenis Daerah')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan secara default
 
                 Tables\Columns\TextColumn::make('daerahMagang.provinsi.nama_provinsi')
                     ->label('Provinsi')
