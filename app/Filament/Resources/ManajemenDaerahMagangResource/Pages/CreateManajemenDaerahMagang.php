@@ -12,6 +12,6 @@ class CreateManajemenDaerahMagang extends CreateRecord
 
     public function getRedirectUrl(): string
     {
-        return '/admin/manajemen-daerah-magang';
+        return $this->getResource()::getUrl('index');
     }
 }
