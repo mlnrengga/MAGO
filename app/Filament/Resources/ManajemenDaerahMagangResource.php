@@ -21,7 +21,7 @@ class ManajemenDaerahMagangResource extends Resource
 {
     protected static ?string $model = DaerahMagangModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static ?string $navigationIcon = 'heroicon-s-map';
     protected static ?string $navigationLabel = 'Manajemen Daerah Magang';
     protected static ?string $slug = 'manajemen-daerah-magang';
     protected static ?string $modelLabel = 'Daerah Magang';

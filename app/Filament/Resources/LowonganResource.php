@@ -25,7 +25,7 @@ class LowonganResource extends Resource
 {
     protected static ?string $model = LowonganMagangModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static ?string $navigationIcon = 'heroicon-s-briefcase';
     protected static ?string $navigationLabel = 'Manajemen Lowongan';
     protected static ?string $slug = 'manajemen-lowongan';
     protected static ?string $modelLabel = 'Lowongan';

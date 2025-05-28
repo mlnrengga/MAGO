@@ -19,7 +19,7 @@ class ManajemenJenisMagangResource extends Resource
 {
     protected static ?string $model = JenisMagangModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static ?string $navigationIcon = 'heroicon-s-rectangle-group';
     protected static ?string $navigationLabel = 'Manajemen Jenis Magang';
     protected static ?string $slug = 'manajemen-jenis-magang';
     protected static ?string $modelLabel = 'Jenis Magang';
