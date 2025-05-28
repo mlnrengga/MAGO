@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('r_dospem_bidang_keahlian', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_dospem')->index()->onDelete('cascade');
-            $table->unsignedBigInteger('id_bidang')->index()->onDelete('cascade');
+            $table->unsignedBigInteger('id_dospem')->index();
+            $table->unsignedBigInteger('id_bidang')->index();
             $table->timestamps();
             
             $table->primary(['id_dospem', 'id_bidang']);
 
-            $table->foreign('id_dospem')->references('id_dospem')->on('m_dospem');
-            $table->foreign('id_bidang')->references('id_bidang')->on('m_bidang_keahlian');
+            $table->foreign('id_dospem')->references('id_dospem')->on('m_dospem')->onDelete('cascade');
+            $table->foreign('id_bidang')->references('id_bidang')->on('m_bidang_keahlian')->onDelete('cascade');
         });
     }
 

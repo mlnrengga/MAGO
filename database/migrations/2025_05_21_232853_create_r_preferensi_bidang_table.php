@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('r_preferensi_bidang', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_preferensi')->index()->onDelete('cascade');
-            $table->unsignedBigInteger('id_bidang')->index()->onDelete('cascade');
+            $table->unsignedBigInteger('id_preferensi')->index();
+            $table->unsignedBigInteger('id_bidang')->index();
             $table->unsignedTinyInteger('rangking_bidang');
             $table->timestamps();
             
             $table->primary(['id_preferensi', 'id_bidang']);
 
-            $table->foreign('id_preferensi')->references('id_preferensi')->on('r_preferensi_mahasiswa');
-            $table->foreign('id_bidang')->references('id_bidang')->on('m_bidang_keahlian');
+            $table->foreign('id_preferensi')->references('id_preferensi')->on('r_preferensi_mahasiswa')->onDelete('cascade');
+            $table->foreign('id_bidang')->references('id_bidang')->on('m_bidang_keahlian')->onDelete('cascade');
         });
     }
 
