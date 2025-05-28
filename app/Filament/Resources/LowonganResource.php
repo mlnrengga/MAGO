@@ -69,7 +69,7 @@ class LowonganResource extends Resource
                             ->searchable()
                             ->reactive() // TRIGGER DROPDOWN DAERAH 
                             ->required(),
-                            
+
                         Forms\Components\Select::make('id_daerah_magang')
                             ->label('Daerah (Kota/Kabupaten)')
                             ->options(function (callable $get) {
@@ -83,7 +83,7 @@ class LowonganResource extends Resource
                             })
                             ->searchable()
                             ->required()
-                            ->disabled(fn (callable $get) => !$get('id_provinsi')) // Disable jika belum pilih provinsi
+                            ->disabled(fn(callable $get) => !$get('id_provinsi')) // Disable jika belum pilih provinsi
                             ->reactive(),
 
                         Forms\Components\Select::make('id_periode')
@@ -144,6 +144,7 @@ class LowonganResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->label('Judul Lowongan')
+                    ->limit(10)
                     ->searchable()
                     ->sortable(),
 
@@ -156,8 +157,15 @@ class LowonganResource extends Resource
                     ->label('Jenis Magang')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('lokasiMagang.nama_lokasi')
+                Tables\Columns\TextColumn::make('daerahMagang.namaLengkap')
                     ->label('Lokasi')
+                    ->limit(10)
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('daerahMagang.provinsi.nama_provinsi')
+                    ->label('Provinsi')
+                    ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('batas_akhir_lamaran')

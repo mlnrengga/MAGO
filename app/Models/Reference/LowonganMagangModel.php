@@ -72,4 +72,9 @@ class LowonganMagangModel extends Model
     {
         return $this->belongsTo(InsentifModel::class, 'id_insentif', 'id_insentif');
     }
+
+    public function pengajuanMagang()
+    {
+        return $this->hasMany(PengajuanMagangModel::class, 'id_lowongan', 'id_lowongan');
+    }
 }
