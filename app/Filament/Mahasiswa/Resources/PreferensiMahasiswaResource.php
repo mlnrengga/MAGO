@@ -6,6 +6,7 @@ use App\Filament\Mahasiswa\Resources\PreferensiMahasiswaResource\Pages;
 use App\Filament\Mahasiswa\Resources\PreferensiMahasiswaResource\RelationManagers;
 use App\Models\Pivot\PreferensiMahasiswaModel;
 use App\Models\Reference\BidangKeahlianModel;
+use App\Models\Reference\DaerahMagangModel;
 use App\Models\Reference\InsentifModel;
 use App\Models\Reference\JenisMagangModel;
 use App\Models\Reference\LokasiMagangModel;
@@ -48,11 +49,11 @@ class PreferensiMahasiswaResource extends Resource
                     ->required(),
                 ]),
 
-                Section::make('Lokasi Magang')
+                Section::make('Daerah Magang')
                 ->schema([
-                Select::make('id_lokasi_magang')
-                    ->label('Lokasi Magang')
-                    ->options(LokasiMagangModel::all()->pluck('nama_lokasi', 'id_lokasi_magang'))
+                Select::make('id_daerah_magang')
+                    ->label('Daerah Magang')
+                    ->options(DaerahMagangModel::all()->pluck('nama_daerah', 'id_daerah_magang'))
                     ->searchable()
                     ->multiple()
                     ->required()
@@ -166,7 +167,7 @@ class PreferensiMahasiswaResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'Manajemen Akun & Profil';
+        return 'Manajemen Preferensi';
     }
 
     public static function getPluralModelLabel(): string
