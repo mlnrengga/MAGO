@@ -2,6 +2,7 @@
 
 namespace App\Models\Auth;
 
+use App\Models\MBidangKeahlian;
 use App\Models\UserModel;
 use App\Models\Reference\JenisMagangModel;
 use App\Models\Reference\LokasiMagangModel;
@@ -32,5 +33,11 @@ class DosenPembimbingModel extends Model
     public function user()
     {
         return $this->belongsTo(UserModel::class, 'id_user');
+    }
+
+    // Relasi many-to-many ke MBidangKeahlian
+    public function bidangKeahlian()
+    {
+        return $this->belongsToMany(MBidangKeahlian::class, 'r_dospem_bidang_keahlian', 'id_dospem', 'id_bidang');
     }
 }
