@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('r_lowongan_bidang', function (Blueprint $table) {
             $table->unsignedBigInteger('id_lowongan')->index();
             $table->unsignedBigInteger('id_bidang')->index();
-            
+            $table->timestamps();
+
             $table->primary(['id_lowongan', 'id_bidang']);
 
-            $table->foreign('id_lowongan')->references('id_lowongan')->on('t_lowongan_magang');
-            $table->foreign('id_bidang')->references('id_bidang')->on('m_bidang_keahlian');
+            $table->foreign('id_lowongan')->references('id_lowongan')->on('t_lowongan_magang')->onDelete('cascade');
+            $table->foreign('id_bidang')->references('id_bidang')->on('m_bidang_keahlian')->onDelete('cascade');
         });
     }
 

@@ -42,6 +42,7 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
         'alamat',
         'no_telepon',
         'role',
+        'profile_picture',
     ];
     protected $hidden = [
         'password',
