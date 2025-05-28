@@ -65,7 +65,12 @@ class LowonganResource extends Resource
 
                         Forms\Components\Select::make('id_provinsi')
                             ->label('Provinsi')
-                            ->options(DaerahMagangModel::all()->pluck('provinsi.nama_provinsi', 'id_provinsi'))
+                            ->options(function () {
+                                return DaerahMagangModel::query()
+                                    ->select('id_provinsi', 'provinsi.nama_provinsi')
+                                    ->get()
+                                    ->pluck('provinsi.nama_provinsi', 'id_provinsi');
+                            })
                             ->searchable()
                             ->reactive() // TRIGGER DROPDOWN DAERAH 
                             ->required(),
