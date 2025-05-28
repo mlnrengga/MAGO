@@ -37,6 +37,12 @@ class DatabaseSeeder extends Seeder
             PeriodeSeeder::class,
             WaktuMagangSeeder::class,
             InsentifSeeder::class,
+            LowonganMagangSeeder::class,
+            PengajuanMagangSeeder::class,
+            PreferensiMahasiswaSeeder::class,
+            PreferensiJenisMagangSeeder::class,
+            DospemBidangKeahlianSeeder::class,
+            LowonganBidangSeeder::class,
         ]);
 
         // Create spatie roles
