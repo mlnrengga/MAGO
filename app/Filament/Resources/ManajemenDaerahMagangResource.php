@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -74,10 +75,21 @@ class ManajemenDaerahMagangResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('nama_provinsi')
+                ->label('Provinsi')
+                ->relationship('provinsi', 'nama_provinsi'),
+
+                SelectFilter::make('jenis_daerah')
+                ->label('Jenis Daerah')
+                ->options([
+                    'Kota' => 'Kota',
+                    'Kabupaten' => 'Kabupaten'
+                ]),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
