@@ -194,11 +194,20 @@ class KegiatanMagangResource extends Resource
                                 'Ditolak' => 'Ditolak',
                             ])
                             ->live()
+                            ->afterStateUpdated(function (string $state, callable $set) {
+                                if ($state === 'Diterima') {
+                                    $set('tanggal_diterima', now()->format('Y-m-d'));
+                                }
+                            })
                             ->required(),
 
                         Forms\Components\DatePicker::make('tanggal_diterima')
                             ->label('Tanggal Diterima')
-                            ->required(fn(Forms\Get $get) => $get('status') === 'Diterima'),
+                            ->default(now()->format('Y-m-d'))
+                            ->displayFormat('Y-m-d')
+                            ->visible(fn(Forms\Get $get) => $get('status') === 'Diterima')
+                            ->disabled() // Make it read-only
+                            ->dehydrated(fn(Forms\Get $get) => $get('status') === 'Diterima'),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Dosen Pembimbing')
