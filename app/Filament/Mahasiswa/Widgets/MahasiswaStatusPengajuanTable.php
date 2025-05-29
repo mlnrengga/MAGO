@@ -37,7 +37,7 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                 // Query hanya pengajuan milik mahasiswa yang sedang login
                 PengajuanMagangModel::query()
                     ->where('id_mahasiswa', $userId)
-                    ->with(['mahasiswa', 'lowongan.perusahaan'])
+                    ->with(['mahasiswa', 'lowongan.perusahaan', 'lowongan.jenisMagang', 'lowongan.daerahMagang'])
             )
             ->columns([
                 Tables\Columns\TextColumn::make('mahasiswa.user.nama')
