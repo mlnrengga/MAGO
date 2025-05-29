@@ -160,7 +160,7 @@ class LowonganResource extends Resource
                 Tables\Columns\TextColumn::make('daerahMagang.namaLengkap')
                     ->label('Lokasi')
                     ->limit(10)
-                    // ->searchable()
+                    // ->searchable() // Commented out to avoid redundancy with 'daerahMagang.nama_daerah', which is already searchable.
                     ->sortable(),
 
                 // Kolom tersembunyi untuk pencarian

@@ -29,8 +29,9 @@ class PengajuanMagangSeeder extends Seeder
         $data = [];
         $counter = 1;
         
-        // Buat 200 data pengajuan magang
-        for ($i = 1; $i <= 200; $i++) {
+        // Buat 150 data pengajuan magang
+        $validRecords = 0;
+        while ($validRecords < 150) {
             // Pilih mahasiswa secara acak
             $selectedMahasiswa = $mahasiswa->random();
             $idMahasiswa = $selectedMahasiswa->id_mahasiswa;
