@@ -23,8 +23,12 @@ class PerusahaanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $navigationLabel = 'Perusahaan Mitra';
-    protected static ?string $navigationGroup = 'Manajemen Perusahaan';
+    protected static ?string $navigationGroup = 'Reference Data';
     protected static ?int $navigationSort = 1;
+
+    protected static ?string $slug = 'menajemen-perusahan';
+    protected static ?string $modelLabel = 'Lowongan';
+    protected static ?string $pluralModelLabel = 'Data Lowongan Magang';
 
     public static function form(Form $form): Form
     {
@@ -49,9 +53,12 @@ class PerusahaanResource extends Resource
 
                 Select::make('id_admin')
                     ->label('Admin Penanggung Jawab')
-                    ->relationship('admin', 'nip') // atau ubah ke nama jika ingin
+                    ->relationship('admin', 'nip')
                     ->searchable()
                     ->preload()
+                    ->required(),
+
+                TextInput::make('website')
                     ->required(),
             ]);
     }
@@ -65,12 +72,14 @@ class PerusahaanResource extends Resource
                 TextColumn::make('no_telepon'),
                 TextColumn::make('email'),
                 TextColumn::make('admin.nip')->label('Admin'),
-
+                TextColumn::make('website')  // Fixed case to match database column
+                    ->label('Website'),     // Proper label for display
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),  // Added view action
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -92,6 +101,7 @@ class PerusahaanResource extends Resource
         return [
             'index' => Pages\ListPerusahaans::route('/'),
             'create' => Pages\CreatePerusahaan::route('/create'),
+              'view' => Pages\ViewPerusahaan::route('/{record}'),
             'edit' => Pages\EditPerusahaan::route('/{record}/edit'),
         ];
     }
