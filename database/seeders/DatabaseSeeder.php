@@ -43,11 +43,8 @@ class DatabaseSeeder extends Seeder
             PreferensiJenisMagangSeeder::class,
             DospemBidangKeahlianSeeder::class,
             LowonganBidangSeeder::class,
+            PenempatanMagangSeeder::class,
         ]);
 
-        // Create spatie roles
-        // foreach (['mahasiswa', 'dosen_pembimbing', 'admin'] as $roleName) {
-        //     Role::firstOrCreate(['name' => $roleName]);
-        // }
     }
 }
