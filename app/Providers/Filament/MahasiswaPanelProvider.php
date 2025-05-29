@@ -35,6 +35,7 @@ class MahasiswaPanelProvider extends PanelProvider
             ->id('mahasiswa')
             ->path('mahasiswa')
             ->login(false)
+            ->databaseNotifications()
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Slate,

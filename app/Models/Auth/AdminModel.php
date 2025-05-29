@@ -7,10 +7,11 @@ use App\Models\UserModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 
 class AdminModel extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     // m_admin
     // + id_admin: String (PK)
