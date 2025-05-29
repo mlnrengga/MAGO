@@ -8,10 +8,11 @@ use App\Models\Reference\PengajuanMagangModel;
 use App\Models\Reference\ProdiModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class MahasiswaModel extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     // m mahasiswa
     // + id_mahasiswa: String (PK)

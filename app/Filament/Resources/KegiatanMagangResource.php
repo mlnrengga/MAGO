@@ -8,21 +8,21 @@ use App\Models\KegiatanMagang;
 use App\Models\Reference\PengajuanMagangModel;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\FormsComponent;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-use Illuminate\Console\View\Components\Info;
+use Illuminate\Support\Facades\DB;
 
 class KegiatanMagangResource extends Resource
 {
     protected static ?string $model = PengajuanMagangModel::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-document-check';
-    protected static ?string $navigationLabel = 'Manajemen Kegiatan Magang';
+    protected static ?string $navigationLabel = 'Manajemen Pengajuan Magang';
     protected static ?string $slug = 'kegiatan-magang';
     protected static ?string $modelLabel = 'Pengajuan Magang';
     protected static ?string $pluralModelLabel = 'Data Pengajuan Magang';
@@ -62,7 +62,83 @@ class KegiatanMagangResource extends Resource
                                 'Ditolak' => 'danger',
                                 default => 'gray',
                             }),
-                    ])->columns(2),
+
+                        Infolists\Components\Section::make('Preferensi Mahasiswa')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('mahasiswa.preferensi.daerahMagang.namaLengkapDenganProvinsi')
+                                    ->label('Daerah Magang')
+                                    ->default('Semua')
+                                    ->placeholder('Semua'),
+
+                                Infolists\Components\TextEntry::make('jenisMagang')
+                                    ->label('Jenis Magang')
+                                    ->default('Semua')
+                                    ->placeholder('Semua')
+                                    ->getStateUsing(function ($record) {
+                                        try {
+                                            if (!$record->mahasiswa->preferensi) {
+                                                return 'Semua';
+                                            }
+
+                                            $preferensi = $record->mahasiswa->preferensi;
+
+                                            $jenisMagangs = DB::table('m_jenis_magang')
+                                                ->join('r_preferensi_jenis_magang', 'm_jenis_magang.id_jenis_magang', '=', 'r_preferensi_jenis_magang.id_jenis_magang')
+                                                ->where('r_preferensi_jenis_magang.id_preferensi', $preferensi->id_preferensi)
+                                                ->pluck('m_jenis_magang.nama_jenis_magang')
+                                                ->toArray();
+
+                                            if (empty($jenisMagangs)) {
+                                                return 'Semua';
+                                            }
+
+                                            return implode(', ', $jenisMagangs);
+                                        } catch (\Exception $e) {
+                                            return 'Semua: ' . $e->getMessage();
+                                        }
+                                    }),
+
+                                Infolists\Components\TextEntry::make('bidangMahasiswa')
+                                    ->label('Bidang Keahlian')
+                                    ->default('Semua')
+                                    ->placeholder('Semua')
+                                    ->getStateUsing(function ($record) {
+                                        try {
+                                            if (!$record->mahasiswa->preferensi) {
+                                                return 'Semua';
+                                            }
+
+                                            $preferensi = $record->mahasiswa->preferensi;
+                                            $bidangKeahlians = DB::table('m_bidang_keahlian')
+                                                ->join('r_preferensi_bidang', 'm_bidang_keahlian.id_bidang', '=', 'r_preferensi_bidang.id_bidang')
+                                                ->where('r_preferensi_bidang.id_preferensi', $preferensi->id_preferensi)
+                                                ->pluck('m_bidang_keahlian.nama_bidang_keahlian')
+                                                ->toArray();
+
+                                            if (empty($bidangKeahlians)) {
+                                                return 'Semua';
+                                            }
+
+                                            return implode(', ', $bidangKeahlians);
+                                        } catch (\Exception $e) {
+                                            return 'Semua: ' . $e->getMessage();
+                                        }
+                                    }),
+
+                                Infolists\Components\TextEntry::make('mahasiswa.preferensi.insentif.keterangan')
+                                    ->label('Insentif')
+                                    ->default('Semua')
+                                    ->placeholder('Semua'),
+
+                                Infolists\Components\TextEntry::make('mahasiswa.preferensi.waktuMagang.waktu_magang')
+                                    ->label('Waktu Magang')
+                                    ->default('Semua')
+                                    ->placeholder('Semua'),
+
+                            ])->columns(2)
+                            ->collapsible(),
+
+                    ])->columns(3),
 
                 Infolists\Components\Section::make('Informasi Lowongan')
                     ->schema([
@@ -99,7 +175,7 @@ class KegiatanMagangResource extends Resource
                                 'Selesai' => 'danger',
                                 default => 'gray',
                             }),
-                    ])->columns(2),
+                    ])->columns(3),
 
             ]);
     }
@@ -117,12 +193,40 @@ class KegiatanMagangResource extends Resource
                                 'Diterima' => 'Diterima',
                                 'Ditolak' => 'Ditolak',
                             ])
+                            ->live()
                             ->required(),
 
                         Forms\Components\DatePicker::make('tanggal_diterima')
                             ->label('Tanggal Diterima')
                             ->required(fn(Forms\Get $get) => $get('status') === 'Diterima'),
                     ])->columns(2),
+
+                Forms\Components\Section::make('Dosen Pembimbing')
+                    ->schema([
+                        Forms\Components\Select::make('dosen_pembimbing')
+                            ->label('Dosen Pembimbing')
+                            ->options(function () {
+                                $dosenOptions = [];
+                                $dosenList = \App\Models\Auth\DosenPembimbingModel::query()
+                                    ->with('bidangKeahlian', 'user')
+                                    ->get();
+
+                                foreach ($dosenList as $dosen) {
+                                    $bidangKeahlian = $dosen->bidangKeahlian->pluck('nama_bidang_keahlian')->toArray();
+                                    $bidangText = !empty($bidangKeahlian)
+                                        ? implode(', ', $bidangKeahlian)
+                                        : 'Tidak Ada';
+
+                                    $dosenOptions[$dosen->id_dospem] = $dosen->user->nama . ' (' . $bidangText . ')';
+                                }
+
+                                return $dosenOptions;
+                            })
+                            ->searchable()
+                            ->required(fn(Forms\Get $get) => $get('status') === 'Diterima')
+                            ->visible(fn(Forms\Get $get) => $get('status') === 'Diterima'),
+                    ])
+                    ->visible(fn(Forms\Get $get) => $get('status') === 'Diterima')
             ]);
     }
 
@@ -151,7 +255,8 @@ class KegiatanMagangResource extends Resource
                     ->sortable()
                     ->date('Y-m-d'),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->label('Status')
                     ->colors([
                         'warning' => 'Diajukan',
@@ -170,11 +275,37 @@ class KegiatanMagangResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->modalHeading('Hapus Pengajuan Magang')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus pengajuan magang ini? Jika pengajuan sudah diterima, data penempatan magang terkait juga akan dihapus.')
+                    ->modalSubmitActionLabel('Ya, Hapus')
+                    ->modalCancelActionLabel('Batal')
+                    ->before(function (PengajuanMagangModel $record) {
+                        if ($record->penempatan) {
+                            DB::table('r_bimbingan')
+                                ->where('id_penempatan', $record->penempatan->id_penempatan)
+                                ->delete();
+
+                            $record->penempatan->delete();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->modalHeading('Hapus Pengajuan Magang')
+                        ->modalDescription('Apakah Anda yakin ingin menghapus pengajuan magang ini? Jika pengajuan sudah diterima, data penempatan magang terkait juga akan dihapus.')
+                        ->modalSubmitActionLabel('Ya, Hapus')
+                        ->modalCancelActionLabel('Batal')
+                        ->before(function (PengajuanMagangModel $record) {
+                            if ($record->penempatan) {
+                                DB::table('r_bimbingan')
+                                    ->where('id_penempatan', $record->penempatan->id_penempatan)
+                                    ->delete();
+
+                                $record->penempatan->delete();
+                            }
+                        }),
                 ]),
             ]);
     }

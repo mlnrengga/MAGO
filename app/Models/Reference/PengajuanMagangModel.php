@@ -37,4 +37,9 @@ class PengajuanMagangModel extends Model
     {
         return $this->belongsTo(LowonganMagangModel::class, 'id_lowongan', 'id_lowongan');
     }
+
+    public function penempatan()
+    {
+        return $this->hasOne(PenempatanMagangModel::class, 'id_pengajuan', 'id_pengajuan');
+    }
 }
