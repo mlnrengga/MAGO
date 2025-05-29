@@ -19,6 +19,6 @@ class EditManajemenDaerahMagang extends EditRecord
 
     public function getRedirectUrl(): string
     {
-        return '/admin/manajemen-daerah-magang';
+        return $this->getResource()::getUrl('index');
     }
 }

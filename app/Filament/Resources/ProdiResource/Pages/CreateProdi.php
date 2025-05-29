@@ -9,9 +9,4 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateProdi extends CreateRecord
 {
     protected static string $resource = ProdiResource::class;
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
 }
