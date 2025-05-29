@@ -47,7 +47,24 @@ class LowonganResource extends Resource
                             ->label('Perusahaan')
                             ->options(PerusahaanModel::all()->pluck('nama', 'id_perusahaan'))
                             ->searchable()
-                            ->required(),
+                            ->required()
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if ($state) {
+                                    $perusahaan = PerusahaanModel::find($state);
+                                    if ($perusahaan) {
+                                        $set('alamat_perusahaan', $perusahaan->alamat);
+                                    }
+                                } else {
+                                    $set('alamat_perusahaan', null);
+                                }
+                            }),
+
+                        Forms\Components\TextInput::make('alamat_perusahaan')
+                            ->label('Alamat Perusahaan')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->extraAttributes(['class' => 'bg-gray-100']),
 
                         Forms\Components\RichEditor::make('deskripsi_lowongan')
                             ->label('Deskripsi Lowongan')
@@ -159,20 +176,22 @@ class LowonganResource extends Resource
 
                 Tables\Columns\TextColumn::make('daerahMagang.namaLengkap')
                     ->label('Lokasi')
-                    ->limit(10)
+                    ->limit(10),
                     // ->searchable() // Commented out to avoid redundancy with 'daerahMagang.nama_daerah', which is already searchable.
-                    ->sortable(),
+                    // ->sortable(),
 
                 // Kolom tersembunyi untuk pencarian
                 Tables\Columns\TextColumn::make('daerahMagang.nama_daerah')
                     ->label('Nama Daerah')
                     ->searchable()
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan secara default
 
                 // Kolom tersembunyi untuk pencarian jenis daerah
                 Tables\Columns\TextColumn::make('daerahMagang.jenis_daerah')
                     ->label('Jenis Daerah')
                     ->searchable()
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan secara default
 
                 Tables\Columns\TextColumn::make('daerahMagang.provinsi.nama_provinsi')
