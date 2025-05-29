@@ -38,22 +38,148 @@ class AdminStatsOverview extends StatsOverviewWidget
         [$dosenDesc, $dosenIcon, $dosenColor] = $this->getDescriptionDetails($dosenPercentChange);
         [$rasioDesc, $rasioIcon, $rasioColor] = $this->getDescriptionDetails($rasioPercentChange, true);
 
+        // Dapatkan data historis untuk chart
+        $mahasiswaChart = $this->getMahasiswaChartData();
+        $dosenChart = $this->getDosenChartData();
+        $rasioChart = $this->getRasioChartData();
+
         return [
             Stat::make('Total Mahasiswa Magang', $totalMahasiswa)
                 ->description($mahasiswaDesc)
                 ->descriptionIcon($mahasiswaIcon)
-                ->color($mahasiswaColor),
-                
+                ->color($mahasiswaColor)
+                ->chart($mahasiswaChart),
+
             Stat::make('Dosen Pembimbing', $totalDosen)
                 ->description($dosenDesc)
                 ->descriptionIcon($dosenIcon)
-                ->color($dosenColor),
-                
+                ->color($dosenColor)
+                ->chart($dosenChart),
+
             Stat::make('Rasio Dosen:Mahasiswa', "1:$rasio")
                 ->description($rasioDesc)
                 ->descriptionIcon($rasioIcon)
-                ->color($rasioColor),
+                ->color($rasioColor)
+                ->chart($rasioChart),
         ];
+    }
+
+    /**
+     * Mendapatkan data chart untuk mahasiswa magang
+     */
+    private function getMahasiswaChartData(): array
+    {
+        $data = [];
+        
+        // // Ambil data untuk 14 hari terakhir
+        // for ($i = 13; $i >= 0; $i--) {
+        //     $date = Carbon::now()->subDays($i)->startOfDay();
+        //     $nextDate = $i > 0 ? Carbon::now()->subDays($i-1)->startOfDay() : Carbon::now()->addDay()->startOfDay();
+            
+        //     // Jumlah mahasiswa per hari (mahasiswa yang mulai magang pada hari tersebut)
+        //     $count = PenempatanMagangModel::where('created_at', '>=', $date)
+        //                                  ->where('created_at', '<', $nextDate)
+        //                                  ->distinct('id_mahasiswa')
+        //                                  ->count('id_mahasiswa');
+            
+        //     // Tambahkan jumlah kumulatif jika diperlukan
+        //     // $count = PenempatanMagangModel::where('created_at', '<=', $date)->distinct('id_mahasiswa')->count('id_mahasiswa');
+            
+        //     $data[] = $count;
+        // }
+        
+        // Ambil data untuk 14 hari terakhir, urutan terbalik
+        for ($i = 0; $i <= 13; $i++) {
+            $date = Carbon::now()->subDays($i)->startOfDay();
+            $nextDate = $i > 0 ? Carbon::now()->subDays($i-1)->startOfDay() : Carbon::now()->addDay()->startOfDay();
+            
+            // Jumlah mahasiswa per hari (mahasiswa yang mulai magang pada hari tersebut)
+            $count = PenempatanMagangModel::where('created_at', '>=', $date)
+                                         ->where('created_at', '<', $nextDate)
+                                         ->distinct('id_mahasiswa')
+                                         ->count('id_mahasiswa');
+            
+            // Sebagai alternatif: Jumlah kumulatif mahasiswa hingga hari tersebut
+            // $count = PenempatanMagangModel::where('created_at', '<=', $date)->distinct('id_mahasiswa')->count('id_mahasiswa');
+            
+            $data[] = $count;
+        }
+
+        return $data;
+    }
+    
+    /**
+     * Mendapatkan data chart untuk dosen pembimbing
+     */
+    private function getDosenChartData(): array
+    {
+        $data = [];
+        
+        // // Ambil data untuk 14 hari terakhir
+        // for ($i = 13; $i >= 0; $i--) {
+        //     $date = Carbon::now()->subDays($i)->startOfDay();
+            
+        //     // Jumlah dosen hingga tanggal tersebut
+        //     $count = DosenPembimbingModel::where('created_at', '<=', $date)->count();
+            
+        //     $data[] = $count;
+        // }
+
+        // Ambil data untuk 14 hari terakhir, urutan terbalik
+        for ($i = 0; $i <= 13; $i++) {
+            $date = Carbon::now()->subDays($i)->startOfDay();
+            
+            // Jumlah dosen hingga tanggal tersebut
+            $count = DosenPembimbingModel::where('created_at', '<=', $date)->count();
+            
+            $data[] = $count;
+        }
+        
+        return $data;
+    }
+    
+    /**
+     * Mendapatkan data chart untuk rasio dosen:mahasiswa
+     */
+    private function getRasioChartData(): array
+    {
+        $data = [];
+        
+        // // Ambil data untuk 14 hari terakhir
+        // for ($i = 13; $i >= 0; $i--) {
+        //     $date = Carbon::now()->subDays($i)->startOfDay();
+            
+        //     // Jumlah mahasiswa dan dosen hingga tanggal tersebut
+        //     $mahasiswa = PenempatanMagangModel::where('created_at', '<=', $date)
+        //                                      ->distinct('id_mahasiswa')
+        //                                      ->count('id_mahasiswa');
+            
+        //     $dosen = DosenPembimbingModel::where('created_at', '<=', $date)->count();
+            
+        //     // Hitung rasio
+        //     $ratio = $dosen > 0 ? round($mahasiswa / $dosen, 2) : 0;
+            
+        //     $data[] = $ratio;
+        // }
+
+        // Ambil data untuk 14 hari terakhir, urutan terbalik
+        for ($i = 0; $i <= 13; $i++) {
+            $date = Carbon::now()->subDays($i)->startOfDay();
+            
+            // Jumlah mahasiswa dan dosen hingga tanggal tersebut
+            $mahasiswa = PenempatanMagangModel::where('created_at', '<=', $date)
+                                             ->distinct('id_mahasiswa')
+                                             ->count('id_mahasiswa');
+            
+            $dosen = DosenPembimbingModel::where('created_at', '<=', $date)->count();
+            
+            // Hitung rasio
+            $ratio = $dosen > 0 ? round($mahasiswa / $dosen, 2) : 0;
+            
+            $data[] = $ratio;
+        }
+        
+        return $data;
     }
     
     /**
