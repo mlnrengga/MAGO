@@ -151,7 +151,8 @@ class KegiatanMagangResource extends Resource
                     ->sortable()
                     ->date('Y-m-d'),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->label('Status')
                     ->colors([
                         'warning' => 'Diajukan',

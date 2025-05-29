@@ -12,6 +12,6 @@ class CreateManajemenJenisMagang extends CreateRecord
 
     public function getRedirectUrl(): string
     {
-        return '/admin/manajemen-jenis-magang';
+        return $this->getResource()::getUrl('index');
     }
 }

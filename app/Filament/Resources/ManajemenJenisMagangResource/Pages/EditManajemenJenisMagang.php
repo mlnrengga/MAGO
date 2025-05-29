@@ -19,6 +19,6 @@ class EditManajemenJenisMagang extends EditRecord
 
     public function getRedirectUrl(): string
     {
-        return '/admin/manajemen-jenis-magang';
+        return $this->getResource()::getUrl('index');
     }
 }
