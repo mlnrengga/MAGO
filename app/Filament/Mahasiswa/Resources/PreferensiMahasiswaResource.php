@@ -21,6 +21,7 @@ class PreferensiMahasiswaResource extends Resource
     protected static ?string $model = PreferensiMahasiswaModel::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-users';
+    protected static ?string $navigationGroup = 'Profil Saya';
 
     public static function form(Form $form): Form
     {
