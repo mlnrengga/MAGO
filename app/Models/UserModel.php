@@ -44,6 +44,7 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
     'alamat',
     'no_telepon',
     'role',
+     'id_role',
     'profile_picture',
 ];
 
