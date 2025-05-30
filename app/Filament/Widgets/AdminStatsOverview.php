@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class AdminStatsOverview extends StatsOverviewWidget
 {
-    protected $totalPeriod = 14;
+    protected int $totalPeriod = 14;
 
     protected function getStats(): array
     {    
