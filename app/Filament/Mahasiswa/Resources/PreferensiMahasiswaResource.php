@@ -58,7 +58,6 @@ class PreferensiMahasiswaResource extends Resource
                             ->label('Pilih Bidang Keahlian')
                             ->options(BidangKeahlianModel::all()->pluck('nama_bidang_keahlian', 'id_bidang'))
                             ->columns(4)
-                            ->default(fn ($record) => $record?->bidangKeahlian->pluck('id_bidang')->toArray())
                             ->required(),
 
                         Select::make('ranking_bidang')
@@ -71,7 +70,7 @@ class PreferensiMahasiswaResource extends Resource
                                 5 => '5',
                             ])
                             ->required(),
-                        ]),
+                    ]),
 
                 Section::make('Daerah Magang')
                     ->schema([
@@ -80,24 +79,43 @@ class PreferensiMahasiswaResource extends Resource
                             ->options(ProvinsiModel::all()->pluck('nama_provinsi', 'id_provinsi'))
                             ->searchable()
                             ->native(false)
-                            ->reactive() // TRIGGER DROPDOWN DAERAH 
+                            ->reactive()
+                            ->afterStateHydrated(function ($state, callable $set, $record) {
+                                // If there's a record but no state, set the province from the record
+                                if ($record && $record->daerahMagang) {
+                                    $provinsiId = $record->daerahMagang->id_provinsi;
+                                    $set('id_provinsi', $provinsiId);
+                                }
+                            })
                             ->required(),
 
                         Select::make('id_daerah_magang')
                             ->label('Pilih Daerah (Kota/Kabupaten)')
                             ->options(function (callable $get, $record) {
-                                $provinsiId = $get('id_provinsi') ?? $record?->id_provinsi;
+                                $provinsiId = $get('id_provinsi');
+
+                                if (!$provinsiId && $record && $record->daerahMagang) {
+                                    $provinsiId = $record->daerahMagang->id_provinsi;
+                                }
+
                                 if (!$provinsiId) {
                                     return [];
                                 }
+
                                 return DaerahMagangModel::where('id_provinsi', $provinsiId)
                                     ->get()
                                     ->pluck('namaLengkap', 'id_daerah_magang');
                             })
                             ->searchable()
                             ->required()
-                            ->disabled(fn(callable $get) => !$get('id_provinsi')) // Disable jika belum pilih provinsi
+                            ->disabled(fn(callable $get) => !$get('id_provinsi'))
                             ->native(false)
+                            ->afterStateHydrated(function ($state, callable $set, $record) {
+                                // If we have a record, make sure to set the daerah_magang value
+                                if (!$state && $record) {
+                                    $set('id_daerah_magang', $record->id_daerah_magang);
+                                }
+                            })
                             ->reactive(),
 
                         Select::make('ranking_daerah')
@@ -119,7 +137,6 @@ class PreferensiMahasiswaResource extends Resource
                             ->options(JenisMagangModel::all()->pluck('nama_jenis_magang', 'id_jenis_magang'))
                             ->columns(3)
                             ->reactive()
-                            ->default(fn ($record) => $record?->jenisMagang->pluck('id_jenis_magang')->toArray())
                             ->required(),
 
                         Select::make('ranking_jenis_magang')
