@@ -3,7 +3,7 @@
 namespace App\Models\Auth;
 
 use App\Models\UserModel;
-use App\Models\Pivot\PreferensiMahasiswaModel;
+use App\Models\Reference\PreferensiMahasiswaModel;
 use App\Models\Reference\PengajuanMagangModel;
 use App\Models\Reference\ProdiModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
