@@ -32,7 +32,7 @@ class AdminTrenBidangLowongan extends ChartWidget
         
         foreach ($dataBidang as $index => $bidang) {
             // Hitung persentase
-            $persentase = round(($bidang->jumlah_pengajuan / $totalPengajuan) * 100, 1);
+            $persentase = $totalPengajuan > 0 ? round(($bidang->jumlah_pengajuan / $totalPengajuan) * 100, 1) : 0;
 
             // Tambahkan nomor peringkat (1-based index)
             $labels[] = ($index + 1) . '. ' . $bidang->nama_bidang_keahlian . ' (' . $persentase . '%)';
