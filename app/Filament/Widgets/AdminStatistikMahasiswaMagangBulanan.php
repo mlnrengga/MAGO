@@ -3,8 +3,9 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Reference\PenempatanMagangModel;
+use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
-// use Filament\Widgets\Widget;
+use Symfony\Component\VarDumper\VarDumper;
 
 class AdminStatistikMahasiswaMagangBulanan extends ChartWidget
 {
@@ -12,43 +13,54 @@ class AdminStatistikMahasiswaMagangBulanan extends ChartWidget
 
     protected function getData(): array
     {
-        // Inisialisasi array bulan (Januari-Desember)
+        $startDate = Carbon::now()->subMonths(11); // 11 bulan sebelumnya + bulan ini = 12 bulan
+        $endDate = Carbon::now();
+
+        $monthlyData = [];
         $labels = [];
-        $data = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $labels[] = \Carbon\Carbon::create()->month($i)->translatedFormat('F');
-            $data[$i] = 0;
+
+        // Buat array dengan semua bulan dari rentang waktu yang dipilih
+        $currentDate = $startDate->copy();
+        while ($currentDate <= $endDate) {
+            $monthKey = $currentDate->format('Y-m');
+            $monthlyData[$monthKey] = 0; // Inisialisasi semua data dengan 0
+
+            $labels[$monthKey] = $currentDate->translatedFormat('M Y');
+            $currentDate->addMonth();
         }
 
         // Query data jumlah mahasiswa per bulan
-        $result = PenempatanMagangModel::selectRaw('MONTH(created_at) as bulan, COUNT(DISTINCT id_mahasiswa) as jumlah')
-            ->whereYear('created_at', now()->year)
+        $results = PenempatanMagangModel::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as bulan, COUNT(DISTINCT id_mahasiswa) as jumlah')
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<=', $endDate)
             ->groupBy('bulan')
             ->pluck('jumlah', 'bulan')
             ->toArray();
 
         // Masukkan data ke array sesuai bulan
-        foreach ($result as $bulan => $jumlah) {
-            $data[$bulan] = $jumlah;
+        foreach ($results as $bulan => $jumlah) {
+            if (array_key_exists($bulan, $monthlyData)) {
+                $monthlyData[$bulan] = $jumlah;
+            }
         }
 
         return [
             'datasets' => [
                 [
                     'label' => 'Mahasiswa Magang',
-                    'data' => array_values($data),
+                    'data' => array_values($monthlyData),
                     'borderColor' => '#3b82f6',
                     'backgroundColor' => '#60a5fa80',
                     'fill' => true,
                 ],
             ],
-            'labels' => $labels,
+            'labels' => array_values($labels),
         ];
     }
 
     protected function getType(): string
     {
-        return 'line'; // Bisa 'bar', 'pie', dll
+        return 'line';
     }
 
     protected function getOptions(): array
@@ -56,8 +68,15 @@ class AdminStatistikMahasiswaMagangBulanan extends ChartWidget
         return [
             'scales' => [
                 'y' => [
-                    'beginAtZero' => true, // Y-axis mulai dari nol
-                    'min' => 0,            // Pastikan tidak pernah minus
+                    'beginAtZero' => true,
+                    'min' => 0,
+                ],
+            ],
+            // Tambahkan option tooltip untuk memastikan data yang benar ditampilkan
+            'plugins' => [
+                'tooltip' => [
+                    'mode' => 'index',
+                    'intersect' => false,
                 ],
             ],
         ];

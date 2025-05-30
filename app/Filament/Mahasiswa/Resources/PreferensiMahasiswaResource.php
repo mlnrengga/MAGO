@@ -32,25 +32,8 @@ class PreferensiMahasiswaResource extends Resource
 {
     protected static ?string $model = PreferensiMahasiswaModel::class;
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('id_mahasiswa', Auth::user()->id_mahasiswa);
-    }
-
-    public static function canCreate(): bool
-    {
-        return !static::getModel()::where('id_mahasiswa', Auth::user()->id_mahasiswa)->exists();
-    }
-
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        // Ambil ID mahasiswa dari user login
-        $data['id_mahasiswa'] = auth()->user()->mahasiswa->id_mahasiswa;
-
-        return $data;
-    }
-
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static ?string $navigationIcon = 'heroicon-s-users';
+    protected static ?string $navigationGroup = 'Profil Saya';
 
     public static function form(Form $form): Form
     {

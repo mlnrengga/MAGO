@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Reference;
+namespace App\Models\Pivot;
 
 use App\Models\Auth\MahasiswaModel;
 use App\Models\Reference\BidangKeahlianModel;
@@ -17,22 +17,15 @@ class PreferensiMahasiswaModel extends Model
     use HasFactory;
 
     protected $table = 'r_preferensi_mahasiswa';
-
-    //protected $primaryKey = 'id_preferensi';
-
-    protected $guarded = ['id_preferensi'];
-
-
+    protected $primaryKey = 'id_preferensi';
     protected $fillable = [
         'id_mahasiswa',
         'id_bidang',
         'ranking_bidang',
-        'id_daerah_magang',
-        'ranking_daerah',
+        'id_lokasi_magang',
+        'ranking_lokasi',
         'id_jenis_magang',
         'ranking_jenis',
-        'id_waktu_magang',
-        'ranking_waktu_magang',
         'id_insentif',
         'ranking_insentif',
     ];
@@ -44,7 +37,7 @@ class PreferensiMahasiswaModel extends Model
     }
 
     // Relasi ke bidang keahlian
-    public function bidangKeahlian(): BelongsToMany
+    public function bidangMahasiswa(): BelongsToMany
     {
         return $this->belongsToMany(
             BidangKeahlianModel::class,
@@ -54,7 +47,6 @@ class PreferensiMahasiswaModel extends Model
             'ranking_bidang'
         );
     }
-
 
     // Relasi ke daerah magang
     public function daerahMagang()
@@ -72,17 +64,25 @@ class PreferensiMahasiswaModel extends Model
             'id_jenis_magang',
             'ranking_jenis_magang'
         );
+        return $this->belongsToMany(
+            JenisMagangModel::class,
+            'r_preferensi_jenis_magang',
+            'id_preferensi',
+            'id_jenis_magang',
+            'ranking_jenis_magang'
+        );
+    }
+
+
+    // Relasi ke insentif
+    public function insentif()
+    {
+        return $this->belongsTo(InsentifModel::class, 'id_insentif');
     }
 
     // Relasi ke waktu magang
     public function waktuMagang()
     {
         return $this->belongsTo(WaktuMagangModel::class, 'id_waktu_magang');
-    }
-
-    // Relasi ke insentif
-    public function insentif()
-    {
-        return $this->belongsTo(InsentifModel::class, 'id_insentif');
     }
 }
