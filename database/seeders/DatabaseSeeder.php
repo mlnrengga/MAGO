@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             PengajuanMagangSeeder::class,
             PreferensiMahasiswaSeeder::class,
             PreferensiJenisMagangSeeder::class,
+            PreferensiBidangSeeder::class,
             DospemBidangKeahlianSeeder::class,
             LowonganBidangSeeder::class,
             PenempatanMagangSeeder::class,
