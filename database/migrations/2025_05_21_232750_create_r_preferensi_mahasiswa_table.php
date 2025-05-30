@@ -24,6 +24,9 @@ return new class extends Migration
 
             $table->unsignedBigInteger('id_insentif');
             $table->unsignedTinyInteger('ranking_insentif');
+
+            $table->unsignedTinyInteger('ranking_jenis_magang');
+            $table->unsignedTinyInteger('ranking_bidang');
             
             $table->timestamps();
 
