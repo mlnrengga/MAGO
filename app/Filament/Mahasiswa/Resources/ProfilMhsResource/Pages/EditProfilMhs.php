@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\ProdiResource\Pages;
+namespace App\Filament\Mahasiswa\Resources\ProfilMhsResource\Pages;
 
-use App\Filament\Resources\ProdiResource;
+use App\Filament\Mahasiswa\Resources\ProfilMhsResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditProdi extends EditRecord
+class EditProfilMhs extends EditRecord
 {
-    protected static string $resource = ProdiResource::class;
+    protected static string $resource = ProfilMhsResource::class;
 
     protected function getHeaderActions(): array
     {

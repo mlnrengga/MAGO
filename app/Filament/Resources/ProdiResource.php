@@ -6,6 +6,7 @@ use App\Filament\Resources\ProdiResource\Pages;
 use App\Filament\Resources\ProdiResource\RelationManagers;
 use App\Models\Reference\ProdiModel;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -26,17 +27,27 @@ class ProdiResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nama_prodi'),
-                TextInput::make('kode_prodi'),
-            ]);
+                Section::make('Buat Program Studi Baru')
+                ->schema([
+                TextInput::make('nama_prodi')
+                    ->label('Nama Program Studi'),
+                TextInput::make('kode_prodi')
+                    ->label('Kode Program Studi')
+                    ->placeholder('Contoh: D4-TI'),
+            ])
+                ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('nama_prodi'),
-                TextColumn::make('kode_prodi'),
+                TextColumn::make('nama_prodi')
+                    ->label('Nama Program Studi')
+                    ->searchable(),
+                TextColumn::make('kode_prodi')
+                    ->label('Kode Program Studi')
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -76,7 +87,7 @@ class ProdiResource extends Resource
 
     public static function getPluralModelLabel(): string
     {
-        return 'Manajemen Prodi';
+        return 'Data Program Studi';
     }
 
     public static function getModelLabel(): string
