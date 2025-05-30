@@ -1,29 +1,38 @@
 <?php
 
-namespace App\Models\Pivot;
+namespace App\Models\Reference;
 
 use App\Models\Auth\MahasiswaModel;
 use App\Models\Reference\BidangKeahlianModel;
 use App\Models\Reference\DaerahMagangModel;
 use App\Models\Reference\InsentifModel;
 use App\Models\Reference\JenisMagangModel;
+use App\Models\Reference\WaktuMagangModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PreferensiMahasiswaModel extends Model
 {
     use HasFactory;
 
     protected $table = 'r_preferensi_mahasiswa';
-    protected $primaryKey = 'id_preferensi';
+
+    //protected $primaryKey = 'id_preferensi';
+
+    protected $guarded = ['id_preferensi'];
+
+
     protected $fillable = [
         'id_mahasiswa',
         'id_bidang',
         'ranking_bidang',
-        'id_lokasi_magang',
-        'ranking_lokasi',
+        'id_daerah_magang',
+        'ranking_daerah',
         'id_jenis_magang',
         'ranking_jenis',
+        'id_waktu_magang',
+        'ranking_waktu_magang',
         'id_insentif',
         'ranking_insentif',
     ];
@@ -35,10 +44,17 @@ class PreferensiMahasiswaModel extends Model
     }
 
     // Relasi ke bidang keahlian
-    public function bidangKeahlian()
+    public function bidangKeahlian(): BelongsToMany
     {
-        return $this->belongsTo(BidangKeahlianModel::class, 'id_bidang');
+        return $this->belongsToMany(
+            BidangKeahlianModel::class,
+            'r_preferensi_bidang',
+            'id_preferensi',
+            'id_bidang',
+            'ranking_bidang'
+        );
     }
+
 
     // Relasi ke daerah magang
     public function daerahMagang()
@@ -47,9 +63,21 @@ class PreferensiMahasiswaModel extends Model
     }
 
     // Relasi ke jenis magang
-    public function jenisMagang()
+    public function jenisMagang(): BelongsToMany
     {
-        return $this->belongsTo(JenisMagangModel::class, 'id_jenis_magang');
+        return $this->belongsToMany(
+            JenisMagangModel::class,
+            'r_preferensi_jenis_magang',
+            'id_preferensi',
+            'id_jenis_magang',
+            'ranking_jenis_magang'
+        );
+    }
+
+    // Relasi ke waktu magang
+    public function waktuMagang()
+    {
+        return $this->belongsTo(WaktuMagangModel::class, 'id_waktu_magang');
     }
 
     // Relasi ke insentif

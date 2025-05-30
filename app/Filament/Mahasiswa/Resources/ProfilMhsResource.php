@@ -57,8 +57,8 @@ class ProfilMhsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\RedirectToProfil::route('/'),
-            'profil' => Pages\ProfilMhs::route('/profil'),
+            'index' => Pages\ViewProfilMhs::route('/'),
+            'edit' => Pages\ProfilMhs::route('/edit'),
         ];
     }
 
