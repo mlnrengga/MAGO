@@ -2,6 +2,7 @@
 
 namespace App\Models\Auth;
 
+use App\Models\UserModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role as SpatieRole;
@@ -22,4 +23,9 @@ class RoleModel extends SpatieRole
     ];    
 
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class, 'id_user');
+    }
 }
