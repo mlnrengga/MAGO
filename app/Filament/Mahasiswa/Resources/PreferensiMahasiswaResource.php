@@ -35,6 +35,19 @@ class PreferensiMahasiswaResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-s-users';
     protected static ?string $navigationGroup = 'Profil Saya';
 
+    public static function getEloquentQuery(): Builder
+    {
+        $mahasiswa = Auth::user()->mahasiswa;
+
+        if (!$mahasiswa) {
+            return static::getModel()::query()->whereRaw('1=0');
+        }
+
+        return static::getModel()::query()
+            ->where('id_mahasiswa', $mahasiswa->id_mahasiswa);
+    }
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -43,33 +56,22 @@ class PreferensiMahasiswaResource extends Resource
                     ->schema([
                         CheckboxList::make('bidangKeahlian')
                             ->label('Pilih Bidang Keahlian')
-                            ->relationship('bidangKeahlian', 'nama_bidang_keahlian')
                             ->options(BidangKeahlianModel::all()->pluck('nama_bidang_keahlian', 'id_bidang'))
                             ->columns(4)
+                            ->default(fn ($record) => $record?->bidangKeahlian->pluck('id_bidang')->toArray())
                             ->required(),
 
-                        Group::make()
+                        Select::make('ranking_bidang')
                             ->label('Ranking Bidang Keahlian')
-                            ->schema(function (Forms\Get $get) {
-                                $schemas = [];
-
-                                foreach ($get('bidangKeahlian') ?? [] as $id_bidang) {
-                                    $namaBidang = BidangKeahlianModel::find($id_bidang)?->nama_bidang_keahlian ?? 'Unknown';
-                                    $schemas[] = Select::make("ranking_$id_bidang")
-                                        ->label("Ranking untuk $namaBidang")
-                                        ->options([
-                                            1 => '1',
-                                            2 => '2',
-                                            3 => '3',
-                                            4 => '4',
-                                            5 => '5',
-                                        ])
-                                        ->required();
-                                }
-
-                                return $schemas;
-                            }),
-                    ]),
+                            ->options([
+                                1 => '1',
+                                2 => '2',
+                                3 => '3',
+                                4 => '4',
+                                5 => '5',
+                            ])
+                            ->required(),
+                        ]),
 
                 Section::make('Daerah Magang')
                     ->schema([
@@ -83,8 +85,8 @@ class PreferensiMahasiswaResource extends Resource
 
                         Select::make('id_daerah_magang')
                             ->label('Pilih Daerah (Kota/Kabupaten)')
-                            ->options(function (callable $get) {
-                                $provinsiId = $get('id_provinsi');
+                            ->options(function (callable $get, $record) {
+                                $provinsiId = $get('id_provinsi') ?? $record?->id_provinsi;
                                 if (!$provinsiId) {
                                     return [];
                                 }
@@ -117,29 +119,19 @@ class PreferensiMahasiswaResource extends Resource
                             ->options(JenisMagangModel::all()->pluck('nama_jenis_magang', 'id_jenis_magang'))
                             ->columns(3)
                             ->reactive()
+                            ->default(fn ($record) => $record?->jenisMagang->pluck('id_jenis_magang')->toArray())
                             ->required(),
 
-                        Group::make()
+                        Select::make('ranking_jenis_magang')
                             ->label('Ranking Jenis Magang')
-                            ->schema(function (Forms\Get $get) {
-                                $schemas = [];
-
-                                foreach ($get('jenisMagang') ?? [] as $id_jenis_magang) {
-                                    $namaJenis = JenisMagangModel::find($id_jenis_magang)?->nama_jenis_magang ?? 'Unknown';
-                                    $schemas[] = Select::make("ranking_$id_jenis_magang")
-                                        ->label("Ranking untuk $namaJenis")
-                                        ->options([
-                                            1 => '1',
-                                            2 => '2',
-                                            3 => '3',
-                                            4 => '4',
-                                            5 => '5',
-                                        ])
-                                        ->required();
-                                }
-
-                                return $schemas;
-                            }),
+                            ->options([
+                                1 => '1',
+                                2 => '2',
+                                3 => '3',
+                                4 => '4',
+                                5 => '5',
+                            ])
+                            ->required(),
                     ]),
 
 
@@ -193,37 +185,19 @@ class PreferensiMahasiswaResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('bidangKeahlian')
-                    ->label('Bidang Keahlian')
-                    ->formatStateUsing(
-                        fn($record) =>
-                        $record->bidangKeahlian->map(
-                            fn($bidang) =>
-                            "{$bidang->nama_bidang_keahlian} (R: {$bidang->pivot->ranking_bidang})"
-                        )->implode(', ')
-                    ),
-                // TextColumn::make('bidangKeahlian.nama_bidang_keahlian')
-                //     ->label('Bidang Keahlian'),
-                // TextColumn::make('ranking_bidang')
-                //     ->label('Ranking Bidang'),
+
+                TextColumn::make('bidangKeahlian.nama_bidang_keahlian')
+                    ->label('Bidang Keahlian'),
+                TextColumn::make('ranking_bidang')
+                    ->label('Ranking Bidang'),
                 TextColumn::make('daerahMagang.nama_daerah')
                     ->label('Daerah Magang'),
                 TextColumn::make('ranking_daerah')
                     ->label('Ranking Daerah'),
-
-                TextColumn::make('jenisMagang')
-                    ->label('Jenis Magang')
-                    ->formatStateUsing(
-                        fn($record) =>
-                        $record->jenisMagang->map(
-                            fn($jenis) =>
-                            "{$jenis->nama_jenis_magang} (R: {$jenis->pivot->ranking_jenis_magang})"
-                        )->implode(', ')
-                    ),
-                // TextColumn::make('jenisMagang.nama_jenis_magang')
-                //     ->label('Jenis Magang'),
-                // TextColumn::make('ranking_jenis')
-                //     ->label('Ranking Jenis'),
+                TextColumn::make('jenisMagang.nama_jenis_magang')
+                    ->label('Jenis Magang'),
+                TextColumn::make('ranking_jenis_magang')
+                    ->label('Ranking Jenis'),
                 TextColumn::make('insentif.keterangan')
                     ->label('Insentif'),
                 TextColumn::make('ranking_insentif')
@@ -259,6 +233,7 @@ class PreferensiMahasiswaResource extends Resource
             'index' => Pages\ListPreferensiMahasiswas::route('/'),
             'create' => Pages\CreatePreferensiMahasiswa::route('/create'),
             'edit' => Pages\EditPreferensiMahasiswa::route('/{record}/edit'),
+            'view' => Pages\ViewPreferensiMahasiswa::route('/{record}'),
         ];
     }
 

@@ -9,7 +9,7 @@ class PreferensiBidangModel extends Model
 {
     protected $table = 'r_preferensi_bidang';
     
-    public $timestamps = false;
+    public $timestamps = true;
     
     protected $primaryKey = ['id_preferensi', 'id_bidang'];
     

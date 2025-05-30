@@ -27,8 +27,7 @@ class BidangKeahlianModel extends Model
             PreferensiMahasiswaModel::class,
             'r_preferensi_bidang',
             'id_bidang',
-            'id_preferensi',
-            'ranking_bidang'
+            'id_preferensi'
         );
     }
     

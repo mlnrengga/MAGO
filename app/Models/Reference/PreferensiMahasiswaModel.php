@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Pivot;
+namespace App\Models\Reference;
 
 use App\Models\Auth\MahasiswaModel;
 use App\Models\Reference\BidangKeahlianModel;
@@ -20,14 +20,14 @@ class PreferensiMahasiswaModel extends Model
     protected $primaryKey = 'id_preferensi';
     protected $fillable = [
         'id_mahasiswa',
-        'id_bidang',
-        'ranking_bidang',
-        'id_lokasi_magang',
-        'ranking_lokasi',
-        'id_jenis_magang',
-        'ranking_jenis',
+        'id_daerah_magang',
+        'ranking_daerah',
+        'id_waktu_magang',
+        'ranking_waktu_magang',
         'id_insentif',
         'ranking_insentif',
+        'ranking_jenis_magang',
+        'ranking_bidang'
     ];
 
     // Relasi ke mahasiswa
@@ -37,15 +37,15 @@ class PreferensiMahasiswaModel extends Model
     }
 
     // Relasi ke bidang keahlian
-    public function bidangMahasiswa(): BelongsToMany
+    public function bidangKeahlian(): BelongsToMany
     {
         return $this->belongsToMany(
             BidangKeahlianModel::class,
             'r_preferensi_bidang',
             'id_preferensi',
             'id_bidang',
-            'ranking_bidang'
-        );
+        )
+        ->withTimestamps();
     }
 
     // Relasi ke daerah magang
@@ -62,15 +62,8 @@ class PreferensiMahasiswaModel extends Model
             'r_preferensi_jenis_magang',
             'id_preferensi',
             'id_jenis_magang',
-            'ranking_jenis_magang'
-        );
-        return $this->belongsToMany(
-            JenisMagangModel::class,
-            'r_preferensi_jenis_magang',
-            'id_preferensi',
-            'id_jenis_magang',
-            'ranking_jenis_magang'
-        );
+        )
+        ->withTimestamps();
     }
 
 

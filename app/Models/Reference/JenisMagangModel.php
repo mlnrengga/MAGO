@@ -28,8 +28,7 @@ class JenisMagangModel extends Model
             PreferensiMahasiswaModel::class,
             'r_preferensi_jenis_magang',
             'id_jenis_magang',
-            'id_preferensi',
-            'ranking_jenis_magang'
+            'id_preferensi'
         );
     }
 
