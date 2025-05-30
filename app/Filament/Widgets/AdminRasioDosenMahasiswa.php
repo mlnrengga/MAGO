@@ -7,6 +7,7 @@ use Filament\Widgets\ChartWidget;
 class AdminRasioDosenMahasiswa extends ChartWidget
 {
     protected static ?string $heading = 'Rasio Dosen : Mahasiswa';
+    protected static ?string $maxHeight = '260px';
 
     protected function getData(): array
     {
