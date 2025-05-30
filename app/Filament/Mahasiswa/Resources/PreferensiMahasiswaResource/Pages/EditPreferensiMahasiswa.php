@@ -13,7 +13,18 @@ class EditPreferensiMahasiswa extends EditRecord
 
     protected array $bidangIds = [];
     protected array $jenisIds = [];
-    
+
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        // Load relationship data for the form
+        if ($this->record) {
+            $data['bidangKeahlian'] = $this->record->bidangKeahlian->pluck('id_bidang')->toArray();
+            $data['jenisMagang'] = $this->record->jenisMagang->pluck('id_jenis_magang')->toArray();
+        }
+        
+        return $data;
+    }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
