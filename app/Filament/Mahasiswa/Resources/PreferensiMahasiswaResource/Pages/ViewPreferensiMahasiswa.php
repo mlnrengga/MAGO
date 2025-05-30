@@ -46,7 +46,7 @@ class ViewPreferensiMahasiswa extends ViewRecord
                         TextEntry::make('jenisMagang')
                             ->label('Jenis Magang')
                             ->formatStateUsing(fn() => $this->record->jenisMagang->pluck('nama_jenis_magang')->implode(', ') ?? '-'),
-                        TextEntry::make('ranking_jenis')->label('Ranking Jenis'),
+                        TextEntry::make('ranking_jenis_magang')->label('Ranking Jenis'),
                     ]),
                 Section::make('Insentif')
                     ->schema([
