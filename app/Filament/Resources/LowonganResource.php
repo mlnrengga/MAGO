@@ -47,7 +47,24 @@ class LowonganResource extends Resource
                             ->label('Perusahaan')
                             ->options(PerusahaanModel::all()->pluck('nama', 'id_perusahaan'))
                             ->searchable()
-                            ->required(),
+                            ->required()
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if ($state) {
+                                    $perusahaan = PerusahaanModel::find($state);
+                                    if ($perusahaan) {
+                                        $set('alamat_perusahaan', $perusahaan->alamat);
+                                    }
+                                } else {
+                                    $set('alamat_perusahaan', null);
+                                }
+                            }),
+
+                        Forms\Components\TextInput::make('alamat_perusahaan')
+                            ->label('Alamat Perusahaan')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->extraAttributes(['class' => 'bg-gray-100']),
 
                         Forms\Components\RichEditor::make('deskripsi_lowongan')
                             ->label('Deskripsi Lowongan')
@@ -69,7 +86,7 @@ class LowonganResource extends Resource
                             ->searchable()
                             ->reactive() // TRIGGER DROPDOWN DAERAH 
                             ->required(),
-                            
+
                         Forms\Components\Select::make('id_daerah_magang')
                             ->label('Daerah (Kota/Kabupaten)')
                             ->options(function (callable $get) {
@@ -83,7 +100,7 @@ class LowonganResource extends Resource
                             })
                             ->searchable()
                             ->required()
-                            ->disabled(fn (callable $get) => !$get('id_provinsi')) // Disable jika belum pilih provinsi
+                            ->disabled(fn(callable $get) => !$get('id_provinsi')) // Disable jika belum pilih provinsi
                             ->reactive(),
 
                         Forms\Components\Select::make('id_periode')
@@ -144,6 +161,7 @@ class LowonganResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->label('Judul Lowongan')
+                    ->limit(10)
                     ->searchable()
                     ->sortable(),
 
@@ -156,8 +174,29 @@ class LowonganResource extends Resource
                     ->label('Jenis Magang')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('lokasiMagang.nama_lokasi')
+                Tables\Columns\TextColumn::make('daerahMagang.namaLengkap')
                     ->label('Lokasi')
+                    ->limit(10),
+                    // ->searchable() // Commented out to avoid redundancy with 'daerahMagang.nama_daerah', which is already searchable.
+                    // ->sortable(),
+
+                // Kolom tersembunyi untuk pencarian
+                Tables\Columns\TextColumn::make('daerahMagang.nama_daerah')
+                    ->label('Nama Daerah')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan secara default
+
+                // Kolom tersembunyi untuk pencarian jenis daerah
+                Tables\Columns\TextColumn::make('daerahMagang.jenis_daerah')
+                    ->label('Jenis Daerah')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan secara default
+
+                Tables\Columns\TextColumn::make('daerahMagang.provinsi.nama_provinsi')
+                    ->label('Provinsi')
+                    ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('batas_akhir_lamaran')
@@ -165,7 +204,8 @@ class LowonganResource extends Resource
                     ->date()
                     ->sortable(),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->colors([
                         'success' => 'Aktif',
                         'danger' => 'Selesai',

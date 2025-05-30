@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('r_bimbingan', function (Blueprint $table) {
             $table->unsignedBigInteger('id_dospem')->index();
             $table->unsignedBigInteger('id_penempatan')->index();
+            $table->timestamps();
             
             $table->primary(['id_dospem', 'id_penempatan']);
 
-            $table->foreign('id_dospem')->references('id_dospem')->on('m_dospem');
-            $table->foreign('id_penempatan')->references('id_penempatan')->on('t_penempatan_magang');
+            $table->foreign('id_dospem')->references('id_dospem')->on('m_dospem')->onDelete('cascade');
+            $table->foreign('id_penempatan')->references('id_penempatan')->on('t_penempatan_magang')->onDelete('cascade');
         });
     }
 

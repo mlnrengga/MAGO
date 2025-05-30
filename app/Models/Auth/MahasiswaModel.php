@@ -4,12 +4,15 @@ namespace App\Models\Auth;
 
 use App\Models\UserModel;
 use App\Models\Pivot\PreferensiMahasiswaModel;
+use App\Models\Reference\PengajuanMagangModel;
+use App\Models\Reference\ProdiModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class MahasiswaModel extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     // m mahasiswa
     // + id_mahasiswa: String (PK)
@@ -44,4 +47,13 @@ class MahasiswaModel extends Model
         return $this->hasOne(PreferensiMahasiswaModel::class, 'id_mahasiswa');
     }
 
+    public function pengajuanMagang()
+    {
+        return $this->hasMany(PengajuanMagangModel::class, 'id_mahasiswa', 'id_mahasiswa');
+    }
+
+    public function prodi()
+    {
+        return $this->belongsTo(ProdiModel::class, 'id_prodi', 'id_prodi');
+    }
 }

@@ -12,11 +12,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
+use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 class UserModel extends Authenticatable implements FilamentUser, HasName
 {
-    use HasFactory, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 
     public function canAccessPanel(Panel $panel): bool
     {
@@ -37,13 +38,15 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
 
     protected $table = 'm_user';
     protected $primaryKey = 'id_user';
-    protected $fillable = [
-        'nama',
-        'password',
-        'alamat',
-        'no_telepon',
-        'id_role',
-    ];
+   protected $fillable = [
+    'nama',
+    'password',
+    'alamat',
+    'no_telepon',
+    'role',
+    'profile_picture',
+];
+
     protected $hidden = [
         'password',
     ];

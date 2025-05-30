@@ -2,11 +2,16 @@
 
 namespace App\Models\Auth;
 
+use App\Models\MBidangKeahlian;
+use App\Models\Pivot\DospemBidangModel;
+use App\Models\Reference\BidangKeahlianModel;
 use App\Models\UserModel;
 use App\Models\Reference\JenisMagangModel;
 use App\Models\Reference\LokasiMagangModel;
+use App\Models\Reference\PenempatanMagangModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class DosenPembimbingModel extends Model
 {
@@ -20,7 +25,7 @@ class DosenPembimbingModel extends Model
     // + id_jenis_magang: int (FK)
 
     protected $table = 'm_dospem';
-    protected $primaryKey = 'id_dosen';
+    protected $primaryKey = 'id_dospem';
     protected $fillable = [
         'id_user',
         'nip',
@@ -32,5 +37,15 @@ class DosenPembimbingModel extends Model
     public function user()
     {
         return $this->belongsTo(UserModel::class, 'id_user');
+    }
+
+    public function bidangKeahlian(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            BidangKeahlianModel::class,
+            'r_dospem_bidang_keahlian',
+            'id_dospem',
+            'id_bidang'
+        );
     }
 }
