@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DosenPembimbingSeeder extends Seeder
 {
@@ -13,149 +14,88 @@ class DosenPembimbingSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [
-            [
-                'id_dospem' => 1,
-                'id_user' => 81, 
-                'nip' => '198804162011031001',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 2,
-                'id_user' => 82, 
-                'nip' => '197506232005011002',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 3,
-                'id_user' => 83, 
-                'nip' => '196809152000032001',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 4,
-                'id_user' => 84, 
-                'nip' => '197203102003121003',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 5,
-                'id_user' => 85, 
-                'nip' => '198012182006042002',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 6,
-                'id_user' => 86, 
-                'nip' => '197605082002121004',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 7,
-                'id_user' => 87, 
-                'nip' => '198302142007012003',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 8,
-                'id_user' => 88, 
-                'nip' => '196509271995031005',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 9,
-                'id_user' => 89, 
-                'nip' => '198107092008012004',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 10,
-                'id_user' => 90, 
-                'nip' => '197108232001121006',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 11,
-                'id_user' => 91, 
-                'nip' => '198504122010042005',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 12,
-                'id_user' => 92, 
-                'nip' => '197309112004121007',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 13,
-                'id_user' => 93, 
-                'nip' => '196902152000032006',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 14,
-                'id_user' => 94, 
-                'nip' => '198212252009121008',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 15,
-                'id_user' => 95, 
-                'nip' => '197711172003122007',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 16,
-                'id_user' => 96, 
-                'nip' => '196803211994031009',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 17,
-                'id_user' => 97, 
-                'nip' => '198601082011012008',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 18,
-                'id_user' => 98, 
-                'nip' => '197904232005011010',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 19,
-                'id_user' => 99, 
-                'nip' => '197010102000032009',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id_dospem' => 20,
-                'id_user' => 100, 
-                'nip' => '198508182012121011',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+        // Buat array untuk tanggal dengan pola pertumbuhan yang menarik
+        $dates = [
+            // Awal tahun - pertumbuhan lambat
+            Carbon::now()->subMonths(12)->addDays(5),    // Mei 2024
+            Carbon::now()->subMonths(11)->addDays(12),   // Juni 2024
+            
+            // Pertengahan tahun pertama - sedikit peningkatan
+            Carbon::now()->subMonths(10)->addDays(3),    // Juli 2024
+            Carbon::now()->subMonths(10)->addDays(18),   // Juli 2024
+            Carbon::now()->subMonths(9)->addDays(7),     // Agustus 2024
+            
+            // Akhir tahun - stabil
+            Carbon::now()->subMonths(8)->addDays(10),    // September 2024
+            Carbon::now()->subMonths(7)->addDays(22),    // Oktober 2024
+            
+            // Awal tahun baru - pertumbuhan cepat
+            Carbon::now()->subMonths(6)->addDays(5),     // November 2024
+            Carbon::now()->subMonths(6)->addDays(15),    // November 2024
+            Carbon::now()->subMonths(5)->addDays(8),     // Desember 2024
+            Carbon::now()->subMonths(5)->addDays(20),    // Desember 2024
+            
+            // Pertumbuhan paling cepat - awal semester baru
+            Carbon::now()->subMonths(4)->addDays(7),     // Januari 2025
+            Carbon::now()->subMonths(4)->addDays(17),    // Januari 2025
+            Carbon::now()->subMonths(4)->addDays(27),    // Januari 2025
+            Carbon::now()->subMonths(3)->addDays(10),    // Februari 2025
+            Carbon::now()->subMonths(3)->addDays(22),    // Februari 2025
+            
+            // Stabilisasi kembali
+            Carbon::now()->subMonths(2)->addDays(5),     // Maret 2025
+            Carbon::now()->subMonths(1)->addDays(12),    // April 2025
+            
+            // Bulan ini - terbaru
+            Carbon::now()->subDays(15),                  // Mei 2025
+            Carbon::now()->subDays(5),                   // Mei 2025
         ];
 
+        $data = [];
+        
+        // Memastikan jumlah dosen sesuai dengan jumlah tanggal
+        for ($i = 0; $i < min(20, count($dates)); $i++) {
+            $data[] = [
+                'id_dospem' => $i + 1,
+                'id_user' => $i + 81,
+                'nip' => $this->generateNIP($i),
+                'created_at' => $dates[$i],
+                'updated_at' => $dates[$i],
+            ];
+        }
+
         DB::table('m_dospem')->insert($data);
+    }
+    
+    /**
+     * Generate NIP unik
+     */
+    private function generateNIP($index)
+    {
+        // Gunakan data NIP yang sudah ada
+        $nipData = [
+            '198804162011031001',
+            '197506232005011002',
+            '196809152000032001',
+            '197203102003121003',
+            '198012182006042002',
+            '197605082002121004',
+            '198302142007012003',
+            '196509271995031005',
+            '198107092008012004',
+            '197108232001121006',
+            '198504122010042005',
+            '197309112004121007',
+            '196902152000032006',
+            '198212252009121008',
+            '197711172003122007',
+            '196803211994031009',
+            '198601082011012008',
+            '197904232005011010',
+            '197010102000032009',
+            '198508182012121011',
+        ];
+        
+        return isset($nipData[$index]) ? $nipData[$index] : '19' . rand(60, 99) . rand(01, 12) . rand(10, 28) . rand(1990, 2015) . rand(01, 12) . rand(1000, 9999);
     }
 }

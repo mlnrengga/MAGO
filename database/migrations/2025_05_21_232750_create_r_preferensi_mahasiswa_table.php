@@ -24,6 +24,9 @@ return new class extends Migration
 
             $table->unsignedBigInteger('id_insentif');
             $table->unsignedTinyInteger('ranking_insentif');
+
+            $table->unsignedTinyInteger('ranking_jenis_magang');
+            $table->unsignedTinyInteger('ranking_bidang');
             
             $table->timestamps();
 
@@ -31,6 +34,8 @@ return new class extends Migration
             $table->foreign('id_daerah_magang')->references('id_daerah_magang')->on('m_daerah_magang');
             $table->foreign('id_waktu_magang')->references('id_waktu_magang')->on('m_waktu_magang');
             $table->foreign('id_insentif')->references('id_insentif')->on('m_insentif');
+
+            
         });
     }
 

@@ -40,30 +40,60 @@ class PreferensiMahasiswaSeeder extends Seeder
             // 70% kemungkinan memilih "Ada Insentif" (id: 1)
             $insentif = (rand(1, 100) <= 70) ? 1 : 2;
             
-            // Tentukan ranking untuk setiap preferensi
-            // Untuk daerah: 1-5 (prioritas tertinggi ke terendah)
-            // Mahasiswa dari semester lebih tinggi cenderung lebih fleksibel dalam memilih daerah
-            // (untuk membuat data lebih realistis)
+            // Buat array ranking 1-5 dan acak urutannya untuk memastikan tidak ada duplikasi
+            $availableRankings = [1, 2, 3, 4, 5];
+            shuffle($availableRankings);
+            
+            // Beri bobot pada preferensi berdasarkan karakteristik mahasiswa
             $semester = DB::table('m_mahasiswa')->where('id_mahasiswa', $mahasiswaId)->value('semester');
-            $rankingDaerah = min(5, max(1, rand(1, 3) + floor($semester / 2)));
             
-            // Untuk waktu magang: 1-3
-            // Mahasiswa umumnya lebih suka waktu magang yang lebih pendek
-            $rankingWaktuMagang = ($waktuMagang == 1) ? rand(1, 2) : rand(2, 3);
+            // Tentukan preferensi berdasarkan logika bisnis yang sudah ada
+            // tapi tetap pastikan ranking-nya unik dengan menggunakan array yang sudah diacak
             
-            // Untuk insentif: 1-3
-            // Mahasiswa umumnya lebih memprioritaskan insentif
-            $rankingInsentif = ($insentif == 1) ? 1 : rand(2, 3);
+            // Preferensi untuk daerah - biasanya semester tinggi lebih fleksibel
+            $daerahWeight = min(5, max(1, 3 + floor($semester / 2))); // Angka lebih tinggi = prioritas rendah
+            
+            // Preferensi waktu magang - biasanya lebih suka waktu pendek
+            $waktuWeight = ($waktuMagang == 1) ? 2 : 4;  // Waktu pendek prioritas lebih tinggi
+            
+            // Preferensi insentif - biasanya sangat diprioritaskan
+            $insentifWeight = ($insentif == 1) ? 1 : 4;  // Ada insentif paling diprioritaskan
+            
+            // Preferensi jenis magang dan bidang (asumsi prioritas menengah)
+            $jenisMagangWeight = 3;
+            $bidangWeight = 3;
+            
+            // Buat array dari semua preferensi dan bobot
+            $preferences = [
+                'daerah' => $daerahWeight,
+                'waktu_magang' => $waktuWeight,
+                'insentif' => $insentifWeight,
+                'jenis_magang' => $jenisMagangWeight,
+                'bidang' => $bidangWeight
+            ];
+            
+            // Urutkan preferensi berdasarkan bobot (nilai kecil = prioritas tinggi)
+            asort($preferences);
+            
+            // Assign ranking unik untuk setiap preferensi berdasarkan prioritasnya
+            $rankingAssignment = [];
+            $rank = 0;
+            foreach ($preferences as $prefType => $weight) {
+                $rankingAssignment[$prefType] = $availableRankings[$rank];
+                $rank++;
+            }
             
             $data[] = [
                 'id_preferensi' => $id,
                 'id_mahasiswa' => $mahasiswaId,
                 'id_daerah_magang' => $daerahMagang,
-                'ranking_daerah' => $rankingDaerah,
+                'ranking_daerah' => $rankingAssignment['daerah'],
                 'id_waktu_magang' => $waktuMagang,
-                'ranking_waktu_magang' => $rankingWaktuMagang,
+                'ranking_waktu_magang' => $rankingAssignment['waktu_magang'],
                 'id_insentif' => $insentif,
-                'ranking_insentif' => $rankingInsentif,
+                'ranking_insentif' => $rankingAssignment['insentif'],
+                'ranking_jenis_magang' => $rankingAssignment['jenis_magang'],
+                'ranking_bidang' => $rankingAssignment['bidang'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

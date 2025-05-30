@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('r_preferensi_jenis_magang', function (Blueprint $table) {
             $table->unsignedBigInteger('id_preferensi');
             $table->unsignedBigInteger('id_jenis_magang');
-            $table->unsignedTinyInteger('ranking_jenis_magang');
             $table->timestamps();
 
             $table->primary(['id_preferensi', 'id_jenis_magang']);
