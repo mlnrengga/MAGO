@@ -247,8 +247,8 @@ class LowonganMagangSeeder extends Seeder
         shuffle($data);
         
         // Reassign ID setelah pengacakan
-        for ($i = 0; $i < count($data); $i++) {
-            $data[$i]['id_lowongan'] = $i + 1;
+        for ($index = 0; $index < count($data); $index++) {
+            $data[$index]['id_lowongan'] = $index + 1;
         }
         
         // Memasukkan data ke database
