@@ -36,6 +36,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(false)
+            ->renderHook(
+                'panels::head.start',
+                fn () => view('filament.favicon')
+            )
             ->databaseNotifications()
             ->colors([
                 'danger' => Color::Red,

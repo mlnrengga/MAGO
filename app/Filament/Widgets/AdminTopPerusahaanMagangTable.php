@@ -16,6 +16,9 @@ class AdminTopPerusahaanMagangTable extends BaseWidget
     protected int|string|array $columnSpan = 'full';
     protected static ?string $heading = 'Top Perusahaan Magang Paling Diminati';
 
+    // Menambahkan opsi untuk memaksimalkan ukuran tabel
+    protected static bool $isLazy = false;
+
     public function table(Table $table): Table
     {
         // Buat query dengan selectSub untuk mengatasi masalah aggregate columns
@@ -76,6 +79,9 @@ class AdminTopPerusahaanMagangTable extends BaseWidget
                     ->rowIndex()
                     ->alignCenter()
                     ->badge()
+                    // Gunakan fixed width untuk kolom kecil
+                    ->extraHeaderAttributes(['style' => 'width: 60px; min-width: 60px;'])
+                    ->extraCellAttributes(['style' => 'width: 60px; min-width: 60px;'])
                     ->color(function ($state) {
                         return match ((int)$state) {
                             1 => 'warning',
@@ -100,16 +106,42 @@ class AdminTopPerusahaanMagangTable extends BaseWidget
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
-                    ->wrap(),
+                    // Gunakan fixed width untuk kolom nama
+                    ->extraHeaderAttributes(['style' => 'width: 180px; min-width: 180px;'])
+                    ->extraCellAttributes(['style' => 'width: 180px; min-width: 180px;'])
+                    ->limit(30) // Batasi tampilan teks
+                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
+                        return $column->getState(); // Tampilkan teks lengkap saat hover
+                    }),
                 
                 Tables\Columns\TextColumn::make('bidang_keahlian')
                     ->label('Bidang Keahlian')
+                    ->extraHeaderAttributes(['style' => 'width: 280px; min-width: 280px;'])
+                    ->extraCellAttributes(['style' => 'width: 280px; min-width: 280px;'])
+                    ->formatStateUsing(function ($state) {
+                        // Memecah string menjadi array
+                        $bidang = array_map('trim', explode(',', $state));
+                        
+                        // Jika lebih dari 3 bidang, tampilkan 3 pertama saja + "x lainnya"
+                        if (count($bidang) > 3) {
+                            $visible = array_slice($bidang, 0, 3);
+                            return implode(", ", $visible) . ', +' . (count($bidang) - 3) . ' lainnya';
+                        }
+                        
+                        return $state;
+                    })
+                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
+                        return $column->getRecord()->bidang_keahlian; // Tampilkan semua bidang saat hover
+                    })
                     ->wrap(),
                 
                 Tables\Columns\TextColumn::make('jumlah_mahasiswa_magang')
                     ->label('Jumlah Mahasiswa')
                     ->sortable()
                     ->alignCenter()
+                    // Ukuran tetap untuk kolom badge
+                    ->extraHeaderAttributes(['style' => 'width: 100px; min-width: 100px;'])
+                    ->extraCellAttributes(['style' => 'width: 100px; min-width: 100px;'])
                     ->badge()
                     ->color('success'),
                 
@@ -117,23 +149,34 @@ class AdminTopPerusahaanMagangTable extends BaseWidget
                     ->label('Jumlah Lowongan')
                     ->sortable()
                     ->alignCenter()
+                    // Ukuran tetap untuk kolom badge
+                    ->extraHeaderAttributes(['style' => 'width: 100px; min-width: 100px;'])
+                    ->extraCellAttributes(['style' => 'width: 100px; min-width: 100px;'])
                     ->badge()
                     ->color('info'),
                     
                 Tables\Columns\TextColumn::make('nama_daerah')
                     ->label('Daerah')
+                    ->formatStateUsing(function ($state, $record) {
+                        return $state . ' (' . $record->jenis_daerah . ')';
+                    })
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->extraHeaderAttributes(['style' => 'width: 150px; min-width: 150px;'])
+                    ->extraCellAttributes(['style' => 'width: 150px; min-width: 150px;']),
                     
                 Tables\Columns\TextColumn::make('jenis_daerah')
                     ->label('Kota')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->visibleFrom('md'),
 
                 Tables\Columns\TextColumn::make('nama_provinsi')
                     ->label('Provinsi')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->extraHeaderAttributes(['style' => 'width: 120px; min-width: 120px;'])
+                    ->extraCellAttributes(['style' => 'width: 120px; min-width: 120px;']),
             ])
             ->striped()
             ->filters([
@@ -153,6 +196,9 @@ class AdminTopPerusahaanMagangTable extends BaseWidget
                 ]),
             ])
             ->defaultSort('jumlah_mahasiswa_magang', 'desc')
-            ->paginated([5, 10, 25, 50, 'all']);
+            ->paginated([5, 10, 25, 50, 'all'])
+            ->deferLoading()
+            ->emptyStateHeading('Tidak ada perusahaan magang yang ditemukan')
+            ->emptyStateDescription('Silakan buat perusahaan baru di menu Perusahaan Mitra.');
     }
 }
