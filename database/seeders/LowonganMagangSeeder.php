@@ -221,5 +221,7 @@ class LowonganMagangSeeder extends Seeder
         }
         
         DB::table('t_lowongan_magang')->insert($data);
+
+        $this->command->info('Berhasil menyeeder ' . count($data) . ' data lowongan magang');
     }
 }
