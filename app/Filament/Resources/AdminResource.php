@@ -15,12 +15,12 @@ class AdminResource extends Resource
 {
     protected static ?string $model = UserModel::class;
 
-    protected static ?string $navigationLabel = 'Manajemen Admin';
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationLabel = 'Pengguna';
+    protected static ?string $navigationIcon = 'heroicon-s-user-group';
     protected static ?string $modelLabel = 'Admin';
     protected static ?string $pluralModelLabel = 'Data Admin';
 
-    protected static ?string $navigationGroup = 'Reference Data';
+    protected static ?string $navigationGroup = 'Pengguna & Mitra';
 
 
     protected static ?int $navigationSort = 1;

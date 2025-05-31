@@ -32,8 +32,10 @@ class PreferensiMahasiswaResource extends Resource
 {
     protected static ?string $model = PreferensiMahasiswaModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-users';
-    protected static ?string $navigationGroup = 'Profil Saya';
+    protected static ?string $navigationIcon = 'heroicon-s-adjustments-horizontal';
+    protected static ?string $navigationLabel = 'Preferensi Profil';
+    protected static ?string $pluralModelLabel = 'Preferensi Profil Saya';
+    protected static ?string $navigationGroup = 'Tentang Saya';
 
     public static function getEloquentQuery(): Builder
     {
@@ -234,7 +236,9 @@ class PreferensiMahasiswaResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Tidak ada preferensi magang yang ditemukan')
+            ->emptyStateDescription('Silakan buat preferensi magang baru untuk mengatur preferensi magang Anda.');
     }
 
     public static function getRelations(): array
@@ -252,20 +256,5 @@ class PreferensiMahasiswaResource extends Resource
             'edit' => Pages\EditPreferensiMahasiswa::route('/{record}/edit'),
             'view' => Pages\ViewPreferensiMahasiswa::route('/{record}'),
         ];
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return 'Manajemen Preferensi';
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return 'Preferensi Mahasiswa';
-    }
-
-    public static function getModelLabel(): string
-    {
-        return 'Preferensi';
     }
 }
