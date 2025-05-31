@@ -58,7 +58,8 @@ class MahasiswaPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
-                \App\Filament\Mahasiswa\Widgets\MahasiswaStatusPengajuanTable::class
+                \App\Filament\Mahasiswa\Widgets\MahasiswaStatusPengajuanTable::class,
+                \App\Filament\Mahasiswa\Widgets\RekomendasiMagang::class,
             ])
             ->middleware([
                 EncryptCookies::class,
