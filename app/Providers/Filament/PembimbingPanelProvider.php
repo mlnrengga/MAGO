@@ -35,6 +35,10 @@ class PembimbingPanelProvider extends PanelProvider
             ->id('pembimbing')
             ->path('pembimbing')
             ->login(false)
+            ->renderHook(
+                'panels::head.start',
+                fn () => view('filament.favicon')
+            )
             ->colors([
                 'primary' => Color::Amber,
             ])

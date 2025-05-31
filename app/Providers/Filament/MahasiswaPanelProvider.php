@@ -35,6 +35,10 @@ class MahasiswaPanelProvider extends PanelProvider
             ->id('mahasiswa')
             ->path('mahasiswa')
             ->login(false)
+            ->renderHook(
+                'panels::head.start',
+                fn () => view('filament.favicon')
+            )
             ->databaseNotifications()
             ->colors([
                 'danger' => Color::Red,
