@@ -197,6 +197,8 @@ class AdminTopPerusahaanMagangTable extends BaseWidget
             ])
             ->defaultSort('jumlah_mahasiswa_magang', 'desc')
             ->paginated([5, 10, 25, 50, 'all'])
-            ->deferLoading();
+            ->deferLoading()
+            ->emptyStateHeading('Tidak ada perusahaan magang yang ditemukan')
+            ->emptyStateDescription('Silakan buat perusahaan baru di menu Perusahaan Mitra.');
     }
 }

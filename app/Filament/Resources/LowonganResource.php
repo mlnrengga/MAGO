@@ -26,11 +26,11 @@ class LowonganResource extends Resource
     protected static ?string $model = LowonganMagangModel::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-briefcase';
-    protected static ?string $navigationLabel = 'Manajemen Lowongan';
+    protected static ?string $navigationLabel = 'Lowongan Magang';
     protected static ?string $slug = 'manajemen-lowongan';
     protected static ?string $modelLabel = 'Lowongan';
     protected static ?string $pluralModelLabel = 'Data Lowongan Magang';
-    protected static ?string $navigationGroup = 'Magang';
+    protected static ?string $navigationGroup = 'Administrasi Magang';
 
     public static function form(Form $form): Form
     {
@@ -233,7 +233,8 @@ class LowonganResource extends Resource
                         'danger' => 'Selesai',
                     ]),
             ])
-            ->emptyStateHeading('Tidak ada data lowongan')
+            ->emptyStateHeading('Tidak ada data lowongan magang yang ditemukan')
+            ->emptyStateDescription('Silakan buat lowongan magang baru.')
             ->emptyStateIcon('heroicon-o-document-text')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
