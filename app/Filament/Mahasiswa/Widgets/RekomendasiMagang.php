@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\DB;
 class RekomendasiMagang extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
-    protected static ?string $heading = 'Rekomendasi Magang Paling Sesuai';
     protected static ?int $sort = 3;
+
+    protected $kesesuaianValues = [];
 
     protected array $bobot = [
         1 => 0.397,
@@ -49,36 +50,48 @@ class RekomendasiMagang extends BaseWidget
             ->columns([
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->searchable()
-                    ->sortable()
-                    ->label('Judul Lowongan'),
+                    ->limit(25)
+                    ->label('Lowongan'),
                 Tables\Columns\TextColumn::make('perusahaan.nama')
                     ->searchable()
-                    ->sortable()
-                    ->label('Nama Perusahaan'),
+                    ->label('Perusahaan'),
                 Tables\Columns\TextColumn::make('jenisMagang.nama_jenis_magang')
                     ->searchable()
-                    ->sortable()
                     ->label('Jenis Magang'),
                 Tables\Columns\TextColumn::make('daerahMagang.namaLengkapDenganProvinsi')
+                    ->limit(15)
+                    ->label('Lokasi Magang'),
+                Tables\Columns\TextColumn::make('daerahMagang.nama_daerah')
+                    ->label('Nama Daerah')
                     ->searchable()
-                    ->sortable()
-                    ->label('Lokasi'),
+                    ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan secara default
+                Tables\Columns\TextColumn::make('daerahMagang.jenis_daerah')
+                    ->label('Jenis Daerah')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('waktuMagang.waktu_magang')
                     ->searchable()
-                    ->sortable()
                     ->label('Waktu'),
                 Tables\Columns\TextColumn::make('insentif.keterangan')
                     ->searchable()
-                    ->sortable()
                     ->label('Insentif'),
             ])
+            ->striped()
             ->emptyStateHeading('Belum ada lowongan yang tersedia')
             ->emptyStateDescription('Silakan lengkapi preferensi magang Anda untuk mendapatkan rekomendasi lowongan yang sesuai.')
+            ->filters([
+                Tables\Filters\SelectFilter::make('id_jenis_magang')
+                    ->label('Jenis Magang')
+                    ->relationship('jenisMagang', 'nama_jenis_magang'),
+                Tables\Filters\SelectFilter::make('id_daerah_magang')
+                    ->label('Daerah Magang')
+                    ->relationship('daerahMagang', 'nama_daerah'),
+            ])
             ->actions([
-                // Tables\Actions\Action::make('detail')
-                //     ->url(fn($record) => route('filament.mahasiswa.resources.lowongan-magang.detail', $record->id_lowongan))
-                //     ->button()
-                //     ->label('Lihat Detail'),
+                // Tables\Actions\Action::make('lihat_detail')
+                //     ->label('Lihat Detail')
+                //     ->url(fn($record) => route('filament.mahasiswa.pages.detail-lowongan', ['record' => $record->id_lowongan]))
+                //     ->icon('heroicon-o-eye')
             ]);
     }
 
@@ -148,7 +161,7 @@ class RekomendasiMagang extends BaseWidget
                         $matchCount++;
                     }
                 }
-                $bidang = $matchCount / $bidangCount;
+                $bidang = $matchCount;
             } else {
                 $bidang = 0;
             }
