@@ -17,8 +17,6 @@ class RekomendasiMagang extends BaseWidget
     protected int|string|array $columnSpan = 'full';
     protected static ?int $sort = 3;
 
-    protected $kesesuaianValues = [];
-
     protected array $bobot = [
         1 => 0.397,
         2 => 0.297,
@@ -48,6 +46,31 @@ class RekomendasiMagang extends BaseWidget
                     ->orderByRaw("FIELD(id_lowongan, " . implode(',', $orderedIds) . ")");
             })
             ->columns([
+                Tables\Columns\TextColumn::make('iteration')
+                    ->label('#')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->badge()
+                    ->extraHeaderAttributes(['style' => 'width: 60px; min-width: 60px;'])
+                    ->extraCellAttributes(['style' => 'width: 60px; min-width: 60px;'])
+                    ->color(function ($state) {
+                        return match ((int)$state) {
+                            1 => 'warning',
+                            2 => 'gray',
+                            3 => 'danger',
+                            default => 'primary',
+                        };
+                    })
+                    ->formatStateUsing(function ($state) {
+                        return match ((int)$state) {
+                            1 => '🥇 1',
+                            2 => '🥈 2',
+                            3 => '🥉 3',
+                            default => $state,
+                        };
+                    })
+                    ->weight('bold')
+                    ->size('lg'),
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->searchable()
                     ->limit(25)
@@ -110,7 +133,7 @@ class RekomendasiMagang extends BaseWidget
         // Mendapatkan lowongan yang aktif
         $lowonganCollection = LowonganMagangModel::query()
             ->with(['bidangKeahlian', 'jenisMagang', 'daerahMagang', 'waktuMagang', 'insentif', 'perusahaan'])
-            ->where('status', 'Selesai')
+            ->where('status', 'Aktif')
             ->get();
 
         if ($lowonganCollection->isEmpty()) {
@@ -251,11 +274,49 @@ class RekomendasiMagang extends BaseWidget
             return $b['kesesuaian'] <=> $a['kesesuaian'];
         });
 
+        $this->saveTopRecommendations($rekomendasiItems, $mahasiswa->id_mahasiswa, $preferensi->id_preferensi);
+
         // Kembalikan hasil sebagai collection yang sudah diurutkan
         $lowonganCollectionSorted = collect(array_map(function ($item) {
             return $item['lowongan'];
         }, $rekomendasiItems));
 
         return $lowonganCollectionSorted;
+    }
+
+    protected function saveTopRecommendations($recommendations, $mahasiswaId, $preferensiId)
+    {
+        if (empty($recommendations)) {
+            return;
+        }
+
+        // Ambil hanya 10 besar
+        $topTen = array_slice($recommendations, 0, 10);
+
+        // Hapus data lama
+        DB::table('t_histori_rekomendasi')
+            ->where('id_mahasiswa', $mahasiswaId)
+            ->where('id_preferensi', $preferensiId)
+            ->delete();
+
+        // Simpan data baru
+        $dataToInsert = [];
+        foreach ($topTen as $index => $item) {
+            $ranking = $index + 1;
+            
+            $dataToInsert[] = [
+                'id_mahasiswa' => $mahasiswaId,
+                'id_lowongan' => $item['id_lowongan'],
+                'id_preferensi' => $preferensiId,
+                'ranking' => $ranking,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        // Insert batch data
+        if (!empty($dataToInsert)) {
+            DB::table('t_histori_rekomendasi')->insert($dataToInsert);
+        }
     }
 }
