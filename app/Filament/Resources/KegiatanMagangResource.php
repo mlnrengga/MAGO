@@ -250,19 +250,21 @@ class KegiatanMagangResource extends Resource
 
                 Tables\Columns\TextColumn::make('lowongan.judul_lowongan')
                     ->label('Judul Lowongan')
-                    ->limit(10)
+                    ->limit(20)
+                    ->copyable()
+                    ->tooltip(fn ($record) => $record->lowongan->judul_lowongan)
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('tanggal_pengajuan')
                     ->label('Tanggal Pengajuan')
                     ->sortable()
-                    ->date('Y-m-d'),
+                    ->date(),
 
                 Tables\Columns\TextColumn::make('tanggal_diterima')
                     ->label('Tanggal Diterima')
                     ->sortable()
-                    ->date('Y-m-d'),
+                    ->date(),
 
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
