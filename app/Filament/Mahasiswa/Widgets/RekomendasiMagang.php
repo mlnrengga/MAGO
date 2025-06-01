@@ -74,10 +74,7 @@ class RekomendasiMagang extends BaseWidget
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->searchable()
                     ->limit(25)
-                    ->label('Lowongan')
-                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
-                        return $column->getState(); // Tampilkan teks lengkap saat hover
-                    }),
+                    ->label('Lowongan'),
                 Tables\Columns\TextColumn::make('perusahaan.nama')
                     ->searchable()
                     ->label('Perusahaan'),
@@ -86,10 +83,7 @@ class RekomendasiMagang extends BaseWidget
                     ->label('Jenis Magang'),
                 Tables\Columns\TextColumn::make('daerahMagang.namaLengkapDenganProvinsi')
                     ->limit(15)
-                    ->label('Lokasi Magang')
-                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
-                        return $column->getState(); // Tampilkan teks lengkap saat hover
-                    }),
+                    ->label('Lokasi Magang'),
                 Tables\Columns\TextColumn::make('daerahMagang.nama_daerah')
                     ->label('Nama Daerah')
                     ->searchable()
