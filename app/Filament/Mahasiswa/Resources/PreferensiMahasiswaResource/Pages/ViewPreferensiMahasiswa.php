@@ -20,8 +20,7 @@ class ViewPreferensiMahasiswa extends ViewRecord
 
     protected static string $view = 'filament.mahasiswa.resources.preferensi-mahasiswa-resource.pages.view-preferensi-mahasiswa';
 
-    protected static ?string $title = 'Preferensi Mahasiswa';
-    protected static ?string $navigationLabel = 'Preferensi Mahasiswa';
+    protected static ?string $title = 'Preferensi Profil Saya';
     protected static ?string $slug = 'preferensi mahasiswa';
 
     public function infolist(Infolist $infolist): Infolist

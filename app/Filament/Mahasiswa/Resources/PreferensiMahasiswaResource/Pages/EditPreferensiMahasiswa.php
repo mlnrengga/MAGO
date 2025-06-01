@@ -11,6 +11,7 @@ class EditPreferensiMahasiswa extends EditRecord
 {
     protected static string $resource = PreferensiMahasiswaResource::class;
 
+    protected static ?string $title = 'Edit Preferensi Profil Saya';
     protected array $bidangIds = [];
     protected array $jenisIds = [];
 
