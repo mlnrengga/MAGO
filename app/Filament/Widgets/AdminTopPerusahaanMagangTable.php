@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class AdminTopPerusahaanMagangTable extends BaseWidget
 {
-    protected static ?int $sort = 3; // Urutkan widget setelah chart-chart
+    // protected static ?int $sort = -1; 
     protected int|string|array $columnSpan = 'full';
     protected static ?string $heading = 'Top Perusahaan Magang Paling Diminati';
 
