@@ -87,13 +87,13 @@ class AdminResource extends Resource
                             ->required(fn($livewire) => $livewire instanceof Pages\CreateAdmin)
                             ->disabled(fn($get) => !$get('id_role'))
                             ->reactive(),
-
                         Forms\Components\FileUpload::make('profile_picture')
                             ->label('Foto Profil')
                             ->image()
                             ->directory('profile_pictures')
                             ->disk('public')
-                            ->disabled(), // masih disabled
+
+
                     ])->columns(2),
             ]);
     }
