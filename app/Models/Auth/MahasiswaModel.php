@@ -2,10 +2,12 @@
 
 namespace App\Models\Auth;
 
+use App\Models\Reference\DokumenModel;
 use App\Models\UserModel;
 use App\Models\Reference\PreferensiMahasiswaModel;
 use App\Models\Reference\PengajuanMagangModel;
 use App\Models\Reference\ProdiModel;
+use App\Models\Reference\ProfilMhsModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -55,5 +57,15 @@ class MahasiswaModel extends Model
     public function prodi()
     {
         return $this->belongsTo(ProdiModel::class, 'id_prodi', 'id_prodi');
+    }
+
+    public function dokumen()
+    {
+        return $this->hasMany(DokumenModel::class, 'id_mahasiswa', 'id_mahasiswa');
+    }
+
+    public function profil()
+    {
+        return $this->hasOne(ProfilMhsModel::class, 'id_mahasiswa', 'id_mahasiswa');
     }
 }
