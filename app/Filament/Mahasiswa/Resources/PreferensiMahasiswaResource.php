@@ -12,6 +12,7 @@ use App\Models\Reference\JenisMagangModel;
 use App\Models\Reference\LokasiMagangModel;
 use App\Models\Reference\ProvinsiModel;
 use App\Models\Reference\WaktuMagangModel;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Group;
@@ -27,6 +28,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
 
 class PreferensiMahasiswaResource extends Resource
 {
@@ -71,7 +74,23 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()
+                            ->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_daerah'),
+                                    $get('ranking_jenis_magang'),
+                                    $get('ranking_insentif'),
+                                    $get('ranking_waktu_magang'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
                 Section::make('Daerah Magang')
@@ -129,7 +148,23 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()
+                           ->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_bidang'),
+                                    $get('ranking_jenis_magang'),
+                                    $get('ranking_insentif'),
+                                    $get('ranking_waktu_magang'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
                 Section::make('Jenis Magang')
@@ -150,7 +185,22 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_bidang'),
+                                    $get('ranking_daerah'),
+                                    $get('ranking_insentif'),
+                                    $get('ranking_waktu_magang'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
 
@@ -174,7 +224,22 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_bidang'),
+                                    $get('ranking_daerah'),
+                                    $get('ranking_jenis_magang'),
+                                    $get('ranking_waktu_magang'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
                 Section::make('Waktu Magang')
@@ -194,7 +259,22 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_bidang'),
+                                    $get('ranking_daerah'),
+                                    $get('ranking_jenis_daerah'),
+                                    $get('ranking_insentif'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
             ]);

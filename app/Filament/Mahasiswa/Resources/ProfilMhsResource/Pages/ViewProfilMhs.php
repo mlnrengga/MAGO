@@ -3,17 +3,22 @@
 namespace App\Filament\Mahasiswa\Resources\ProfilMhsResource\Pages;
 
 use App\Filament\Mahasiswa\Resources\ProfilMhsResource;
-use App\Models\Auth\MahasiswaModel;
-use Filament\Actions\Action;
-use Filament\Notifications\Notification;
-use Filament\Resources\Pages\Page;
-use Illuminate\Support\Facades\Storage;
+use Filament\Infolists\Components\Actions\Action;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Mahasiswa\Resources\ProfilMhsResource\Pages\EditProfil;
+use App\Filament\Mahasiswa\Resources\ProfilMhsResource\Pages\EditPengalaman;
+use App\Filament\Mahasiswa\Resources\ProfilMhsResource\Pages\EditDokumen;
+use Filament\Forms\Components\Builder;
+use Filament\Infolists\Components\RepeatableEntry;
 
-class ViewProfilMhs extends Page
+class ViewProfilMhs extends ViewRecord
 {
     protected static string $resource = ProfilMhsResource::class;
-
-    protected static string $view = 'filament.mahasiswa.resources.profil-mhs-resource.pages.view-profil-mhs';
 
     protected static ?string $title = 'Profil Saya';
 
@@ -21,44 +26,100 @@ class ViewProfilMhs extends Page
 
     protected static ?string $slug = 'profil-saya';
 
-    public $user;
-
-    public function mount(): void
+    protected function getRecordQuery(): Builder
     {
-        $this->user = auth()->user();
+        return parent::getRecordQuery()->with(['dokumen']);
     }
 
-    protected function getHeaderActions(): array
+
+    public function infolist(Infolist $infolist): Infolist
     {
-        return [
-            Action::make('hapusFoto')
-                ->label('Hapus Foto')
-                ->color('danger')
-                ->visible(fn() => filled($this->user->profile_picture))
-                ->requiresConfirmation()
-                ->modalHeading('Hapus Foto Profil')
-                ->modalDescription('Apakah Anda yakin ingin menghapus foto profil?')
-                ->modalSubmitActionLabel('Ya, Hapus')
-                ->action(function () {
-                    // Hapus file dari storage
-                    if ($this->user->profile_picture && Storage::disk('public')->exists($this->user->profile_picture)) {
-                        Storage::disk('public')->delete($this->user->profile_picture);
-                    }
+        return $infolist
+            ->record($this->record)
+            ->schema([
+                // SECTION PROFIL
+                Section::make('Informasi Profil')
+                    ->schema([
+                        Grid::make(4)
+                            ->schema([
+                                ImageEntry::make('user.profile_picture')
+                                    ->label('')
+                                    ->circular()
+                                    ->visibility('private')
+                                    ->disk('public')
+                                    ->getStateUsing(function ($record) {
+                                        return 'foto-profil/' . $record->foto_profil;
+                                    }),
 
-                    // Update database
-                    $this->user->update([
-                        'profile_picture' => null,
-                    ]);
+                                Grid::make()
+                                    ->schema([
+                                        TextEntry::make('user.nama')->label('Nama'),
+                                        TextEntry::make('nim')->label('NIM'),
+                                        TextEntry::make('prodi.nama_prodi')->label('Program Studi'),
+                                        TextEntry::make('ipk')->label('IPK'),
+                                        TextEntry::make('semester')->label('Semester'),
+                                        TextEntry::make('user.alamat')->label('Alamat'),
+                                        TextEntry::make('user.no_telepon')->label('No. Telepon'),
+                                        TextEntry::make('user.password')
+                                            ->label('Password')
+                                            ->formatStateUsing(fn() => '******'),
+                                    ])
+                                    ->columnSpan(3),
+                            ]),
+                    ])
+                    ->headerActions([
+                        Action::make('edit_profil')
+                            ->label('Edit Profil')
+                            ->action(fn($record) => redirect(EditProfil::getUrl(['record' => $record])))
+                            ->color('primary'),
+                    ]),
 
-                    // Refresh data
-                    $this->user->refresh();
+                // SECTION PENGALAMAN
+                Section::make('Pengalaman')
+                    ->schema([
+                        TextEntry::make('pengalaman')
+                            ->label('')
+                            ->placeholder('Belum ada pengalaman yang ditambahkan'),
+                    ])
+                    ->headerActions([
+                        Action::make('edit_pengalaman')
+                            ->label(fn($record) => $record->pengalaman ? 'Edit Pengalaman' : 'Tambah Pengalaman')
+                            ->action(fn($record) => redirect(EditPengalaman::getUrl(['record' => $record])))
+                            ->color(fn($record) => $record->pengalaman ? 'primary' : 'primary'),
+                    ]),
 
-                    // Notifikasi
-                    Notification::make()
-                        ->title('Foto profil berhasil dihapus.')
-                        ->success()
-                        ->send();
-                }),
-        ];
+                // SECTION DOKUMEN
+                Section::make('Dokumen')
+                    ->schema([
+                        Grid::make()
+                            ->schema([
+                                TextEntry::make('no_dokumen')
+                                    ->label('')
+                                    ->state('Belum ada dokumen yang diupload')
+                                    ->visible(fn($record) => $record->dokumen->isEmpty()),
+                            ]),
+
+                        RepeatableEntry::make('dokumen')
+                            ->label('')
+                            ->visible(fn($record) => $record->dokumen->isNotEmpty())
+                            ->schema([
+                                TextEntry::make('jenis_dokumen')->label('Jenis Dokumen'),
+                                TextEntry::make('nama_dokumen')->label('Nama Dokumen'),
+                                TextEntry::make('path_dokumen')
+                                    ->label('File')
+                                    ->formatStateUsing(fn($state) => $state
+                                        ? '<a href="' . asset('storage/' . $state) . '" target="_blank" class="text-primary-600 underline">Download</a>'
+                                        : '-')
+                                    ->html(),
+                            ])
+                            ->columns(3),
+                    ])
+                    ->headerActions([
+                        Action::make('edit_dokumen')
+                            ->label(fn($record) => $record->dokumen->count() > 0 ? 'Edit Dokumen' : 'Tambah Dokumen')
+                            ->action(fn($record) => redirect(EditDokumen::getUrl(['record' => $record])))
+                            ->color('primary'),
+                    ]),
+            ]);
     }
 }
