@@ -12,13 +12,15 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
+
+
 class AdminResource extends Resource
 {
     protected static ?string $model = UserModel::class;
 
     protected static ?string $navigationLabel = 'Manajemen Pengguna';
     protected static ?string $navigationIcon = 'heroicon-s-user-group';
-    protected static ?string $modelLabel = 'Menajemen -Pengguna';
+    protected static ?string $modelLabel = 'Manajemen - Pengguna';
     protected static ?string $pluralModelLabel = 'Data Pengguna';
     protected static ?string $navigationGroup = 'Pengguna & Mitra';
     protected static ?int $navigationSort = 1;
@@ -46,20 +48,25 @@ class AdminResource extends Resource
                             ->required()
                             ->reactive(),
 
-                        Forms\Components\TextInput::make('nim')
+                        Forms\Components\TextInput::make('mahasiswa.nim')
                             ->label('NIM')
                             ->visible(fn ($get) => $get('id_role') == 2)
                             ->required(fn ($get) => $get('id_role') == 2)
                             ->disabled(fn ($get) => !$get('id_role'))
-                            ->default(fn ($record) => $record?->mahasiswa?->nim ?? null)
                             ->reactive(),
 
-                        Forms\Components\TextInput::make('nip')
-                            ->label('NIP')
-                            ->visible(fn ($get) => in_array($get('id_role'), [1, 3]))
-                            ->required(fn ($get) => in_array($get('id_role'), [1, 3]))
+                        Forms\Components\TextInput::make('admin.nip')
+                            ->label('NIP Admin')
+                            ->visible(fn ($get) => $get('id_role') == 1)
+                            ->required(fn ($get) => $get('id_role') == 1)
                             ->disabled(fn ($get) => !$get('id_role'))
-                            ->default(fn ($record) => $record?->admin?->nip ?? $record?->dosenPembimbing?->nip ?? null)
+                            ->reactive(),
+
+                        Forms\Components\TextInput::make('dosenPembimbing.nip')
+                            ->label('NIP Dosen Pembimbing')
+                            ->visible(fn ($get) => $get('id_role') == 3)
+                            ->required(fn ($get) => $get('id_role') == 3)
+                            ->disabled(fn ($get) => !$get('id_role'))
                             ->reactive(),
 
                         Forms\Components\TextInput::make('alamat')
@@ -148,13 +155,14 @@ class AdminResource extends Resource
             ->emptyStateIcon('heroicon-s-user-group');
     }
 
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListAdmins::route('/'),
-            'create' => Pages\CreateAdmin::route('/create'),
-            // 'view' => Pages\ViewAdmin::route('/{record}'),
-            'edit' => Pages\EditAdmin::route('/{record}/edit'),
-        ];
+ public static function getPages(): array
+{
+    return [
+        'index' => Pages\ListAdmins::route('/'),
+        'create' => Pages\CreateAdmin::route('/create'),
+        'edit' => Pages\EditAdmin::route('/{record}/edit'),
+        // 'view' => Pages\ViewAdmin::route('/{record}'),
+    ];
+
     }
 }
