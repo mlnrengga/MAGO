@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\DB;
 class RekomendasiMagang extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
-    protected static ?string $heading = 'Rekomendasi Magang Paling Sesuai';
     protected static ?int $sort = 3;
 
     protected array $bobot = [
@@ -47,38 +46,75 @@ class RekomendasiMagang extends BaseWidget
                     ->orderByRaw("FIELD(id_lowongan, " . implode(',', $orderedIds) . ")");
             })
             ->columns([
+                Tables\Columns\TextColumn::make('iteration')
+                    ->label('#')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->badge()
+                    ->extraHeaderAttributes(['style' => 'width: 60px; min-width: 60px;'])
+                    ->extraCellAttributes(['style' => 'width: 60px; min-width: 60px;'])
+                    ->color(function ($state) {
+                        return match ((int)$state) {
+                            1 => 'warning',
+                            2 => 'gray',
+                            3 => 'danger',
+                            default => 'primary',
+                        };
+                    })
+                    ->formatStateUsing(function ($state) {
+                        return match ((int)$state) {
+                            1 => '🥇 1',
+                            2 => '🥈 2',
+                            3 => '🥉 3',
+                            default => $state,
+                        };
+                    })
+                    ->weight('bold')
+                    ->size('lg'),
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->searchable()
-                    ->sortable()
-                    ->label('Judul Lowongan'),
+                    ->limit(25)
+                    ->label('Lowongan'),
                 Tables\Columns\TextColumn::make('perusahaan.nama')
                     ->searchable()
-                    ->sortable()
-                    ->label('Nama Perusahaan'),
+                    ->label('Perusahaan'),
                 Tables\Columns\TextColumn::make('jenisMagang.nama_jenis_magang')
                     ->searchable()
-                    ->sortable()
                     ->label('Jenis Magang'),
                 Tables\Columns\TextColumn::make('daerahMagang.namaLengkapDenganProvinsi')
+                    ->limit(15)
+                    ->label('Lokasi Magang'),
+                Tables\Columns\TextColumn::make('daerahMagang.nama_daerah')
+                    ->label('Nama Daerah')
                     ->searchable()
-                    ->sortable()
-                    ->label('Lokasi'),
+                    ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan secara default
+                Tables\Columns\TextColumn::make('daerahMagang.jenis_daerah')
+                    ->label('Jenis Daerah')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('waktuMagang.waktu_magang')
                     ->searchable()
-                    ->sortable()
                     ->label('Waktu'),
                 Tables\Columns\TextColumn::make('insentif.keterangan')
                     ->searchable()
-                    ->sortable()
                     ->label('Insentif'),
             ])
+            ->striped()
             ->emptyStateHeading('Belum ada lowongan yang tersedia')
             ->emptyStateDescription('Silakan lengkapi preferensi magang Anda untuk mendapatkan rekomendasi lowongan yang sesuai.')
+            ->filters([
+                Tables\Filters\SelectFilter::make('id_jenis_magang')
+                    ->label('Jenis Magang')
+                    ->relationship('jenisMagang', 'nama_jenis_magang'),
+                Tables\Filters\SelectFilter::make('id_daerah_magang')
+                    ->label('Daerah Magang')
+                    ->relationship('daerahMagang', 'nama_daerah'),
+            ])
             ->actions([
-                // Tables\Actions\Action::make('detail')
-                //     ->url(fn($record) => route('filament.mahasiswa.resources.lowongan-magang.detail', $record->id_lowongan))
-                //     ->button()
-                //     ->label('Lihat Detail'),
+                // Tables\Actions\Action::make('lihat_detail')
+                //     ->label('Lihat Detail')
+                //     ->url(fn($record) => route('filament.mahasiswa.pages.detail-lowongan', ['record' => $record->id_lowongan]))
+                //     ->icon('heroicon-o-eye')
             ]);
     }
 
@@ -97,7 +133,7 @@ class RekomendasiMagang extends BaseWidget
         // Mendapatkan lowongan yang aktif
         $lowonganCollection = LowonganMagangModel::query()
             ->with(['bidangKeahlian', 'jenisMagang', 'daerahMagang', 'waktuMagang', 'insentif', 'perusahaan'])
-            ->where('status', 'Selesai')
+            ->where('status', 'Aktif')
             ->get();
 
         if ($lowonganCollection->isEmpty()) {
@@ -148,7 +184,7 @@ class RekomendasiMagang extends BaseWidget
                         $matchCount++;
                     }
                 }
-                $bidang = $matchCount / $bidangCount;
+                $bidang = $matchCount;
             } else {
                 $bidang = 0;
             }
@@ -238,11 +274,49 @@ class RekomendasiMagang extends BaseWidget
             return $b['kesesuaian'] <=> $a['kesesuaian'];
         });
 
+        $this->saveTopRecommendations($rekomendasiItems, $mahasiswa->id_mahasiswa, $preferensi->id_preferensi);
+
         // Kembalikan hasil sebagai collection yang sudah diurutkan
         $lowonganCollectionSorted = collect(array_map(function ($item) {
             return $item['lowongan'];
         }, $rekomendasiItems));
 
         return $lowonganCollectionSorted;
+    }
+
+    protected function saveTopRecommendations($recommendations, $mahasiswaId, $preferensiId)
+    {
+        if (empty($recommendations)) {
+            return;
+        }
+
+        // Ambil hanya 10 besar
+        $topTen = array_slice($recommendations, 0, 10);
+
+        // Hapus data lama
+        DB::table('t_histori_rekomendasi')
+            ->where('id_mahasiswa', $mahasiswaId)
+            ->where('id_preferensi', $preferensiId)
+            ->delete();
+
+        // Simpan data baru
+        $dataToInsert = [];
+        foreach ($topTen as $index => $item) {
+            $ranking = $index + 1;
+            
+            $dataToInsert[] = [
+                'id_mahasiswa' => $mahasiswaId,
+                'id_lowongan' => $item['id_lowongan'],
+                'id_preferensi' => $preferensiId,
+                'ranking' => $ranking,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        // Insert batch data
+        if (!empty($dataToInsert)) {
+            DB::table('t_histori_rekomendasi')->insert($dataToInsert);
+        }
     }
 }

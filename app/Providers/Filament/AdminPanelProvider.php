@@ -36,6 +36,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(false)
+            ->renderHook(
+                'panels::head.start',
+                fn () => view('filament.favicon')
+            )
             ->databaseNotifications()
             ->colors([
                 'danger' => Color::Red,
@@ -46,6 +50,7 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Orange,
             ])
             ->font('Poppins')
+            ->brandName('MAGO')
             ->brandLogo(asset('images/logo1.png'))
             ->brandLogoHeight('1.5rem')
             ->darkModeBrandLogo(asset('images/logo2.png'))

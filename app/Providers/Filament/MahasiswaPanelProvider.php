@@ -35,6 +35,10 @@ class MahasiswaPanelProvider extends PanelProvider
             ->id('mahasiswa')
             ->path('mahasiswa')
             ->login(false)
+            ->renderHook(
+                'panels::head.start',
+                fn () => view('filament.favicon')
+            )
             ->databaseNotifications()
             ->colors([
                 'danger' => Color::Red,
@@ -45,6 +49,7 @@ class MahasiswaPanelProvider extends PanelProvider
                 'warning' => Color::Orange,
             ])
             ->font('Poppins')
+            ->brandName('MAGO')
             ->brandLogo(asset('images/logo1.png'))
             ->brandLogoHeight('1.5rem')
             ->darkModeBrandLogo(asset('images/logo2.png'))

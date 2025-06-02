@@ -25,7 +25,10 @@ class ProfilMhsResource extends Resource
 {
     protected static ?string $model = ProfilMhsModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationIcon = 'heroicon-s-user';
+    protected static ?string $navigationLabel = 'Profil';
+    protected static ?string $pluralModelLabel = 'Profil Saya';
+    protected static ?string $navigationGroup = 'Tentang Saya';
 
     public static function getEloquentQuery(): Builder
     {
@@ -114,18 +117,18 @@ class ProfilMhsResource extends Resource
     }
 
 
-    public static function getNavigationLabel(): string
-    {
-        return 'Profil Saya';
-    }
+    // public static function getNavigationLabel(): string
+    // {
+    //     return 'Profil';
+    // }
 
-    public static function getPluralModelLabel(): string
-    {
-        return 'Profil Saya';
-    }
+    // public static function getPluralModelLabel(): string
+    // {
+    //     return 'Profil Saya';
+    // }
 
-    public static function getModelLabel(): string
-    {
-        return 'Profil Saya';
-    }
+    // public static function getModelLabel(): string
+    // {
+    //     return 'Profil';
+    // }
 }
