@@ -11,6 +11,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\HtmlString;
 
 class RekomendasiMagang extends BaseWidget
 {
@@ -74,7 +75,10 @@ class RekomendasiMagang extends BaseWidget
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->searchable()
                     ->limit(25)
-                    ->label('Lowongan'),
+                    ->label('Lowongan')
+                    ->tooltip(fn($record) => new HtmlString(
+                        $record->judul_lowongan
+                    )),
                 Tables\Columns\TextColumn::make('perusahaan.nama')
                     ->searchable()
                     ->label('Perusahaan'),
@@ -83,7 +87,10 @@ class RekomendasiMagang extends BaseWidget
                     ->label('Jenis Magang'),
                 Tables\Columns\TextColumn::make('daerahMagang.namaLengkapDenganProvinsi')
                     ->limit(15)
-                    ->label('Lokasi Magang'),
+                    ->label('Lokasi Magang')
+                    ->tooltip(fn($record) => new HtmlString(
+                        $record->daerahMagang->namaLengkapDenganProvinsi
+                    )),
                 Tables\Columns\TextColumn::make('daerahMagang.nama_daerah')
                     ->label('Nama Daerah')
                     ->searchable()
@@ -111,10 +118,15 @@ class RekomendasiMagang extends BaseWidget
                     ->relationship('daerahMagang', 'nama_daerah'),
             ])
             ->actions([
-                // Tables\Actions\Action::make('lihat_detail')
-                //     ->label('Lihat Detail')
-                //     ->url(fn($record) => route('filament.mahasiswa.pages.detail-lowongan', ['record' => $record->id_lowongan]))
-                //     ->icon('heroicon-o-eye')
+                Tables\Actions\Action::make('lihat_detail')
+                    ->label('Lihat Detail')
+                    ->icon('heroicon-o-eye')
+                    ->url(
+                        fn(LowonganMagangModel $record) =>
+                        '/mahasiswa/lowongan-magang/' . $record->id_lowongan
+                    )
+                    ->openUrlInNewTab(false)
+                    ->color('primary')
             ]);
     }
 
@@ -303,7 +315,7 @@ class RekomendasiMagang extends BaseWidget
         $dataToInsert = [];
         foreach ($topTen as $index => $item) {
             $ranking = $index + 1;
-            
+
             $dataToInsert[] = [
                 'id_mahasiswa' => $mahasiswaId,
                 'id_lowongan' => $item['id_lowongan'],

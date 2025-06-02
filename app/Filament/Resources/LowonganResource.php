@@ -183,24 +183,29 @@ class LowonganResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->label('Judul Lowongan')
-                    ->limit(10)
+                    ->tooltip(fn ($record) => $record->judul_lowongan)
+                    ->copyable()
+                    ->limit(20)
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('perusahaan.nama')
                     ->label('Perusahaan')
+                    ->tooltip(fn ($record) => $record->perusahaan->nama)
+                    ->limit(20)
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('jenisMagang.nama_jenis_magang')
                     ->label('Jenis Magang')
+                    ->tooltip(fn ($record) => $record->jenisMagang->nama_jenis_magang)
+                    ->limit(15)
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('daerahMagang.namaLengkap')
+                Tables\Columns\TextColumn::make('daerahMagang.namaLengkapDenganProvinsi')
                     ->label('Lokasi')
+                    ->tooltip(fn ($record) => $record->daerahMagang->namaLengkapDenganProvinsi)
                     ->limit(10),
-                // ->searchable() // Commented out to avoid redundancy with 'daerahMagang.nama_daerah', which is already searchable.
-                // ->sortable(),
 
                 // Kolom tersembunyi untuk pencarian
                 Tables\Columns\TextColumn::make('daerahMagang.nama_daerah')
@@ -215,11 +220,6 @@ class LowonganResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan secara default
-
-                Tables\Columns\TextColumn::make('daerahMagang.provinsi.nama_provinsi')
-                    ->label('Provinsi')
-                    ->searchable()
-                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('batas_akhir_lamaran')
                     ->label('Batas Lamaran')
