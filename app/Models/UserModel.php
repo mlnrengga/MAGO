@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Auth\AdminModel;
-use App\Models\Auth\DosenPembimbingModel;
-use App\Models\Auth\MahasiswaModel;
-use App\Models\Auth\RoleModel;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasName;
 use Filament\Panel;
-use Illuminate\Notifications\Notifiable;
+use App\Models\Auth\RoleModel;
+use App\Models\Auth\AdminModel;
+use App\Models\Auth\MahasiswaModel;
+use Filament\Models\Contracts\HasName;
 use Spatie\Permission\Traits\HasRoles;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use App\Models\Auth\DosenPembimbingModel;
+use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Storage;
 class UserModel extends Authenticatable implements FilamentUser, HasName
 {
     use HasFactory, HasRoles, Notifiable;
@@ -29,24 +29,17 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
         return $this->nama;
     }
 
-    // m_user 
-    // + id_user: int (PK)
-    // + nama: string
-    // + password: string
-    // + alamat: string
-    // + no_telepon: string
-
     protected $table = 'm_user';
     protected $primaryKey = 'id_user';
-   protected $fillable = [
-    'nama',
-    'password',
-    'alamat',
-    'no_telepon',
-    'role',
-     'id_role',
-    'profile_picture',
-];
+    protected $fillable = [
+        'nama',
+        'password',
+        'alamat',
+        'no_telepon',
+        'role',
+        'id_role',
+        'profile_picture',
+    ];
 
     protected $hidden = [
         'password',
@@ -89,8 +82,6 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
         return $this->hasOne(RoleModel::class, 'id_role', 'id_role');
     }
 
-
-    // === tambahkan di sini
     public function setPasswordAttribute($value)
     {
         if (substr($value, 0, 4) !== '$2y$') {
@@ -99,4 +90,17 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
             $this->attributes['password'] = $value;
         }
     }
+
+    // === Tambahkan accessor profile_picture_url di sini
+        public function getProfilePictureUrlAttribute()
+    {
+        $path = 'profile_pictures/' . $this->profile_picture;
+
+        if (!$this->profile_picture || !\Storage::disk('public')->exists($path)) {
+            return asset('storage/profile_pictures/default.png');
+        }
+
+        return asset('storage/' . $path);
+    }
+
 }
