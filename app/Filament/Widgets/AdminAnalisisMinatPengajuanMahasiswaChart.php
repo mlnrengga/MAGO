@@ -9,7 +9,7 @@ use Filament\Widgets\ChartWidget;
 
 class AdminAnalisisMinatPengajuanMahasiswaChart extends ChartWidget
 {
-    protected static ?string $heading = 'Analisis Minat Pengajuan Mahasiswa';
+    protected static ?string $heading = '🎓 Analisis Minat Pengajuan Mahasiswa';
     protected static ?string $description = 'Perbandingan pengajuan magang berdasarkan rekomendasi vs tanpa melibatkan rekomendasi per bulan';
     // protected int|string|array $columnSpan = 'full';
     // protected static ?int $sort = 2; // Urutan widget setelah chart penempatan
