@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class AdminTrenBidangLowongan extends ChartWidget
 {
-    protected static ?string $heading = 'Tren Bidang Perusahaan Paling Diminati';
+    protected static ?string $heading = '📈 Tren Bidang Perusahaan Paling Diminati';
+    protected static ?string $description = 'Analisis tren bidang keahlian yang paling banyak diminati berdasarkan pengajuan magang mahasiswa.';
     protected int|string|array $columnSpan = 'full';
 
     protected function getData(): array
