@@ -8,6 +8,7 @@ use App\Models\Auth\AdminModel;
 use App\Models\Auth\DosenPembimbingModel;
 use Filament\Resources\Pages\EditRecord;
 
+
 class EditAdmin extends EditRecord
 {
     protected static string $resource = AdminResource::class;
@@ -17,11 +18,15 @@ class EditAdmin extends EditRecord
         $record = $this->record->load(['mahasiswa', 'admin', 'dosenPembimbing']);
 
         if ($record->id_role == 2 && $record->mahasiswa) {
-            $data['extra']['nim'] = $record->mahasiswa->nim;
+            $data['mahasiswa']['nim'] = $record->mahasiswa->nim;
         }
 
-        if (in_array($record->id_role, [1, 3])) {
-            $data['extra']['nip'] = $record->admin?->nip ?? $record->dosenPembimbing?->nip;
+        if ($record->id_role == 1 && $record->admin) {
+            $data['admin']['nip'] = $record->admin->nip;
+        }
+
+        if ($record->id_role == 3 && $record->dosenPembimbing) {
+            $data['dosenPembimbing']['nip'] = $record->dosenPembimbing->nip;
         }
 
         return $data;
@@ -31,41 +36,26 @@ class EditAdmin extends EditRecord
     {
         $user = $this->record;
         $roleId = $user->id_role;
-        $extra = $this->data['extra'] ?? [];
 
-        if ($roleId == 2) { // Mahasiswa
-            $mahasiswa = MahasiswaModel::where('id_user', $user->id_user)->first();
-            if ($mahasiswa) {
-                $mahasiswa->update(['nim' => $extra['nim'] ?? null]);
-            } else {
-                MahasiswaModel::create([
-                    'id_user' => $user->id_user,
-                    'nim' => $extra['nim'] ?? null,
-                    'id_prodi' => 1,
-                    'ipk' => 0,
-                    'semester' => 1,
-                ]);
-            }
-        } elseif ($roleId == 1) { // Admin
-            $admin = AdminModel::where('id_user', $user->id_user)->first();
-            if ($admin) {
-                $admin->update(['nip' => $extra['nip'] ?? null]);
-            } else {
-                AdminModel::create([
-                    'id_user' => $user->id_user,
-                    'nip' => $extra['nip'] ?? null,
-                ]);
-            }
-        } elseif ($roleId == 3) { // Dosen Pembimbing
-            $dospem = DosenPembimbingModel::where('id_user', $user->id_user)->first();
-            if ($dospem) {
-                $dospem->update(['nip' => $extra['nip'] ?? null]);
-            } else {
-                DosenPembimbingModel::create([
-                    'id_user' => $user->id_user,
-                    'nip' => $extra['nip'] ?? null,
-                ]);
-            }
+        $mahasiswaInput = $this->data['mahasiswa']['nim'] ?? null;
+        $adminInput = $this->data['admin']['nip'] ?? null;
+        $dospemInput = $this->data['dosenPembimbing']['nip'] ?? null;
+
+        if ($roleId == 2) {
+            MahasiswaModel::updateOrCreate(
+                ['id_user' => $user->id_user],
+                ['nim' => $mahasiswaInput, 'id_prodi' => 1, 'ipk' => 0, 'semester' => 1]
+            );
+        } elseif ($roleId == 1) {
+            AdminModel::updateOrCreate(
+                ['id_user' => $user->id_user],
+                ['nip' => $adminInput]
+            );
+        } elseif ($roleId == 3) {
+            DosenPembimbingModel::updateOrCreate(
+                ['id_user' => $user->id_user],
+                ['nip' => $dospemInput]
+            );
         }
     }
 }

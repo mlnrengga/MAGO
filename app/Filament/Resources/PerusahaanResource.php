@@ -66,7 +66,7 @@ class PerusahaanResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama')->searchable(),
+                TextColumn::make('nama')->searchable()->label('Nama Perusahaan'),
                 TextColumn::make('alamat')->limit(50),
                 TextColumn::make('no_telepon')->label('No Telepon'),
                 TextColumn::make('email'),
@@ -74,10 +74,10 @@ class PerusahaanResource extends Resource
                 TextColumn::make('website')->label('Website'),
             ])
             ->filters([
-                //
+                // Tambahkan filter jika dibutuhkan
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make(), // View pakai bawaan
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->before(function ($record, $action) {
@@ -97,7 +97,7 @@ class PerusahaanResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Tambahkan RelationManager jika perlu
         ];
     }
 
@@ -106,7 +106,7 @@ class PerusahaanResource extends Resource
         return [
             'index' => Pages\ListPerusahaans::route('/'),
             'create' => Pages\CreatePerusahaan::route('/create'),
-            // 'view' => Pages\ViewPerusahaan::route('/{record}'),
+            'view' => Pages\ViewPerusahaan::route('/{record}'), // Aktifkan halaman view
             'edit' => Pages\EditPerusahaan::route('/{record}/edit'),
         ];
     }

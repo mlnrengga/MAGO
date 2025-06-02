@@ -14,26 +14,30 @@ class CreateAdmin extends CreateRecord
 
     protected function afterCreate(): void
     {
-        $user = $this->record; // data yang baru disimpan di m_user
+        $user = $this->record;
         $roleId = $user->id_role;
 
-        if ($roleId == 2) { // Mahasiswa
+        $mahasiswaInput = $this->data['mahasiswa']['nim'] ?? null;
+        $adminInput = $this->data['admin']['nip'] ?? null;
+        $dospemInput = $this->data['dosenPembimbing']['nip'] ?? null;
+
+        if ($roleId == 2) {
             MahasiswaModel::create([
                 'id_user' => $user->id_user,
-                'nim' => $this->data['nim'],
+                'nim' => $mahasiswaInput,
                 'id_prodi' => 1,
                 'ipk' => 0,
                 'semester' => 1,
             ]);
-        } elseif ($roleId == 1) { // Admin
+        } elseif ($roleId == 1) {
             AdminModel::create([
                 'id_user' => $user->id_user,
-                'nip' => $this->data['nip'],
+                'nip' => $adminInput,
             ]);
-        } elseif ($roleId == 3) { // Dosen Pembimbing
+        } elseif ($roleId == 3) {
             DosenPembimbingModel::create([
                 'id_user' => $user->id_user,
-                'nip' => $this->data['nip'],
+                'nip' => $dospemInput,
             ]);
         }
     }
