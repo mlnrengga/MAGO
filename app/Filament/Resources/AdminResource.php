@@ -39,7 +39,7 @@ class AdminResource extends Resource
                         Forms\Components\TextInput::make('nama')
                             ->label('Nama Pengguna')
                             ->required()
-                            ->disabled(fn ($get) => !$get('id_role'))
+                            ->disabled(fn($get) => !$get('id_role'))
                             ->reactive(),
 
                         Forms\Components\Select::make('id_role')
@@ -50,42 +50,42 @@ class AdminResource extends Resource
 
                         Forms\Components\TextInput::make('mahasiswa.nim')
                             ->label('NIM')
-                            ->visible(fn ($get) => $get('id_role') == 2)
-                            ->required(fn ($get) => $get('id_role') == 2)
-                            ->disabled(fn ($get) => !$get('id_role'))
+                            ->visible(fn($get) => $get('id_role') == 2)
+                            ->required(fn($get) => $get('id_role') == 2)
+                            ->disabled(fn($get) => !$get('id_role'))
                             ->reactive(),
 
                         Forms\Components\TextInput::make('admin.nip')
                             ->label('NIP Admin')
-                            ->visible(fn ($get) => $get('id_role') == 1)
-                            ->required(fn ($get) => $get('id_role') == 1)
-                            ->disabled(fn ($get) => !$get('id_role'))
+                            ->visible(fn($get) => $get('id_role') == 1)
+                            ->required(fn($get) => $get('id_role') == 1)
+                            ->disabled(fn($get) => !$get('id_role'))
                             ->reactive(),
 
                         Forms\Components\TextInput::make('dosenPembimbing.nip')
                             ->label('NIP Dosen Pembimbing')
-                            ->visible(fn ($get) => $get('id_role') == 3)
-                            ->required(fn ($get) => $get('id_role') == 3)
-                            ->disabled(fn ($get) => !$get('id_role'))
+                            ->visible(fn($get) => $get('id_role') == 3)
+                            ->required(fn($get) => $get('id_role') == 3)
+                            ->disabled(fn($get) => !$get('id_role'))
                             ->reactive(),
 
                         Forms\Components\TextInput::make('alamat')
                             ->label('Alamat')
-                            ->disabled(fn ($get) => !$get('id_role'))
+                            ->disabled(fn($get) => !$get('id_role'))
                             ->reactive(),
 
                         Forms\Components\TextInput::make('no_telepon')
                             ->label('No Telepon')
                             ->required()
-                            ->disabled(fn ($get) => !$get('id_role'))
+                            ->disabled(fn($get) => !$get('id_role'))
                             ->reactive(),
 
                         Forms\Components\TextInput::make('password')
                             ->label('Password')
                             ->password()
                             ->revealable()
-                            ->required(fn ($livewire) => $livewire instanceof Pages\CreateAdmin)
-                            ->disabled(fn ($get) => !$get('id_role'))
+                            ->required(fn($livewire) => $livewire instanceof Pages\CreateAdmin)
+                            ->disabled(fn($get) => !$get('id_role'))
                             ->reactive(),
 
                         Forms\Components\FileUpload::make('profile_picture')
@@ -132,11 +132,9 @@ class AdminResource extends Resource
                     ->label('Alamat')
                     ->sortable(),
 
-                Tables\Columns\ImageColumn::make('profile_picture')
+                Tables\Columns\ImageColumn::make('profile_picture_url')
                     ->label('Foto Profil')
-                    ->disk('public')
-                    ->circular()
-                    ->defaultImageUrl(asset('storage/profile_pictures/default.png')),
+                    ->circular(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('id_role')
@@ -155,14 +153,13 @@ class AdminResource extends Resource
             ->emptyStateIcon('heroicon-s-user-group');
     }
 
- public static function getPages(): array
-{
-    return [
-        'index' => Pages\ListAdmins::route('/'),
-        'create' => Pages\CreateAdmin::route('/create'),
-        'edit' => Pages\EditAdmin::route('/{record}/edit'),
-        // 'view' => Pages\ViewAdmin::route('/{record}'),
-    ];
-
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListAdmins::route('/'),
+            'create' => Pages\CreateAdmin::route('/create'),
+            'edit' => Pages\EditAdmin::route('/{record}/edit'),
+            // 'view' => Pages\ViewAdmin::route('/{record}'),
+        ];
     }
 }
