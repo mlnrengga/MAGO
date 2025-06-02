@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class AdminAnalisisPenempatanMagangMahasiswaChart extends ChartWidget
 {
-    protected static ?string $heading = 'Analisis Penempatan Magang Mahasiswa';
+    protected static ?string $heading = '🎓 Analisis Penempatan Magang Mahasiswa';
     protected static ?string $description = 'Perbandingan penempatan magang berdasarkan rekomendasi vs tanpa melibatkan rekomendasi sistem per bulan';
     // protected int|string|array $columnSpan = 'full';
     protected static ?int $sort = -1; // Urutan widget
