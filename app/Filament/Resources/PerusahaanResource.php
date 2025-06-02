@@ -13,7 +13,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use App\Models\Reference\PerusahaanModel;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PerusahaanResource\Pages;
 use App\Filament\Resources\PerusahaanResource\RelationManagers;
 
@@ -26,9 +25,9 @@ class PerusahaanResource extends Resource
     protected static ?string $navigationGroup = 'Pengguna & Mitra';
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $slug = 'menajemen-perusahan';
-    protected static ?string $modelLabel = 'Lowongan';
-    protected static ?string $pluralModelLabel = 'Data Lowongan Magang';
+    protected static ?string $slug = 'manajemen-perusahaan';
+    protected static ?string $modelLabel = 'Perusahaan';
+    protected static ?string $pluralModelLabel = 'Data Perusahaan Mitra';
 
     public static function form(Form $form): Form
     {
@@ -53,7 +52,7 @@ class PerusahaanResource extends Resource
 
                 Select::make('id_admin')
                     ->label('Admin Penanggung Jawab')
-                    ->relationship('admin', 'nip')
+                    ->relationship('admin.user', 'nama') // Menampilkan nama admin
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -69,18 +68,24 @@ class PerusahaanResource extends Resource
             ->columns([
                 TextColumn::make('nama')->searchable(),
                 TextColumn::make('alamat')->limit(50),
-                TextColumn::make('no_telepon'),
+                TextColumn::make('no_telepon')->label('No Telepon'),
                 TextColumn::make('email'),
-                TextColumn::make('admin.nip')->label('Admin'),
-                TextColumn::make('website')  // Fixed case to match database column
-                    ->label('Website'),     // Proper label for display
+                TextColumn::make('admin.user.nama')->label('Nama Admin'),
+                TextColumn::make('website')->label('Website'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),  // Added view action
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->before(function ($record, $action) {
+                        if ($record->lowonganMagang()->exists()) {
+                            $action->failure('Perusahaan tidak bisa dihapus karena masih memiliki lowongan magang.');
+                            $action->halt();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -101,7 +106,7 @@ class PerusahaanResource extends Resource
         return [
             'index' => Pages\ListPerusahaans::route('/'),
             'create' => Pages\CreatePerusahaan::route('/create'),
-              'view' => Pages\ViewPerusahaan::route('/{record}'),
+            // 'view' => Pages\ViewPerusahaan::route('/{record}'),
             'edit' => Pages\EditPerusahaan::route('/{record}/edit'),
         ];
     }
