@@ -49,13 +49,17 @@ class PerusahaanResource extends Resource
                 TextInput::make('email')
                     ->email()
                     ->required(),
+      Forms\Components\Hidden::make('id_admin')
+    ->default(fn () => auth()->user() ? auth()->user()->id : 1) // fallback ke id 1 misal
+    ->dehydrated(true)
+    ->required(),
 
-                Select::make('id_admin')
-                    ->label('Admin Penanggung Jawab')
-                    ->relationship('admin.user', 'nama') // Menampilkan nama admin
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+            // ✅ hanya untuk tampilan
+            TextInput::make('nama_admin')
+                ->label('Admin Penanggung Jawab')
+                ->default(fn () => auth()->user()->nama)
+                ->disabled()
+                ->dehydrated(false),
 
                 TextInput::make('website')
                     ->required(),
