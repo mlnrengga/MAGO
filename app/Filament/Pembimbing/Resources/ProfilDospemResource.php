@@ -5,7 +5,6 @@ namespace App\Filament\Pembimbing\Resources;
 use App\Filament\Pembimbing\Resources\ProfilDospemResource\Pages;
 use App\Filament\Pembimbing\Resources\ProfilDospemResource\RelationManagers;
 use App\Models\Auth\DosenPembimbingModel;
-use App\Models\ProfilDospem;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -19,12 +18,26 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 
 class ProfilDospemResource extends Resource
 {
     protected static ?string $model = DosenPembimbingModel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Manajemen Profil dan Akun';
+
+    protected static ?string $pluralModelLabel = 'Manajemen Profil & Akun';
+
+    public static function getNavigationUrl(): string
+    {
+        $user = Auth::user();
+        if ($user && $user->dosenPembimbing) {
+            return static::getUrl('view', ['record' => $user->dosenPembimbing->id_dospem]); // <<< UBAH INI KE 'view'
+        }
+        return static::getUrl('dashboard');
+    }
 
     public static function form(Form $form): Form
     {
@@ -77,9 +90,9 @@ class ProfilDospemResource extends Resource
                             ->label('Password Baru')
                             ->password()
                             ->maxLength(255)
-                            ->dehydrateStateUsing(fn (string $state): string => Hash::make($state)) // Hash password sebelum disimpan
-                            ->dehydrated(fn (?string $state): bool => filled($state)) // Hanya dehidrasi jika field diisi
-                            ->required(fn (string $operation): bool => $operation === 'create') // Password hanya wajib saat membuat user baru
+                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state)) // Hash password sebelum disimpan
+                            ->dehydrated(fn(?string $state): bool => filled($state)) // Hanya dehidrasi jika field diisi
+                            ->required(fn(string $operation): bool => $operation === 'create') // Password hanya wajib saat membuat user baru
                             ->confirmed() // Membutuhkan field konfirmasi
                             ->autocomplete('new-password')
                             ->helperText('Biarkan kosong jika tidak ingin mengubah password.'),
@@ -88,28 +101,26 @@ class ProfilDospemResource extends Resource
                             ->password()
                             ->maxLength(255)
                             ->dehydrated(false) // Jangan simpan ke database, hanya untuk validasi
-                            ->required(fn (string $operation): bool => $operation === 'create' && filled(request()->input('data.user.password'))), // Required jika password diisi saat create
+                            ->required(fn(string $operation): bool => $operation === 'create' && filled(request()->input('data.user.password'))), // Required jika password diisi saat create
                     ])->columns(2),
-            ]); 
-
+            ]);
     }
 
     public static function table(Table $table): Table
     {
+        // KOSONGKAN TABLE, KARENA INI BUKAN UNTUK MENAMPILKAN DAFTAR
         return $table
             ->columns([
-                //
+                // Tidak ada kolom di sini
             ])
             ->filters([
-                //
+                // Tidak ada filter
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tidak ada actions (Edit, Delete) di tabel daftar
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tidak ada bulk actions
             ]);
     }
 
@@ -120,12 +131,15 @@ class ProfilDospemResource extends Resource
         ];
     }
 
+    // *** BAGIAN PENTING: Pastikan hanya halaman 'edit' yang didefinisikan di sini ***
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListProfilDospems::route('/'),
-            'create' => Pages\CreateProfilDospem::route('/create'),
+            'view' => Pages\ViewProfilDospem::route('/{record}'),
             'edit' => Pages\EditProfilDospem::route('/{record}/edit'),
         ];
     }
+
+
 }
