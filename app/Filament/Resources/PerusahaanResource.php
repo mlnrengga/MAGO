@@ -49,17 +49,24 @@ class PerusahaanResource extends Resource
                 TextInput::make('email')
                     ->email()
                     ->required(),
-      Forms\Components\Hidden::make('id_admin')
-    ->default(fn () => auth()->user() ? auth()->user()->id : 1) // fallback ke id 1 misal
-    ->dehydrated(true)
-    ->required(),
+                // [PERBAIKAN] Bagian ini sebelumnya error karena:
+                // 1. Mengasumsikan semua user adalah admin
+                // 2. Tidak mengecek relasi admin
+                Forms\Components\Hidden::make('id_admin')
+                    ->default(function () {
+                        $user = auth()->user();
+                        return $user && $user->admin ? $user->admin->id_admin : null;
+                    })
+                    ->required(),
 
-            // ✅ hanya untuk tampilan
-            TextInput::make('nama_admin')
-                ->label('Admin Penanggung Jawab')
-                ->default(fn () => auth()->user()->nama)
-                ->disabled()
-                ->dehydrated(false),
+
+
+                // ✅ hanya untuk tampilan
+                TextInput::make('nama_admin')
+                    ->label('Admin Penanggung Jawab')
+                    ->default(fn() => auth()->user()->nama)
+                    ->disabled()
+                    ->dehydrated(false),
 
                 TextInput::make('website')
                     ->required(),
@@ -74,8 +81,14 @@ class PerusahaanResource extends Resource
                 TextColumn::make('alamat')->limit(50),
                 TextColumn::make('no_telepon')->label('No Telepon'),
                 TextColumn::make('email'),
+
+                TextColumn::make('website')
+                    ->label('Website')
+                    ->url(fn($record) => $record->website ? (str_starts_with($record->website, 'http') ? $record->website : "https://{$record->website}") : null)
+                    ->openUrlInNewTab(),
+
+
                 TextColumn::make('admin.user.nama')->label('Nama Admin'),
-                TextColumn::make('website')->label('Website'),
             ])
             ->filters([
                 // Tambahkan filter jika dibutuhkan
