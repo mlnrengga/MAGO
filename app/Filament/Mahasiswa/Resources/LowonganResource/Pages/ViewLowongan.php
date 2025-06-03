@@ -3,6 +3,7 @@
 namespace App\Filament\Mahasiswa\Resources\LowonganResource\Pages;
 
 use App\Filament\Mahasiswa\Resources\LowonganResource;
+use App\Filament\Mahasiswa\Resources\PengajuanMagangMahasiswaResource;
 use App\Filament\Mahasiswa\Widgets\RekomendasiMagang;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
@@ -24,7 +25,7 @@ class ViewLowongan extends ViewRecord
             Actions\Action::make('Ajukan Lamaran')
                 ->label('Ajukan Lamaran')
                 ->url(function () {
-                    return url()->previous();
+                    return PengajuanMagangMahasiswaResource::getUrl('create', ['id_lowongan' => $this->record->id_lowongan]);
                 })
                 ->color('primary')
                 ->icon('heroicon-o-paper-airplane'),
