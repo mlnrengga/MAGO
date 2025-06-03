@@ -5,15 +5,25 @@ namespace App\Filament\Pembimbing\Resources\ProfilDospemResource\Pages;
 use App\Filament\Pembimbing\Resources\ProfilDospemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Auth;
 
-class ListProfilDospems extends ListRecords
+class ListProfilDospem extends ListRecords
 {
     protected static string $resource = ProfilDospemResource::class;
 
-    protected function getHeaderActions(): array
+    public function mount(): void
     {
-        return [
-            Actions\CreateAction::make(),
-        ];
+        $dosenPembimbing = Auth::user()?->dosenPembimbing;
+
+        if ($dosenPembimbing) {
+            $this->redirect(ProfilDospemResource::getUrl('view', ['record' => $dosenPembimbing->id_dospem]));
+        }
     }
+
+    // protected function getHeaderActions(): array
+    // {
+    //     return [
+    //         Actions\CreateAction::make(),
+    //     ];
+    // }
 }

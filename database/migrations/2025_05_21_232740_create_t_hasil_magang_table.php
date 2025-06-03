@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_dokumen');
             $table->string('path_dokumen');
             $table->enum('jenis_dokumen', ['Sertifikat', 'Surat Keterangan Magang']);
-            $table->text('feedbak_magang');
+            $table->text('feedback_magang');
             $table->date('tanggal_upload');
             $table->timestamps();
 

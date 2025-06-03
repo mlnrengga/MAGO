@@ -5,13 +5,48 @@ namespace App\Filament\Pembimbing\Resources\ProfilDospemResource\Pages;
 use App\Filament\Pembimbing\Resources\ProfilDospemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth; // Import Auth facade
-use Illuminate\Http\RedirectResponse; // Import RedirectResponse
+use Illuminate\Database\Eloquent\Model; 
+use Illuminate\Support\Facades\DB;   
 
 class EditProfilDospem extends EditRecord
 {
     protected static string $resource = ProfilDospemResource::class;
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+
+        return DB::transaction(function () use ($record, $data) {
+
+            $userData = $data['user'];
+            unset($data['user']); 
+
+            $userModel = $record->user; 
+
+            if ($userModel) {
+                // Perbarui atribut user
+                $userModel->nama = $userData['nama'];
+                $userModel->no_telepon = $userData['no_telepon'];
+                $userModel->alamat = $userData['alamat'];
+
+
+                if (!empty($userData['password'])) {
+                    $userModel->password = $userData['password']; 
+                }
+
+                // Tangani foto profil
+                if (isset($userData['profile_picture'])) {
+                    $userModel->profile_picture = $userData['profile_picture'];
+                } else {
+                    $userModel->profile_picture = null;
+                }
+
+                $userModel->save(); 
+            }
+
+            return $record; 
+        });
+    }
+    protected static ?string $title = 'Edit Profil & Akun';
 
     protected function getHeaderActions(): array
     {
@@ -22,18 +57,9 @@ class EditProfilDospem extends EditRecord
 
     /**
      * Mengambil record Dosen Pembimbing yang sedang login.
-     *
+    
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function getRecord(): Model
-    {
-        // Pastikan user sudah login dan memiliki relasi dosenPembimbing
-        $user = Auth::user();
-        if (!$user || !$user->dosenPembimbing) {
-            abort(404, 'Profil Dosen Pembimbing tidak ditemukan.'); // Atau redirect ke halaman lain
-        }
-        return $user->dosenPembimbing;
-    }
 
     /**
      * Mengarahkan kembali ke halaman profil setelah sukses update.
@@ -41,9 +67,10 @@ class EditProfilDospem extends EditRecord
      * @return string|\Illuminate\Http\RedirectResponse
      */
     protected function getRedirectUrl(): ?string
-    {
-        return static::getResource()::getUrl('profile'); // Kembalikan string URL
-    }
+{
+    // Gunakan getKey() untuk mendapatkan primary key yang benar (id_dospem)
+    return static::getResource()::getUrl('view', ['record' => $this->getRecord()->getKey()]);
+}
 
     /**
      * Mengatur pesan sukses setelah update.
