@@ -5,8 +5,10 @@ namespace App\Filament\Mahasiswa\Widgets;
 use App\Models\Reference\JenisMagangModel;
 use App\Models\Reference\PengajuanMagangModel;
 use App\Models\Reference\PerusahaanModel;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -146,7 +148,7 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                             ->schema([
                                 Infolists\Components\TextEntry::make('status')
                                     ->badge()
-                                    ->color(fn (string $state): string => match ($state) {
+                                    ->color(fn(string $state): string => match ($state) {
                                         'Diterima' => 'success',
                                         'Ditolak' => 'danger',
                                         default => 'primary',
@@ -160,7 +162,7 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                                     ->placeholder('-'),
                             ])
                             ->columns(3),
-                        
+
                         Infolists\Components\Section::make('Detail Lowongan')
                             ->schema([
                                 Infolists\Components\TextEntry::make('lowongan.judul_lowongan')
@@ -177,7 +179,7 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                                     ->markdown(),
                             ])
                             ->columns(2),
-                        
+
                         Infolists\Components\Section::make('Data Mahasiswa')
                             ->schema([
                                 Infolists\Components\TextEntry::make('mahasiswa.user.nama')
@@ -191,6 +193,37 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                             ])
                             ->columns(2),
                     ]),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Hapus Pengajuan Magang')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus pengajuan magang ini?')
+                    ->modalSubmitActionLabel('Ya, Hapus')
+                    ->before(function ($record, $action) {
+                        if ($record->penempatan()->exists()) {
+                            Notification::make()
+                                ->warning()
+                                ->title('Tidak dapat menghapus pengajuan')
+                                ->body('Pengajuan ini tidak dapat dihapus karena sudah digunakan dalam data penempatan magang.')
+                                ->persistent()
+                                ->send();
+
+                            $action->cancel();
+                            return false;
+                        }
+
+                        if ($record->status === 'Diterima') {
+                            Notification::make()
+                                ->warning()
+                                ->title('Tidak dapat menghapus pengajuan')
+                                ->body('Pengajuan yang sudah diterima tidak dapat dihapus.')
+                                ->persistent()
+                                ->send();
+
+                            $action->cancel();
+                            return false;
+                        }
+                    })
+                    ->successNotificationTitle('Pengajuan magang berhasil dihapus'),
             ])
             ->emptyStateHeading('Tidak ada pengajuan magang yang ditemukan')
             ->emptyStateDescription('Silakan ajukan magang baru untuk melihat statusnya.');
