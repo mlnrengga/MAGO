@@ -54,6 +54,7 @@ class EditKegiatanMagang extends EditRecord
         if ($record->status === 'Diterima') {
             $dosenPembimbing = $this->data['dosen_pembimbing'] ?? null;
             $dosenPembimbingNama = null;
+            $dosenUser = null;
 
             if ($dosenPembimbing) {
                 $dosenUser = UserModel::whereHas('dosenPembimbing', function ($query) use ($dosenPembimbing) {
@@ -63,6 +64,16 @@ class EditKegiatanMagang extends EditRecord
                 if ($dosenUser) {
                     $dosenPembimbingNama = $dosenUser->nama;
                 }
+            }
+
+            if ($dosenUser) {
+                Notification::make()
+                    ->title('Pengajuan Magang Diterima')
+                    ->body('Anda telah ditunjuk sebagai dosen pembimbing untuk mahasiswa ' . ($mahasiswa->nama ?? '-') . ' pada pengajuan magang berjudul "' . ($record->lowongan->judul_lowongan ?? '-') . '".')
+                    ->success()
+                    ->persistent()
+                    ->icon('heroicon-o-check-circle')
+                    ->sendToDatabase($dosenUser);
             }
 
             if ($mahasiswa) {

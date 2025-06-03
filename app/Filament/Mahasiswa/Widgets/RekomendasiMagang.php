@@ -62,6 +62,7 @@ class RekomendasiMagang extends BaseWidget
                             default => 'primary',
                         };
                     })
+                    ->weight('bold')
                     ->formatStateUsing(function ($state) {
                         return match ((int)$state) {
                             1 => '🥇 1',
@@ -76,6 +77,7 @@ class RekomendasiMagang extends BaseWidget
                     ->searchable()
                     ->limit(25)
                     ->label('Lowongan')
+                    ->weight('bold')
                     ->tooltip(fn($record) => new HtmlString(
                         $record->judul_lowongan
                     )),

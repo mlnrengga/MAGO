@@ -16,6 +16,7 @@ use App\Models\Reference\ProvinsiModel;
 use App\Models\Reference\WaktuMagangModel;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -183,7 +184,7 @@ class LowonganResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->label('Judul Lowongan')
-                    ->tooltip(fn ($record) => $record->judul_lowongan)
+                    ->tooltip(fn($record) => $record->judul_lowongan)
                     ->copyable()
                     ->limit(20)
                     ->searchable()
@@ -191,20 +192,20 @@ class LowonganResource extends Resource
 
                 Tables\Columns\TextColumn::make('perusahaan.nama')
                     ->label('Perusahaan')
-                    ->tooltip(fn ($record) => $record->perusahaan->nama)
+                    ->tooltip(fn($record) => $record->perusahaan->nama)
                     ->limit(20)
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('jenisMagang.nama_jenis_magang')
                     ->label('Jenis Magang')
-                    ->tooltip(fn ($record) => $record->jenisMagang->nama_jenis_magang)
+                    ->tooltip(fn($record) => $record->jenisMagang->nama_jenis_magang)
                     ->limit(15)
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('daerahMagang.namaLengkapDenganProvinsi')
                     ->label('Lokasi')
-                    ->tooltip(fn ($record) => $record->daerahMagang->namaLengkapDenganProvinsi)
+                    ->tooltip(fn($record) => $record->daerahMagang->namaLengkapDenganProvinsi)
                     ->limit(10),
 
                 // Kolom tersembunyi untuk pencarian
@@ -255,7 +256,25 @@ class LowonganResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('Hapus Lowongan')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus lowongan ini?')
+                    ->modalSubmitActionLabel('Ya, Hapus')
+                    ->before(function ($record, $action) {
+                        if ($record->pengajuanMagang()->exists()) {
+                            Notification::make()
+                                ->warning()
+                                ->title('Tidak dapat menghapus lowongan')
+                                ->body('Lowongan ini tidak dapat dihapus karena masih digunakan dalam data pengajuan magang.')
+                                ->persistent()
+                                ->send();
+
+                            $action->cancel();
+                            return false;
+                        }
+                    })
+                    ->successNotificationTitle('Lowongan berhasil dihapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
