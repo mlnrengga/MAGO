@@ -15,6 +15,7 @@ use App\Filament\Mahasiswa\Resources\ProfilMhsResource\Pages\EditPengalaman;
 use App\Filament\Mahasiswa\Resources\ProfilMhsResource\Pages\EditDokumen;
 use Filament\Forms\Components\Builder;
 use Filament\Infolists\Components\RepeatableEntry;
+use Illuminate\Support\Facades\Storage;
 
 class ViewProfilMhs extends ViewRecord
 {
@@ -46,10 +47,9 @@ class ViewProfilMhs extends ViewRecord
                                     ->label('')
                                     ->circular()
                                     ->visibility('private')
-                                    ->disk('public')
-                                    ->getStateUsing(function ($record) {
-                                        return 'foto-profil/' . $record->foto_profil;
-                                    }),
+                                    ->width(225)
+                                    ->height(250)
+                                    ->disk('public'),
 
                                 Grid::make()
                                     ->schema([
@@ -104,13 +104,16 @@ class ViewProfilMhs extends ViewRecord
                             ->visible(fn($record) => $record->dokumen->isNotEmpty())
                             ->schema([
                                 TextEntry::make('jenis_dokumen')->label('Jenis Dokumen'),
-                                TextEntry::make('nama_dokumen')->label('Nama Dokumen'),
+                                // TextEntry::make('nama_dokumen')->label('Nama Dokumen'),
                                 TextEntry::make('path_dokumen')
                                     ->label('File')
-                                    ->formatStateUsing(fn($state) => $state
-                                        ? '<a href="' . asset('storage/' . $state) . '" target="_blank" class="text-primary-600 underline">Download</a>'
-                                        : '-')
-                                    ->html(),
+                                    ->formatStateUsing(function ($state, $record) {
+                                        $extension = pathinfo($state, PATHINFO_EXTENSION);
+                                        return $record->nama_dokumen . '.' . $extension;
+                                    })
+                                    ->url(fn($record) => asset('storage/' . $record->path_dokumen), true)
+                                    ->openUrlInNewTab()
+                                    ->color('primary'),
                             ])
                             ->columns(3),
                     ])
