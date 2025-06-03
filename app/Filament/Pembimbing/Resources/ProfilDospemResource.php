@@ -134,7 +134,7 @@ class ProfilDospemResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProfilDospems::route('/'),
+            'index' => Pages\ListProfilDospem::route('/'),
             'view' => Pages\ViewProfilDospem::route('/{record}'),
             'edit' => Pages\EditProfilDospem::route('/{record}/edit'),
         ];
