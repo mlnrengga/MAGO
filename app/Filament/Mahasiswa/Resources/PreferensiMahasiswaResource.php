@@ -12,6 +12,7 @@ use App\Models\Reference\JenisMagangModel;
 use App\Models\Reference\LokasiMagangModel;
 use App\Models\Reference\ProvinsiModel;
 use App\Models\Reference\WaktuMagangModel;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Group;
@@ -27,13 +28,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
 
 class PreferensiMahasiswaResource extends Resource
 {
     protected static ?string $model = PreferensiMahasiswaModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-users';
-    protected static ?string $navigationGroup = 'Profil Saya';
+    protected static ?string $navigationIcon = 'heroicon-s-adjustments-horizontal';
+    protected static ?string $navigationLabel = 'Preferensi Profil';
+    protected static ?string $pluralModelLabel = 'Preferensi Profil Saya';
+    protected static ?string $navigationGroup = 'Tentang Saya';
 
     public static function getEloquentQuery(): Builder
     {
@@ -69,7 +74,23 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()
+                            ->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_daerah'),
+                                    $get('ranking_jenis_magang'),
+                                    $get('ranking_insentif'),
+                                    $get('ranking_waktu_magang'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
                 Section::make('Daerah Magang')
@@ -127,7 +148,23 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()
+                           ->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_bidang'),
+                                    $get('ranking_jenis_magang'),
+                                    $get('ranking_insentif'),
+                                    $get('ranking_waktu_magang'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
                 Section::make('Jenis Magang')
@@ -148,7 +185,22 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_bidang'),
+                                    $get('ranking_daerah'),
+                                    $get('ranking_insentif'),
+                                    $get('ranking_waktu_magang'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
 
@@ -172,7 +224,22 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_bidang'),
+                                    $get('ranking_daerah'),
+                                    $get('ranking_jenis_magang'),
+                                    $get('ranking_waktu_magang'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
                 Section::make('Waktu Magang')
@@ -192,7 +259,22 @@ class PreferensiMahasiswaResource extends Resource
                                 4 => '4',
                                 5 => '5',
                             ])
-                            ->required(),
+                            ->required()->rules(function (callable $get) {
+                                $used = [
+                                    $get('ranking_bidang'),
+                                    $get('ranking_daerah'),
+                                    $get('ranking_jenis_daerah'),
+                                    $get('ranking_insentif'),
+                                ];
+
+                                return [
+                                    function (string $attribute, $value, Closure $fail) use ($used) {
+                                        if (in_array($value, array_filter($used))) {
+                                            $fail("Ranking $value sudah digunakan di bagian lain.");
+                                        }
+                                    },
+                                ];
+                            }),
                     ]),
 
             ]);
@@ -234,7 +316,9 @@ class PreferensiMahasiswaResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Tidak ada preferensi magang yang ditemukan')
+            ->emptyStateDescription('Silakan buat preferensi magang baru untuk mengatur preferensi magang Anda.');
     }
 
     public static function getRelations(): array
@@ -252,20 +336,5 @@ class PreferensiMahasiswaResource extends Resource
             'edit' => Pages\EditPreferensiMahasiswa::route('/{record}/edit'),
             'view' => Pages\ViewPreferensiMahasiswa::route('/{record}'),
         ];
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return 'Manajemen Preferensi';
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return 'Preferensi Mahasiswa';
-    }
-
-    public static function getModelLabel(): string
-    {
-        return 'Preferensi';
     }
 }

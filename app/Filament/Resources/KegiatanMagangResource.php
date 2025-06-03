@@ -22,11 +22,11 @@ class KegiatanMagangResource extends Resource
     protected static ?string $model = PengajuanMagangModel::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-document-check';
-    protected static ?string $navigationLabel = 'Manajemen Pengajuan Magang';
+    protected static ?string $navigationLabel = 'Pengajuan Magang';
     protected static ?string $slug = 'kegiatan-magang';
     protected static ?string $modelLabel = 'Pengajuan Magang';
     protected static ?string $pluralModelLabel = 'Data Pengajuan Magang';
-    protected static ?string $navigationGroup = 'Magang';
+    protected static ?string $navigationGroup = 'Administrasi Magang';
 
     public static function infolist(Infolist $infolist): Infolist
     {
@@ -250,19 +250,21 @@ class KegiatanMagangResource extends Resource
 
                 Tables\Columns\TextColumn::make('lowongan.judul_lowongan')
                     ->label('Judul Lowongan')
-                    ->limit(10)
+                    ->limit(20)
+                    ->copyable()
+                    ->tooltip(fn ($record) => $record->lowongan->judul_lowongan)
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('tanggal_pengajuan')
                     ->label('Tanggal Pengajuan')
                     ->sortable()
-                    ->date('Y-m-d'),
+                    ->date(),
 
                 Tables\Columns\TextColumn::make('tanggal_diterima')
                     ->label('Tanggal Diterima')
                     ->sortable()
-                    ->date('Y-m-d'),
+                    ->date(),
 
                 Tables\Columns\TextColumn::make('status')
                     ->badge()

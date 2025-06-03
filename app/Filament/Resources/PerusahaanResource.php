@@ -13,7 +13,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use App\Models\Reference\PerusahaanModel;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PerusahaanResource\Pages;
 use App\Filament\Resources\PerusahaanResource\RelationManagers;
 
@@ -21,14 +20,14 @@ class PerusahaanResource extends Resource
 {
     protected static ?string $model = PerusahaanModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office';
+    protected static ?string $navigationIcon = 'heroicon-s-building-office';
     protected static ?string $navigationLabel = 'Perusahaan Mitra';
-    protected static ?string $navigationGroup = 'Reference Data';
+    protected static ?string $navigationGroup = 'Pengguna & Mitra';
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $slug = 'menajemen-perusahan';
-    protected static ?string $modelLabel = 'Lowongan';
-    protected static ?string $pluralModelLabel = 'Data Lowongan Magang';
+    protected static ?string $slug = 'manajemen-perusahaan';
+    protected static ?string $modelLabel = 'Perusahaan';
+    protected static ?string $pluralModelLabel = 'Data Perusahaan Mitra';
 
     public static function form(Form $form): Form
     {
@@ -50,13 +49,24 @@ class PerusahaanResource extends Resource
                 TextInput::make('email')
                     ->email()
                     ->required(),
-
-                Select::make('id_admin')
-                    ->label('Admin Penanggung Jawab')
-                    ->relationship('admin', 'nip')
-                    ->searchable()
-                    ->preload()
+                // [PERBAIKAN] Bagian ini sebelumnya error karena:
+                // 1. Mengasumsikan semua user adalah admin
+                // 2. Tidak mengecek relasi admin
+                Forms\Components\Hidden::make('id_admin')
+                    ->default(function () {
+                        $user = auth()->user();
+                        return $user && $user->admin ? $user->admin->id_admin : null;
+                    })
                     ->required(),
+
+
+
+                // ✅ hanya untuk tampilan
+                TextInput::make('nama_admin')
+                    ->label('Admin Penanggung Jawab')
+                    ->default(fn() => auth()->user()->nama)
+                    ->disabled()
+                    ->dehydrated(false),
 
                 TextInput::make('website')
                     ->required(),
@@ -67,20 +77,32 @@ class PerusahaanResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama')->searchable(),
+                TextColumn::make('nama')->searchable()->label('Nama Perusahaan'),
                 TextColumn::make('alamat')->limit(50),
-                TextColumn::make('no_telepon'),
+                TextColumn::make('no_telepon')->label('No Telepon'),
                 TextColumn::make('email'),
-                TextColumn::make('admin.nip')->label('Admin'),
-                TextColumn::make('website')  // Fixed case to match database column
-                    ->label('Website'),     // Proper label for display
+
+                TextColumn::make('website')
+                    ->label('Website')
+                    ->url(fn($record) => $record->website ? (str_starts_with($record->website, 'http') ? $record->website : "https://{$record->website}") : null)
+                    ->openUrlInNewTab(),
+
+
+                TextColumn::make('admin.user.nama')->label('Nama Admin'),
             ])
             ->filters([
-                //
+                // Tambahkan filter jika dibutuhkan
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),  // Added view action
+                Tables\Actions\ViewAction::make(), // View pakai bawaan
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->before(function ($record, $action) {
+                        if ($record->lowonganMagang()->exists()) {
+                            $action->failure('Perusahaan tidak bisa dihapus karena masih memiliki lowongan magang.');
+                            $action->halt();
+                        }
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -92,7 +114,7 @@ class PerusahaanResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Tambahkan RelationManager jika perlu
         ];
     }
 
@@ -101,7 +123,7 @@ class PerusahaanResource extends Resource
         return [
             'index' => Pages\ListPerusahaans::route('/'),
             'create' => Pages\CreatePerusahaan::route('/create'),
-              'view' => Pages\ViewPerusahaan::route('/{record}'),
+            'view' => Pages\ViewPerusahaan::route('/{record}'), // Aktifkan halaman view
             'edit' => Pages\EditPerusahaan::route('/{record}/edit'),
         ];
     }
