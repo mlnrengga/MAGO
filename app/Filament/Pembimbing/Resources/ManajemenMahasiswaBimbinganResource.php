@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ManajemenMahasiswaBimbinganResource extends Resource
 {
-    protected static ?string $model = DosenPembimbingModel::class;
+    protected static ?string $model = PenempatanMagangModel::class;
 
     protected static ?string $navigationLabel = 'Mahasiswa Bimbingan';
     protected static ?string $pluralModelLabel = 'Data Mahasiswa Bimbingan';
@@ -34,11 +34,6 @@ class ManajemenMahasiswaBimbinganResource extends Resource
             ]);
     }
 
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     return DosenPembimbingModel::with(['penempatan.mahasiswa.user'])
-    //         ->where('id_dospem', auth()->user()->id);
-    // }
     public static function getEloquentQuery(): Builder
     {
         $idDospem = auth()->user()->dosenPembimbing->id_dospem;
@@ -48,14 +43,6 @@ class ManajemenMahasiswaBimbinganResource extends Resource
         })
             ->with(['mahasiswa.user']);
     }
-
-    // public static function getGloballySearchableAttributes(): array
-    // {
-    //     return [
-    //         'penempatan.mahasiswa.user.nama',
-    //         'penempatan.status',
-    //     ];
-    // }
 
 
     public static function table(Table $table): Table
@@ -79,13 +66,15 @@ class ManajemenMahasiswaBimbinganResource extends Resource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('status')
-                    ->label('Status Magang'),
+                    ->label('Status Magang')
+                    ->badge()
+                    ->color('success'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -105,25 +94,8 @@ class ManajemenMahasiswaBimbinganResource extends Resource
     {
         return [
             'index' => Pages\ListManajemenMahasiswaBimbingans::route('/'),
-            'create' => Pages\CreateManajemenMahasiswaBimbingan::route('/create'),
-            'edit' => Pages\EditManajemenMahasiswaBimbingan::route('/{record}/edit'),
+            'view' => Pages\ViewMahasiswaBimbingan::route('/{record}'),
         ];
     }
 
-    // public function getMahasiswaBimbinganJoin($id_dospem)
-    // {
-    //     $mahasiswaBimbingan = BimbinganModel::join('penempatan', 'r_bimbingan.id_penempatan', '=', 'penempatan.id')
-    //         ->join('mahasiswa', 'penempatan.id_mahasiswa', '=', 'mahasiswa.id')
-    //         ->where('r_bimbingan.id_dospem', $id_dospem)
-    //         ->select(
-    //             'mahasiswa.id',
-    //             'mahasiswa.nama',
-    //             'mahasiswa.nim',
-    //             'penempatan.status',
-    //             'r_bimbingan.id as bimbingan_id'
-    //         )
-    //         ->get();
-
-    //     return $mahasiswaBimbingan;
-    // }
 }
