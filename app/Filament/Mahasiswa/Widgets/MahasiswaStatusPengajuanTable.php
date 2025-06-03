@@ -39,7 +39,14 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                 // Query hanya pengajuan milik mahasiswa yang sedang login
                 PengajuanMagangModel::query()
                     ->where('id_mahasiswa', $userId)
-                    ->with(['mahasiswa', 'lowongan.perusahaan', 'lowongan.jenisMagang', 'lowongan.daerahMagang'])
+                    ->with([
+                        'mahasiswa', 
+                        'lowongan.perusahaan', 
+                        'lowongan.jenisMagang', 
+                        'lowongan.daerahMagang', 
+                        'penempatan.dosenPembimbing.user', 
+                        'penempatan.dosenPembimbing.bidangKeahlian'
+                    ])
             )
             ->columns([
                 Tables\Columns\TextColumn::make('mahasiswa.user.nama')
@@ -192,6 +199,33 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                                     ->label('Semester'),
                             ])
                             ->columns(2),
+
+                        Infolists\Components\Section::make('Dosen Pembimbing')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.user.nama')
+                                    ->label('Nama Dosen'),
+                                Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.nip')
+                                    ->label('NIP'),
+                                Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.bidangKeahlian')
+                                    ->label('Bidang Keahlian')
+                                    ->state(function ($record) {
+                                        if (!$record->penempatan || !$record->penempatan->dosenPembimbing) {
+                                            return '-';
+                                        }
+                                        
+                                        $dospem = $record->penempatan->dosenPembimbing->first();
+                                        
+                                        if (!$dospem || !$dospem->bidangKeahlian || $dospem->bidangKeahlian->isEmpty()) {
+                                            return '-';
+                                        }
+                                        
+                                        // Mengembalikan array bidang keahlian, bukan string
+                                        return $dospem->bidangKeahlian->pluck('nama_bidang_keahlian')->toArray();
+                                    })
+                                    ->listWithLineBreaks() // Gunakan ini sebagai pengganti bulleted()
+                            ])
+                            ->columns(3)
+                            ->visible(fn ($record) => $record->status === 'Diterima'),
                     ]),
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation()
