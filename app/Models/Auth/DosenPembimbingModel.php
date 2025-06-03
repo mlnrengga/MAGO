@@ -5,13 +5,16 @@ namespace App\Models\Auth;
 use App\Models\MBidangKeahlian;
 use App\Models\Pivot\DospemBidangModel;
 use App\Models\Reference\BidangKeahlianModel;
+use App\Models\Reference\BimbinganModel;
 use App\Models\UserModel;
 use App\Models\Reference\JenisMagangModel;
 use App\Models\Reference\LokasiMagangModel;
 use App\Models\Reference\PenempatanMagangModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DosenPembimbingModel extends Model
 {
@@ -48,4 +51,18 @@ class DosenPembimbingModel extends Model
             'id_bidang'
         );
     }
+
+    public function mahasiswaBimbingan(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            PenempatanMagangModel::class,
+            'r_bimbingan',
+            'id_dospem',
+            'id_penempatan'
+        );
+    }
+    // public function bimbingan()
+    // {
+    //     return $this->hasMany(BimbinganModel::class, 'id_dospem');
+    // }
 }

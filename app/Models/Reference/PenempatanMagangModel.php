@@ -33,4 +33,15 @@ class PenempatanMagangModel extends Model
     {
         return $this->belongsTo(PengajuanMagangModel::class, 'id_pengajuan', 'id_pengajuan');
     }
+
+    // Relasi ke bimbingan
+    public function dosenPembimbing(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            DosenPembimbingModel::class,
+            'r_bimbingan',
+            'id_penempatan',
+            'id_dospem'
+        );
+    }
 }

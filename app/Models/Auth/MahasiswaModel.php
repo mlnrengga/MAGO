@@ -3,6 +3,7 @@
 namespace App\Models\Auth;
 
 use App\Models\Reference\DokumenModel;
+use App\Models\Reference\PenempatanMagangModel;
 use App\Models\UserModel;
 use App\Models\Reference\PreferensiMahasiswaModel;
 use App\Models\Reference\PengajuanMagangModel;
@@ -67,5 +68,10 @@ class MahasiswaModel extends Model
     public function profil()
     {
         return $this->hasOne(ProfilMhsModel::class, 'id_mahasiswa', 'id_mahasiswa');
+    }
+
+    public function penempatan()
+    {
+        return $this->hasMany(PenempatanMagangModel::class, 'id_mahasiswa', 'id_mahasiswa');
     }
 }
