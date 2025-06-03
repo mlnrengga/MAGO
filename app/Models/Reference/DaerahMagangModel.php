@@ -17,6 +17,8 @@ class DaerahMagangModel extends Model
         'nama_daerah',
         'jenis_daerah',
         'id_provinsi',
+        'latitude',
+        'longitude',
     ];
 
     public function provinsi(): BelongsTo
