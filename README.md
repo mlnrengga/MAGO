@@ -35,3 +35,11 @@ Magang On The GO - Information Technology Student Internship Information System
 4. **Input your credential. Some default credentials are already made in the seeder file, such as** `seeders/UserSeeder.php`, `seeders/MahasiswaSeeder.php`, `seeders/AdminSeeder.php`, `seeders/DosenPembimbingSeeder.php`
 > [!NOTE]
 > When you provide credentials on the login page, the web will immediately redirect you to the filament panel according to the role of the credentials of the user who is currently logged in.
+
+<br>
+
+## ©️ Attribution
+This application uses data from © [OpenStreetMap](https://www.openstreetmap.org/) contributors, available under the [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/).
+
+© 2025 MAGO. All Rights Reserved.
+Final Project for Project-Based Learning at Malang State Polytechnic.
