@@ -34,7 +34,7 @@ class ProfilDospemResource extends Resource
     {
         $user = Auth::user();
         if ($user && $user->dosenPembimbing) {
-            return static::getUrl('view', ['record' => $user->dosenPembimbing->id_dospem]); // <<< UBAH INI KE 'view'
+            return static::getUrl('view', ['record' => $user->dosenPembimbing->id_dospem]); 
         }
         return static::getUrl('dashboard');
     }
@@ -46,40 +46,40 @@ class ProfilDospemResource extends Resource
                 Section::make('Informasi Dosen Pembimbing')
                     ->description('Perbarui detail pribadi dan kontak Anda.')
                     ->schema([
-                        TextInput::make('user.nama') // Mengambil dari relasi user
+                        TextInput::make('user.nama') 
                             ->label('Nama Lengkap')
                             ->required()
                             ->maxLength(255),
-                        TextInput::make('nip') // NIP biasanya tidak diubah
+                        TextInput::make('nip') 
                             ->label('NIP')
                             ->maxLength(20)
-                            ->readOnly() // Membuat field ini hanya bisa dibaca
+                            ->readOnly() 
                             ->helperText('NIP tidak dapat diubah.'),
-                        TextInput::make('user.no_telepon') // Mengambil dari relasi user
+                        TextInput::make('user.no_telepon') 
                             ->label('Nomor Telepon')
                             ->tel()
                             ->required()
                             ->maxLength(20),
-                        TextInput::make('user.alamat') // Mengambil dari relasi user
+                        TextInput::make('user.alamat')
                             ->label('Alamat')
                             ->required()
                             ->maxLength(255),
-                        FileUpload::make('user.profile_picture') // Mengambil dari relasi user
+                        FileUpload::make('user.profile_picture') 
                             ->label('Foto Profil')
                             ->image()
-                            ->directory('profile-pictures') // Folder penyimpanan di storage
+                            ->directory('profile-pictures') 
                             ->nullable(),
                     ])->columns(2),
 
                 Section::make('Bidang Keahlian')
                     ->description('Pilih bidang keahlian yang relevan.')
                     ->schema([
-                        Select::make('bidangKeahlian') // Mengambil dari relasi many-to-many
+                        Select::make('bidangKeahlian') 
                             ->label('Bidang Keahlian')
-                            ->multiple() // Memungkinkan pemilihan banyak bidang
+                            ->multiple()
                             ->relationship('bidangKeahlian', 'nama_bidang_keahlian')
-                            ->preload() // Memuat semua opsi di awal untuk UX yang lebih baik
-                            ->searchable() // Memungkinkan pencarian bidang keahlian
+                            ->preload() 
+                            ->searchable() 
                             ->helperText('Pilih satu atau lebih bidang keahlian Anda.'),
                     ]),
 
@@ -90,39 +90,38 @@ class ProfilDospemResource extends Resource
                             ->label('Password Baru')
                             ->password()
                             ->maxLength(255)
-                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state)) // Hash password sebelum disimpan
-                            ->dehydrated(fn(?string $state): bool => filled($state)) // Hanya dehidrasi jika field diisi
-                            ->required(fn(string $operation): bool => $operation === 'create') // Password hanya wajib saat membuat user baru
-                            ->confirmed() // Membutuhkan field konfirmasi
+                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state)) 
+                            ->dehydrated(fn(?string $state): bool => filled($state))
+                            ->required(fn(string $operation): bool => $operation === 'create') 
+                            ->confirmed() 
                             ->autocomplete('new-password')
                             ->helperText('Biarkan kosong jika tidak ingin mengubah password.'),
                         TextInput::make('user.password_confirmation')
                             ->label('Konfirmasi Password Baru')
                             ->password()
                             ->maxLength(255)
-                            ->dehydrated(false) // Jangan simpan ke database, hanya untuk validasi
+                            ->dehydrated(false)
                             ->required(fn(string $operation): bool => $operation === 'create' && filled(request()->input('data.user.password'))), // Required jika password diisi saat create
                     ])->columns(2),
             ]);
     }
 
-    public static function table(Table $table): Table
-    {
-        // KOSONGKAN TABLE, KARENA INI BUKAN UNTUK MENAMPILKAN DAFTAR
-        return $table
-            ->columns([
-                // Tidak ada kolom di sini
-            ])
-            ->filters([
-                // Tidak ada filter
-            ])
-            ->actions([
-                // Tidak ada actions (Edit, Delete) di tabel daftar
-            ])
-            ->bulkActions([
-                // Tidak ada bulk actions
-            ]);
-    }
+    // public static function table(Table $table): Table
+    // {
+    //     return $table
+    //         ->columns([
+
+    //         ])
+    //         ->filters([
+
+    //         ])
+    //         ->actions([
+
+    //         ])
+    //         ->bulkActions([
+
+    //         ]);
+    // }
 
     public static function getRelations(): array
     {
@@ -131,7 +130,7 @@ class ProfilDospemResource extends Resource
         ];
     }
 
-    // *** BAGIAN PENTING: Pastikan hanya halaman 'edit' yang didefinisikan di sini ***
+
     public static function getPages(): array
     {
         return [

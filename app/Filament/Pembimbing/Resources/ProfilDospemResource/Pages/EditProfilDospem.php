@@ -5,8 +5,8 @@ namespace App\Filament\Pembimbing\Resources\ProfilDospemResource\Pages;
 use App\Filament\Pembimbing\Resources\ProfilDospemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Database\Eloquent\Model; // Pastikan ini di-import
-use Illuminate\Support\Facades\DB;     // Pastikan ini di-import untuk transaksi database
+use Illuminate\Database\Eloquent\Model; 
+use Illuminate\Support\Facades\DB;   
 
 class EditProfilDospem extends EditRecord
 {
@@ -16,11 +16,11 @@ class EditProfilDospem extends EditRecord
     {
 
         return DB::transaction(function () use ($record, $data) {
-            // Ekstrak data user
-            $userData = $data['user'];
-            unset($data['user']); // Hapus dari array data utama
 
-            $userModel = $record->user; // Ambil model user terkait
+            $userData = $data['user'];
+            unset($data['user']); 
+
+            $userModel = $record->user; 
 
             if ($userModel) {
                 // Perbarui atribut user
@@ -28,9 +28,9 @@ class EditProfilDospem extends EditRecord
                 $userModel->no_telepon = $userData['no_telepon'];
                 $userModel->alamat = $userData['alamat'];
 
-                // Tangani password (jika diisi)
+
                 if (!empty($userData['password'])) {
-                    $userModel->password = $userData['password']; // Password sudah di-hash oleh TextInput
+                    $userModel->password = $userData['password']; 
                 }
 
                 // Tangani foto profil
@@ -40,12 +40,10 @@ class EditProfilDospem extends EditRecord
                     $userModel->profile_picture = null;
                 }
 
-                $userModel->save(); // <<< INI YANG SEKARANG AKAN TERJALANKAN
+                $userModel->save(); 
             }
 
-            // DosenPembimbingModel tidak memiliki field yang diupdate langsung dari form ini
-            // Relasi bidangKeahlian ditangani otomatis oleh Filament
-            return $record; // Kembalikan record utama
+            return $record; 
         });
     }
     protected static ?string $title = 'Edit Profil & Akun';
@@ -59,18 +57,9 @@ class EditProfilDospem extends EditRecord
 
     /**
      * Mengambil record Dosen Pembimbing yang sedang login.
-     *
+    
      * @return \Illuminate\Database\Eloquent\Model
      */
-    // public function getRecord(): Model
-    // {
-    //     // Pastikan user sudah login dan memiliki relasi dosenPembimbing
-    //     $user = Auth::user();
-    //     if (!$user || !$user->dosenPembimbing) {
-    //         abort(404, 'Profil Dosen Pembimbing tidak ditemukan.'); // Atau redirect ke halaman lain
-    //     }
-    //     return $user->dosenPembimbing;
-    // }
 
     /**
      * Mengarahkan kembali ke halaman profil setelah sukses update.
