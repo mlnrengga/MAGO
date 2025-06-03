@@ -138,6 +138,34 @@ class KegiatanMagangResource extends Resource
                             ])->columns(2)
                             ->collapsible(),
 
+                        Infolists\Components\Section::make('Dokumen Mahasiswa')
+                            ->schema([
+                                Infolists\Components\RepeatableEntry::make('mahasiswa.dokumen')
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('jenis_dokumen')
+                                            ->label('Jenis Dokumen'),
+
+                                        Infolists\Components\TextEntry::make('path_dokumen')
+                                            ->label('Lihat Dokumen')
+                                            ->color('primary')
+                                            ->formatStateUsing(function ($state, $record) {
+                                                $extension = pathinfo($state, PATHINFO_EXTENSION);
+                                                return $record->nama_dokumen . '.' . $extension;
+                                            })
+                                            ->url(fn($record) => asset('storage/' . $record->path_dokumen), true)
+                                            ->openUrlInNewTab(),
+                                    ])
+                                    ->columns(2),
+
+                                Infolists\Components\TextEntry::make('dokumenEmpty')
+                                    ->label('')
+                                    ->default('Mahasiswa belum mengunggah dokumen apapun')
+                                    ->visible(function ($record) {
+                                        return !$record->mahasiswa->dokumen || $record->mahasiswa->dokumen->isEmpty();
+                                    }),
+                            ])
+                            // ->columns(2)
+                            ->collapsible(),
                     ])->columns(3),
 
                 Infolists\Components\Section::make('Informasi Lowongan')
@@ -252,7 +280,7 @@ class KegiatanMagangResource extends Resource
                     ->label('Judul Lowongan')
                     ->limit(20)
                     ->copyable()
-                    ->tooltip(fn ($record) => $record->lowongan->judul_lowongan)
+                    ->tooltip(fn($record) => $record->lowongan->judul_lowongan)
                     ->sortable()
                     ->searchable(),
 
@@ -346,6 +374,6 @@ class KegiatanMagangResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with(['mahasiswa.user', 'mahasiswa.prodi', 'lowongan.perusahaan', 'lowongan.bidangKeahlian']);
+            ->with(['mahasiswa.user', 'mahasiswa.prodi', 'lowongan.perusahaan', 'lowongan.bidangKeahlian', 'mahasiswa.dokumen']);
     }
 }
