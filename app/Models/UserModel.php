@@ -29,24 +29,17 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
         return $this->nama;
     }
 
-    // m_user 
-    // + id_user: int (PK)
-    // + nama: string
-    // + password: string
-    // + alamat: string
-    // + no_telepon: string
-
     protected $table = 'm_user';
     protected $primaryKey = 'id_user';
-   protected $fillable = [
-    'nama',
-    'password',
-    'alamat',
-    'no_telepon',
-    'role',
-     'id_role',
-    'profile_picture',
-];
+    protected $fillable = [
+        'nama',
+        'password',
+        'alamat',
+        'no_telepon',
+        'role',
+        'id_role',
+        'profile_picture',
+    ];
 
     protected $hidden = [
         'password',
@@ -89,8 +82,6 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
         return $this->hasOne(RoleModel::class, 'id_role', 'id_role');
     }
 
-
-    // === tambahkan di sini
     public function setPasswordAttribute($value)
     {
         if (substr($value, 0, 4) !== '$2y$') {
@@ -99,4 +90,16 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
             $this->attributes['password'] = $value;
         }
     }
+public function getProfilePictureUrlAttribute()
+{
+    $path = 'profile_pictures/' . $this->profile_picture;
+
+    if (!$this->profile_picture || !\Storage::disk('public')->exists($path)) {
+        // Mengarah ke public/assets/images/default.png
+        return asset('assets/images/default.png');
+    }
+
+    return asset('storage/' . $path);
+}
+
 }

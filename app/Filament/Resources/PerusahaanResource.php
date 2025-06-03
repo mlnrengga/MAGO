@@ -49,13 +49,24 @@ class PerusahaanResource extends Resource
                 TextInput::make('email')
                     ->email()
                     ->required(),
-
-                Select::make('id_admin')
-                    ->label('Admin Penanggung Jawab')
-                    ->relationship('admin.user', 'nama') // Menampilkan nama admin
-                    ->searchable()
-                    ->preload()
+                // [PERBAIKAN] Bagian ini sebelumnya error karena:
+                // 1. Mengasumsikan semua user adalah admin
+                // 2. Tidak mengecek relasi admin
+                Forms\Components\Hidden::make('id_admin')
+                    ->default(function () {
+                        $user = auth()->user();
+                        return $user && $user->admin ? $user->admin->id_admin : null;
+                    })
                     ->required(),
+
+
+
+                // ✅ hanya untuk tampilan
+                TextInput::make('nama_admin')
+                    ->label('Admin Penanggung Jawab')
+                    ->default(fn() => auth()->user()->nama)
+                    ->disabled()
+                    ->dehydrated(false),
 
                 TextInput::make('website')
                     ->required(),
@@ -66,18 +77,24 @@ class PerusahaanResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama')->searchable(),
+                TextColumn::make('nama')->searchable()->label('Nama Perusahaan'),
                 TextColumn::make('alamat')->limit(50),
                 TextColumn::make('no_telepon')->label('No Telepon'),
                 TextColumn::make('email'),
+
+                TextColumn::make('website')
+                    ->label('Website')
+                    ->url(fn($record) => $record->website ? (str_starts_with($record->website, 'http') ? $record->website : "https://{$record->website}") : null)
+                    ->openUrlInNewTab(),
+
+
                 TextColumn::make('admin.user.nama')->label('Nama Admin'),
-                TextColumn::make('website')->label('Website'),
             ])
             ->filters([
-                //
+                // Tambahkan filter jika dibutuhkan
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make(), // View pakai bawaan
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->before(function ($record, $action) {
@@ -97,7 +114,7 @@ class PerusahaanResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Tambahkan RelationManager jika perlu
         ];
     }
 
@@ -106,7 +123,7 @@ class PerusahaanResource extends Resource
         return [
             'index' => Pages\ListPerusahaans::route('/'),
             'create' => Pages\CreatePerusahaan::route('/create'),
-            // 'view' => Pages\ViewPerusahaan::route('/{record}'),
+            'view' => Pages\ViewPerusahaan::route('/{record}'), // Aktifkan halaman view
             'edit' => Pages\EditPerusahaan::route('/{record}/edit'),
         ];
     }
