@@ -2,7 +2,7 @@
 
 namespace App\Models\Reference;
 
-use App\Models\Pivot\PreferensiMahasiswaModel;
+use App\Models\Reference\PreferensiMahasiswaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
