@@ -70,7 +70,6 @@ class EditManajemenDaerahMagang extends EditRecord
         if (empty($result)) {
             $this->addError('data.nama_daerah', "Nama {$data['jenis_daerah']} \"{$data['nama_daerah']}\" tidak ditemukan pada peta. Mohon periksa penulisan nama daerah atau coba gunakan nama yang lebih umum.");
             $this->halt();
-            return []; // tidak akan dijalankan karena halt() sudah dipanggil
         }
 
         $data['latitude'] = (float)$result['lat'];
