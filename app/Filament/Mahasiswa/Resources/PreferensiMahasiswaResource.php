@@ -263,7 +263,7 @@ class PreferensiMahasiswaResource extends Resource
                                 $used = [
                                     $get('ranking_bidang'),
                                     $get('ranking_daerah'),
-                                    $get('ranking_jenis_daerah'),
+                                    $get('ranking_jenis_magang'),
                                     $get('ranking_insentif'),
                                 ];
 
