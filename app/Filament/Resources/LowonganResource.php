@@ -46,7 +46,9 @@ class LowonganResource extends Resource
 
                         Forms\Components\Select::make('id_perusahaan')
                             ->label('Perusahaan')
-                            ->options(PerusahaanModel::all()->pluck('nama', 'id_perusahaan'))
+                            ->options(PerusahaanModel::where('partnership', 'Perusahaan Mitra')
+                            ->orderBy('nama', 'asc')
+                            ->pluck('nama', 'id_perusahaan'))
                             ->searchable()
                             ->required()
                             ->reactive()
@@ -199,6 +201,7 @@ class LowonganResource extends Resource
 
                 Tables\Columns\TextColumn::make('jenisMagang.nama_jenis_magang')
                     ->label('Jenis Magang')
+                    ->searchable()
                     ->tooltip(fn($record) => $record->jenisMagang->nama_jenis_magang)
                     ->limit(15)
                     ->sortable(),

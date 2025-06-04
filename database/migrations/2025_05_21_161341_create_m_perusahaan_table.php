@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('m_perusahaan', function (Blueprint $table) {
             $table->id('id_perusahaan');
-            $table->unsignedBigInteger('id_admin')->index();
             $table->string('alamat');
             $table->string('no_telepon', 20);
             $table->string('email')->unique();
             $table->string('website')->nullable();
             $table->string('nama');
+            $table->enum('partnership', ['Perusahaan Mitra', 'Perusahaan Non-Mitra'])->default('Perusahaan Mitra');
             $table->timestamps();
 
-            $table->foreign('id_admin')->references('id_admin')->on('m_admin');
         });
     }
 

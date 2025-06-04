@@ -2,8 +2,7 @@
 
 namespace App\Filament\Mahasiswa\Resources;
 
-use App\Filament\Mahasiswa\Resources\PengajuanMagangMahasiswaResource\Pages;
-use App\Filament\Mahasiswa\Resources\PengajuanMagangMahasiswaResource\RelationManagers;
+use App\Filament\Mahasiswa\Resources\LamarMagangMahasiswaResource\Pages;
 use App\Filament\Mahasiswa\Widgets\MahasiswaStatusPengajuanTable;
 use App\Models\Reference\PengajuanMagangModel;
 use Filament\Forms;
@@ -11,15 +10,15 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 
-class PengajuanMagangMahasiswaResource extends Resource
+class LamarMagangMahasiswaResource extends Resource
 {
     protected static ?string $model = PengajuanMagangModel::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-rocket-launch';
-    protected static ?string $modelLabel = 'Pengajuan Magang';
-    protected static ?string $pluralModelLabel = 'Data Pengajuan Magang';
-    protected static ?string $navigationLabel = 'Pengajuan Magang';
-    protected static ?string $slug = 'pengajuan-magang';
+    protected static ?string $modelLabel = 'Lamaran Magang';
+    protected static ?string $pluralModelLabel = 'Data Lamaran Magang';
+    protected static ?string $navigationLabel = 'Lamar Magang';
+    protected static ?string $slug = 'lamaran-magang';
     protected static ?string $navigationGroup = 'Magang';
 
     public static function getWidgets(): array
@@ -95,9 +94,7 @@ class PengajuanMagangMahasiswaResource extends Resource
                     }),
 
                 Forms\Components\Section::make('Preview Lowongan')
-                    ->schema([
-                        
-                    ])
+                    ->schema([])
                     ->visible(fn(Forms\Get $get) => (bool) $get('id_lowongan'))
                     ->key('lowongan_preview'),
 
@@ -124,8 +121,8 @@ class PengajuanMagangMahasiswaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPengajuanMagangMahasiswas::route('/'),
-            'create' => Pages\CreatePengajuanMagangMahasiswa::route('/create'),
+            'index' => Pages\ListLamarMagangMahasiswas::route('/'),
+            'create' => Pages\CreateLamarMagangMahasiswa::route('/create'),
         ];
     }
 }

@@ -13,6 +13,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 
 class UserModel extends Authenticatable implements FilamentUser, HasName
@@ -94,7 +95,7 @@ public function getProfilePictureUrlAttribute()
 {
     $path = 'profile_pictures/' . $this->profile_picture;
 
-    if (!$this->profile_picture || !\Storage::disk('public')->exists($path)) {
+    if (!$this->profile_picture || !Storage::disk('public')->exists($path)) {
         // Mengarah ke public/assets/images/default.png
         return asset('assets/images/default.png');
     }
