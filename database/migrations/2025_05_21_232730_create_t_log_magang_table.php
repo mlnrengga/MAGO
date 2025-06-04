@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('keterangan');
             $table->enum('status', ['masuk', 'izin', 'sakit', 'cuti']);
             $table->string('file_bukti');
-            $table->string('feedback')->nullable();
+            $table->string('feedback_progres')->nullable();
             $table->timestamps();
 
             $table->foreign('id_penempatan')->references('id_penempatan')->on('t_penempatan_magang');
