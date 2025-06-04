@@ -3,7 +3,6 @@
 namespace App\Filament\Mahasiswa\Resources\LamarMagangMahasiswaResource\Pages;
 
 use App\Filament\Mahasiswa\Resources\LamarMagangMahasiswaResource;
-use App\Filament\Mahasiswa\Resources\LamarPekerjaanMahasiswaResource;
 use App\Filament\Mahasiswa\Widgets\MahasiswaStatusPengajuanTable;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
