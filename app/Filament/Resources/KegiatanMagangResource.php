@@ -22,10 +22,10 @@ class KegiatanMagangResource extends Resource
     protected static ?string $model = PengajuanMagangModel::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-document-check';
-    protected static ?string $navigationLabel = 'Pengajuan Magang';
+    protected static ?string $navigationLabel = 'Pengajuan & Lamaran Magang';
     protected static ?string $slug = 'kegiatan-magang';
     protected static ?string $modelLabel = 'Pengajuan Magang';
-    protected static ?string $pluralModelLabel = 'Data Pengajuan Magang';
+    protected static ?string $pluralModelLabel = 'Data Pengajuan & Lamaran Magang';
     protected static ?string $navigationGroup = 'Administrasi Magang';
 
     public static function infolist(Infolist $infolist): Infolist
@@ -168,43 +168,77 @@ class KegiatanMagangResource extends Resource
                             ->collapsible(),
                     ])->columns(3),
 
-                Infolists\Components\Section::make('Informasi Lowongan')
+                Infolists\Components\Section::make('Informasi Perusahaan')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('lowongan.perusahaan.nama')
+                            ->label('Perusahaan'),
+
+                        Infolists\Components\TextEntry::make('lowongan.perusahaan.no_telepon')
+                            ->label('Nomor Telepon Perusahaan')
+                            ->icon('heroicon-m-phone'),
+
+                        Infolists\Components\TextEntry::make('lowongan.perusahaan.website')
+                            ->label('Website Perusahaan')
+                            ->icon('heroicon-m-globe-alt'),
+
+                        Infolists\Components\TextEntry::make('lowongan.perusahaan.partnership')
+                            ->label('Status Perusahaan')
+                            ->badge()
+                            ->color(fn(string $state): string => match ($state) {
+                                'Perusahaan Mitra' => 'success',
+                                'Perusahaan Non-Mitra' => 'danger',
+                                default => 'gray',
+                            }),
+
+                        Infolists\Components\TextEntry::make('lowongan.perusahaan.alamat')
+                            ->label('Alamat Perusahaan')
+                            ->columnSpanFull(),
+                    ])->columns(2),
+
+                Infolists\Components\Section::make('Detail Magang')
                     ->schema([
                         Infolists\Components\TextEntry::make('lowongan.judul_lowongan')
                             ->label('Judul Lowongan'),
 
-                        Infolists\Components\TextEntry::make('lowongan.perusahaan.nama')
-                            ->label('Perusahaan'),
-
-                        Infolists\Components\TextEntry::make('lowongan.bidangKeahlian.nama_bidang_keahlian')
-                            ->label('Bidang Keahlian'),
-
                         Infolists\Components\TextEntry::make('lowongan.jenisMagang.nama_jenis_magang')
                             ->label('Jenis Magang'),
 
-                        Infolists\Components\TextEntry::make('lowongan.daerahMagang.namaLengkapDenganProvinsi')
-                            ->label('Daerah Magang'),
+                        Infolists\Components\TextEntry::make('lowongan.daerahMagang.provinsi.nama_provinsi')
+                            ->label('Provinsi'),
+
+                        Infolists\Components\TextEntry::make('lowongan.daerahMagang.namaLengkap')
+                            ->label('Daerah (Kota/Kabupaten)'),
 
                         Infolists\Components\TextEntry::make('lowongan.periode.nama_periode')
-                            ->label('Periode Magang'),
+                            ->label('Periode'),
 
                         Infolists\Components\TextEntry::make('lowongan.waktuMagang.waktu_magang')
                             ->label('Waktu Magang'),
 
-                        Infolists\Components\TextEntry::make('lowongan.batas_akhir_lamaran')
-                            ->label('Batas Akhir Lamaran')
-                            ->date('Y-m-d'),
+                        Infolists\Components\TextEntry::make('lowongan.insentif.keterangan')
+                            ->label('Insentif'),
+
 
                         Infolists\Components\TextEntry::make('lowongan.status')
                             ->badge()
-                            ->label('Status Lowongan')
                             ->color(fn(string $state): string => match ($state) {
                                 'Aktif' => 'success',
                                 'Selesai' => 'danger',
                                 default => 'gray',
                             }),
-                    ])->columns(3),
+                        Infolists\Components\TextEntry::make('lowongan.tanggal_posting')
+                            ->label('Tanggal Posting')
+                            ->date(),
 
+                        Infolists\Components\TextEntry::make('lowongan.batas_akhir_lamaran')
+                            ->label('Batas Akhir Lamaran')
+                            ->date(),
+                        
+                            Infolists\Components\TextEntry::make('lowongan.deskripsi_lowongan')
+                            ->label('Deskripsi Lowongan')
+                            ->html()
+                            ->columnSpanFull(),
+                    ])->columns(3),
             ]);
     }
     public static function form(Form $form): Form
@@ -263,7 +297,15 @@ class KegiatanMagangResource extends Resource
                             ->required(fn(Forms\Get $get) => $get('status') === 'Diterima')
                             ->visible(fn(Forms\Get $get) => $get('status') === 'Diterima'),
                     ])
-                    ->visible(fn(Forms\Get $get) => $get('status') === 'Diterima')
+                    ->visible(fn(Forms\Get $get) => $get('status') === 'Diterima'),
+
+                Forms\Components\Section::make('Catatan Penolakan')
+                    ->schema([
+                        Forms\Components\RichEditor::make('alasan_penolakan')
+                            ->required(fn(Forms\Get $get) => $get('status') === 'Ditolak')
+                            ->visible(fn(Forms\Get $get) => $get('status') === 'Ditolak'),
+                    ])
+                    ->visible(fn(Forms\Get $get) => $get('status') === 'Ditolak'),
             ]);
     }
 
@@ -281,6 +323,12 @@ class KegiatanMagangResource extends Resource
                     ->limit(20)
                     ->copyable()
                     ->tooltip(fn($record) => $record->lowongan->judul_lowongan)
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('lowongan.jenisMagang.nama_jenis_magang')
+                    ->label('Jenis Magang')
+                    ->limit(15)
                     ->sortable()
                     ->searchable(),
 
@@ -309,7 +357,25 @@ class KegiatanMagangResource extends Resource
             ->emptyStateHeading('Belum ada kegiatan magang yang diajukan')
             ->emptyStateIcon('heroicon-o-document-text')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('jenis_magang')
+                    ->label('Jenis Magang')
+                    ->relationship('lowongan.jenisMagang', 'nama_jenis_magang')
+                    ->searchable()
+                    ->preload(),
+                
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'Diajukan' => 'Diajukan',
+                        'Diterima' => 'Diterima',
+                        'Ditolak' => 'Ditolak',
+                    ]),
+                
+                Tables\Filters\SelectFilter::make('perusahaan')
+                    ->label('Perusahaan')
+                    ->relationship('lowongan.perusahaan', 'nama')
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

@@ -133,7 +133,8 @@ class EditKegiatanMagang extends EditRecord
             if ($mahasiswa) {
                 Notification::make()
                     ->title('Pengajuan Magang Ditolak')
-                    ->body('Maaf, pengajuan magang ' . ($record->lowongan->judul_lowongan ?? '-') . ' Anda telah ditolak.')
+                    ->body('Maaf, pengajuan magang ' . ($record->lowongan->judul_lowongan ?? '-') . ' Anda telah ditolak.' . 
+                        ($record->alasan_penolakan ? ' Alasan penolakan: ' . $record->alasan_penolakan : ''))
                     ->danger()
                     ->persistent()
                     ->icon('heroicon-o-x-circle')
