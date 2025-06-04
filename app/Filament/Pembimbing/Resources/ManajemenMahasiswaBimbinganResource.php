@@ -14,6 +14,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -51,7 +52,6 @@ class ManajemenMahasiswaBimbinganResource extends Resource
             ->columns([
                 TextColumn::make('mahasiswa.user.nama')
                     ->label('Nama Mahasiswa')
-                    ->sortable()
                     ->searchable(),
                 TextColumn::make('mahasiswa.nim')
                     ->label('NIM')
@@ -65,13 +65,24 @@ class ManajemenMahasiswaBimbinganResource extends Resource
                     ->label('Semester')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('pengajuan.lowongan.periode.nama_periode')
+                    ->label('Periode')
+                    ->sortable(),
                 TextColumn::make('status')
                     ->label('Status Magang')
                     ->badge()
                     ->color('success'),
             ])
             ->filters([
-                //
+                SelectFilter::make('prodi')
+                    ->label('Program Studi')
+                    ->relationship('mahasiswa.prodi', 'nama_prodi'),
+                SelectFilter::make('semester')
+                    ->label('Semester')
+                    ->relationship('mahasiswa', 'semester'),
+                SelectFilter::make('periode')
+                    ->label('Periode')
+                    ->relationship('pengajuan.lowongan.periode','nama_periode'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -97,5 +108,4 @@ class ManajemenMahasiswaBimbinganResource extends Resource
             'view' => Pages\ViewMahasiswaBimbingan::route('/{record}'),
         ];
     }
-
 }
