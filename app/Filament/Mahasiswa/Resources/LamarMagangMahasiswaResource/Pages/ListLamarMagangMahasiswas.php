@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Filament\Mahasiswa\Resources\PengajuanMagangMahasiswaResource\Pages;
+namespace App\Filament\Mahasiswa\Resources\LamarMagangMahasiswaResource\Pages;
 
-use App\Filament\Mahasiswa\Resources\PengajuanMagangMahasiswaResource;
+use App\Filament\Mahasiswa\Resources\LamarMagangMahasiswaResource;
+use App\Filament\Mahasiswa\Resources\LamarPekerjaanMahasiswaResource;
 use App\Filament\Mahasiswa\Widgets\MahasiswaStatusPengajuanTable;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListPengajuanMagangMahasiswas extends ListRecords
+class ListLamarMagangMahasiswas extends ListRecords
 {
-    protected static string $resource = PengajuanMagangMahasiswaResource::class;
+    protected static string $resource = LamarMagangMahasiswaResource::class;
 
     protected function getHeaderActions(): array
     {
