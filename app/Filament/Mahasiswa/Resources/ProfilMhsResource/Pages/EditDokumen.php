@@ -77,7 +77,8 @@ class EditDokumen extends EditRecord
                 ->reorderable()
                 ->collapsible()
                 ->addActionLabel('Tambah Dokumen')
-                ->itemLabel(fn(array $state): ?string => $state['jenis_dokumen'] . ' - ' . ($state['nama_dokumen'] ?? 'Dokumen')),
+                ->itemLabel(fn(array $state): ?string => $state['jenis_dokumen'] . ' - ' . ($state['nama_dokumen'] ?? 'Dokumen'))
+                ->columnSpanFull(),
         ]);
     }
 
