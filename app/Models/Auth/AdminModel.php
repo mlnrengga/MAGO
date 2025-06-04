@@ -13,11 +13,6 @@ class AdminModel extends Model
 {
     use HasFactory, Notifiable;
 
-    // m_admin
-    // + id_admin: String (PK)
-    // + id_user: int (FK)
-    // + nip: String
-
     protected $table = 'm_admin';
     protected $primaryKey = 'id_admin';
     protected $fillable = [
@@ -31,5 +26,10 @@ class AdminModel extends Model
     public function user()
     {
         return $this->belongsTo(UserModel::class, 'id_user');
+    }
+
+    public function perusahaan(): HasMany
+    {
+        return $this->hasMany(PerusahaanModel::class, 'id_admin', 'id_admin');
     }
 }
