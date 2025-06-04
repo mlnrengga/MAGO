@@ -15,6 +15,7 @@ use App\Models\Reference\PerusahaanModel;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PerusahaanResource\Pages;
 use App\Filament\Resources\PerusahaanResource\RelationManagers;
+use Filament\Forms\Components\Hidden; // ✅ DITAMBAHKAN
 
 class PerusahaanResource extends Resource
 {
@@ -49,24 +50,18 @@ class PerusahaanResource extends Resource
                 TextInput::make('email')
                     ->email()
                     ->required(),
-                // [PERBAIKAN] Bagian ini sebelumnya error karena:
-                // 1. Mengasumsikan semua user adalah admin
-                // 2. Tidak mengecek relasi admin
-                Forms\Components\Hidden::make('id_admin')
+
+
+                TextInput::make('partnership')
+                    ->label('Jenis Kemitraan')
+                    ->maxLength(100),
+
+                Hidden::make('id_admin')
                     ->default(function () {
                         $user = auth()->user();
                         return $user && $user->admin ? $user->admin->id_admin : null;
                     })
                     ->required(),
-
-
-
-                // ✅ hanya untuk tampilan
-                TextInput::make('nama_admin')
-                    ->label('Admin Penanggung Jawab')
-                    ->default(fn() => auth()->user()->nama)
-                    ->disabled()
-                    ->dehydrated(false),
 
                 TextInput::make('website')
                     ->required(),
@@ -81,6 +76,10 @@ class PerusahaanResource extends Resource
                 TextColumn::make('alamat')->limit(50),
                 TextColumn::make('no_telepon')->label('No Telepon'),
                 TextColumn::make('email'),
+                TextColumn::make('partnership')
+                    ->label('Jenis Kemitraan')
+                    ->sortable(),
+
 
                 TextColumn::make('website')
                     ->label('Website')
@@ -88,10 +87,22 @@ class PerusahaanResource extends Resource
                     ->openUrlInNewTab(),
 
 
-                TextColumn::make('admin.user.nama')->label('Nama Admin'),
+
+                // // ====== Perbaikan: Tampilkan nama admin via relasi ======
+                // TextColumn::make('admin.user.nama')->label('Nama Admin'),
             ])
             ->filters([
                 // Tambahkan filter jika dibutuhkan
+
+                Tables\Filters\SelectFilter::make('partnership')
+                    ->label('Kemitraan')
+                    ->options([
+                        'Nasional' => 'Nasional',
+                        'Internasional' => 'Internasional',
+                        'Lokal' => 'Lokal',
+                    ])
+                    ->attribute('partnership'),
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(), // View pakai bawaan
