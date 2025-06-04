@@ -74,7 +74,9 @@ class ViewMahasiswaBimbingan extends ViewRecord
                         ->columns(2),
                 ])
                     ->from('md') // Split mulai dari medium screen
-                    ->columnSpanFull(), // Menggunakan lebar penuh
+                    ->columnSpanFull(),
+
+
 
                 // Tempat Magang
                 Section::make('Lokasi Magang Mahasiswa')
@@ -95,8 +97,23 @@ class ViewMahasiswaBimbingan extends ViewRecord
                         TextEntry::make('pengajuan.lowongan.perusahaan.website')
                             ->label('Website Perusahaan')
                             ->url(fn($state) => $state) // bikin jadi link yang bisa diklik
-                            ->color('primary')           // warna biru (default theme Tailwind)
+                            ->color('primary')
                             ->openUrlInNewTab(),
+                    ])
+                    ->columns(2)
+                    ->columnSpanFull(),
+
+                // Lowongan yang ditempuh (diterima magang)
+                Section::make('Lowongan Magang yang sedang Ditempuh')
+                    ->schema([
+                        TextEntry::make('pengajuan.lowongan.judul_lowongan')
+                            ->label('Judul Lowongan'),
+                        TextEntry::make('pengajuan.lowongan.bidangKeahlian.nama_bidang_keahlian')
+                            ->label('Bidang Keahlian'),
+                        TextEntry::make('pengajuan.lowongan.deskripsi_lowongan')
+                            ->label('Deskripsi Lowongan')
+                            ->columnSpan(3),
+
                     ])
                     ->columns(2)
                     ->columnSpanFull()
