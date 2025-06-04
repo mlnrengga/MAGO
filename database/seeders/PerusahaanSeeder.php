@@ -16,7 +16,6 @@ class PerusahaanSeeder extends Seeder
         $data = [
             [
                 'id_perusahaan' => 1,
-                'id_admin' => 1,
                 'nama' => 'PT. Maju Mundur',
                 'alamat' => 'Jl. Raya No. 1',
                 'no_telepon' => '08123456789',
@@ -27,7 +26,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 2,
-                'id_admin' => 1,
                 'nama' => 'PT. Global Media Nusantara',
                 'alamat' => 'Jl. Gatot Subroto Kav. 35-36, Jakarta Selatan',
                 'no_telepon' => '0218765432',
@@ -38,7 +36,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 3,
-                'id_admin' => 2,
                 'nama' => 'PT. Indofood Sukses Makmur',
                 'alamat' => 'Sudirman Plaza, Indofood Tower, Jl. Jend. Sudirman Kav. 76-78, Jakarta',
                 'no_telepon' => '02157958822',
@@ -49,7 +46,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 4,
-                'id_admin' => 2,
                 'nama' => 'PT. Bank Central Asia Tbk',
                 'alamat' => 'Menara BCA, Grand Indonesia, Jl. M.H. Thamrin No. 1, Jakarta',
                 'no_telepon' => '02123588000',
@@ -60,7 +56,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 5,
-                'id_admin' => 3,
                 'nama' => 'PT. Telkom Indonesia Tbk',
                 'alamat' => 'Jl. Japati No. 1, Bandung',
                 'no_telepon' => '02214526455',
@@ -71,7 +66,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 6,
-                'id_admin' => 3,
                 'nama' => 'PT. Astra International Tbk',
                 'alamat' => 'Jl. Gaya Motor Raya No. 8, Sunter II, Jakarta',
                 'no_telepon' => '02165066555',
@@ -82,7 +76,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 7,
-                'id_admin' => 4,
                 'nama' => 'PT. Unilever Indonesia Tbk',
                 'alamat' => 'Graha Unilever, Green Office Park Kav. 3, BSD City, Tangerang',
                 'no_telepon' => '02180827000',
@@ -93,7 +86,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 8,
-                'id_admin' => 4,
                 'nama' => 'PT. Gojek Indonesia',
                 'alamat' => 'Pasaraya Blok M, Gedung B, Jl. Sultan Hasanudin, Jakarta Selatan',
                 'no_telepon' => '02150251110',
@@ -104,7 +96,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 9,
-                'id_admin' => 5,
                 'nama' => 'PT. Tokopedia',
                 'alamat' => 'Tokopedia Tower, Ciputra World 2, Jakarta Selatan',
                 'no_telepon' => '02180625960',
@@ -115,7 +106,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 10,
-                'id_admin' => 5,
                 'nama' => 'PT. Bukalapak.com',
                 'alamat' => 'Metropolitan Tower, Jl. R.A. Kartini Kav. 14, Jakarta',
                 'no_telepon' => '02150963333',
@@ -126,7 +116,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 11,
-                'id_admin' => 6,
                 'nama' => 'PT. Bank Rakyat Indonesia Tbk',
                 'alamat' => 'Gedung BRI, Jl. Jenderal Sudirman Kav. 44-46, Jakarta',
                 'no_telepon' => '02125751966',
@@ -137,7 +126,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 12,
-                'id_admin' => 6,
                 'nama' => 'PT. Bank Mandiri Tbk',
                 'alamat' => 'Plaza Mandiri, Jl. Jenderal Gatot Subroto Kav. 36-38, Jakarta',
                 'no_telepon' => '0215245065',
@@ -148,7 +136,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 13,
-                'id_admin' => 7,
                 'nama' => 'PT. Pertamina',
                 'alamat' => 'Jl. Medan Merdeka Timur No. 1A, Jakarta',
                 'no_telepon' => '02138158075',
@@ -159,7 +146,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 14,
-                'id_admin' => 7,
                 'nama' => 'PT. Garuda Indonesia Tbk',
                 'alamat' => 'Garuda Management Building, Soekarno-Hatta Airport, Tangerang',
                 'no_telepon' => '02123519999',
@@ -170,7 +156,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 15,
-                'id_admin' => 8,
                 'nama' => 'PT. Kalbe Farma Tbk',
                 'alamat' => 'Jl. Let. Jend. Suprapto Kav. 4, Jakarta',
                 'no_telepon' => '0214287388',
@@ -181,7 +166,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 16,
-                'id_admin' => 8,
                 'nama' => 'PT. Adaro Energy Tbk',
                 'alamat' => 'Menara Karya, Jl. H.R. Rasuna Said Blok X-5, Kav. 1-2, Jakarta',
                 'no_telepon' => '02125538000',
@@ -192,7 +176,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 17,
-                'id_admin' => 9,
                 'nama' => 'PT. XL Axiata Tbk',
                 'alamat' => 'XL Axiata Tower, Jl. H.R. Rasuna Said X-5 Kav. 11-12, Jakarta',
                 'no_telepon' => '02156542222',
@@ -203,7 +186,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 18,
-                'id_admin' => 9,
                 'nama' => 'PT. Indosat Tbk',
                 'alamat' => 'Jl. Medan Merdeka Barat No. 21, Jakarta',
                 'no_telepon' => '0230003001',
@@ -214,7 +196,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 19,
-                'id_admin' => 10,
                 'nama' => 'PT. Semen Indonesia Tbk',
                 'alamat' => 'Gedung Utama Semen Indonesia, Jl. Veteran, Gresik',
                 'no_telepon' => '0313981732',
@@ -225,7 +206,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 20,
-                'id_admin' => 10,
                 'nama' => 'PT. United Tractors Tbk',
                 'alamat' => 'Jl. Raya Bekasi Km. 22, Jakarta',
                 'no_telepon' => '02124601608',
@@ -236,7 +216,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 21,
-                'id_admin' => 1,
                 'nama' => 'PT. Mayora Indah Tbk',
                 'alamat' => 'Gedung Mayora, Jl. Tomang Raya No. 21-23, Jakarta',
                 'no_telepon' => '02125508888',
@@ -247,7 +226,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 22,
-                'id_admin' => 2,
                 'nama' => 'PT. Indomarco Prismatama (Indomaret)',
                 'alamat' => 'Jl. Ancol Barat I/9-10, Jakarta',
                 'no_telepon' => '02165834800',
@@ -258,7 +236,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 23,
-                'id_admin' => 3,
                 'nama' => 'PT. Sumber Alfaria Trijaya Tbk (Alfamart)',
                 'alamat' => 'Alfa Tower, Jl. Jalur Sutera Barat Kav. 9, Tangerang',
                 'no_telepon' => '02180821555',
@@ -269,7 +246,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 24,
-                'id_admin' => 4,
                 'nama' => 'PT. Indah Kiat Pulp & Paper Tbk',
                 'alamat' => 'Sinar Mas Land Plaza, Jl. MH. Thamrin No. 51, Jakarta',
                 'no_telepon' => '02131930134',
@@ -280,7 +256,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 25,
-                'id_admin' => 5,
                 'nama' => 'PT. BNI Life Insurance',
                 'alamat' => 'Centennial Tower Lt. 9, Jl. Jend. Gatot Subroto Kav. 24-25, Jakarta',
                 'no_telepon' => '02129461010',
@@ -291,7 +266,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 26,
-                'id_admin' => 6,
                 'nama' => 'PT. Djarum',
                 'alamat' => 'Jl. A. Yani No. 28, Kudus',
                 'no_telepon' => '0291431901',
@@ -302,7 +276,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 27,
-                'id_admin' => 7,
                 'nama' => 'PT. Lion Air',
                 'alamat' => 'Lion Air Tower, Jl. Gajah Mada No. 7, Jakarta',
                 'no_telepon' => '0215747777',
@@ -313,7 +286,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 28,
-                'id_admin' => 8,
                 'nama' => 'PT. Astra Otoparts Tbk',
                 'alamat' => 'Jl. Raya Pegangsaan Dua Km. 2.2, Jakarta',
                 'no_telepon' => '02146019061',
@@ -324,7 +296,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 29,
-                'id_admin' => 9,
                 'nama' => 'PT. Trans Retail Indonesia (Transmart Carrefour)',
                 'alamat' => 'Jl. H.R. Rasuna Said Kav. B7-A, Jakarta',
                 'no_telepon' => '02129109999',
@@ -335,7 +306,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 30,
-                'id_admin' => 10,
                 'nama' => 'PT. Kompas Gramedia',
                 'alamat' => 'Menara Kompas Gramedia, Jl. Palmerah Selatan No. 22-28, Jakarta',
                 'no_telepon' => '0215347710',
@@ -346,7 +316,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 31,
-                'id_admin' => 1,
                 'nama' => 'PT. Lippo Karawaci Tbk',
                 'alamat' => 'Menara Matahari, Jl. Boulevard Palem Raya No. 7, Tangerang',
                 'no_telepon' => '02155788888',
@@ -357,7 +326,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 32,
-                'id_admin' => 2,
                 'nama' => 'PT. Ciputra Development Tbk',
                 'alamat' => 'Ciputra World 1, DBS Bank Tower Lt. 39, Jakarta',
                 'no_telepon' => '02129885858',
@@ -368,7 +336,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 33,
-                'id_admin' => 3,
                 'nama' => 'PT. Sido Muncul Tbk',
                 'alamat' => 'Office Sido Muncul, Gedung Menara Suara Merdeka, Semarang',
                 'no_telepon' => '0248307979',
@@ -379,7 +346,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 34,
-                'id_admin' => 4,
                 'nama' => 'PT. Tiket.com',
                 'alamat' => 'Wisma 77 Tower 2, Jl. Letjen. S. Parman Kav. 77, Jakarta',
                 'no_telepon' => '02158204100',
@@ -390,7 +356,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 35,
-                'id_admin' => 5,
                 'nama' => 'PT. Shopee Indonesia',
                 'alamat' => 'Wisma 77 Tower 2, Jl. Letjen. S. Parman Kav. 77, Jakarta',
                 'no_telepon' => '02129490110',
@@ -401,7 +366,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 36,
-                'id_admin' => 6,
                 'nama' => 'PT. Lazada Indonesia',
                 'alamat' => 'Menara Palma, Jl. HR Rasuna Said Blok X2 Kav. 6, Jakarta',
                 'no_telepon' => '02180648888',
@@ -412,7 +376,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 37,
-                'id_admin' => 7,
                 'nama' => 'PT. Maybank Indonesia Tbk',
                 'alamat' => 'Sentral Senayan III, Jl. Asia Afrika No. 8, Jakarta',
                 'no_telepon' => '0221500611',
@@ -423,7 +386,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 38,
-                'id_admin' => 8,
                 'nama' => 'PT. CIMB Niaga Tbk',
                 'alamat' => 'Menara CIMB Niaga, Jl. M.H. Thamrin No. 26, Jakarta',
                 'no_telepon' => '02162886000',
@@ -434,7 +396,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 39,
-                'id_admin' => 9,
                 'nama' => 'PT. Bank Permata Tbk',
                 'alamat' => 'Gedung WTC II, Jl. Jend. Sudirman Kav. 29-31, Jakarta',
                 'no_telepon' => '0215237788',
@@ -445,7 +406,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 40,
-                'id_admin' => 10,
                 'nama' => 'PT. Bank OCBC NISP Tbk',
                 'alamat' => 'OCBC NISP Tower, Jl. Prof. Dr. Satrio Kav. 25, Jakarta',
                 'no_telepon' => '02125533888',
@@ -456,7 +416,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 41,
-                'id_admin' => 1,
                 'nama' => 'PT. Biofarma',
                 'alamat' => 'Jl. Pasteur No. 28, Bandung',
                 'no_telepon' => '0222033755',
@@ -467,7 +426,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 42,
-                'id_admin' => 2,
                 'nama' => 'PT. Kimia Farma Tbk',
                 'alamat' => 'Jl. Veteran No. 9, Jakarta',
                 'no_telepon' => '0213847709',
@@ -478,7 +436,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 43,
-                'id_admin' => 3,
                 'nama' => 'PT. Bluebird Tbk',
                 'alamat' => 'Jl. Mampang Prapatan Raya No. 60, Jakarta',
                 'no_telepon' => '0217941234',
@@ -489,7 +446,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 44,
-                'id_admin' => 4,
                 'nama' => 'PT. Kereta Api Indonesia',
                 'alamat' => 'Jl. Perintis Kemerdekaan No. 3, Bandung',
                 'no_telepon' => '0224230031',
@@ -500,7 +456,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 45,
-                'id_admin' => 5,
                 'nama' => 'PT. Pupuk Indonesia',
                 'alamat' => 'Jl. Taman Anggrek Kemanggisan Jaya, Jakarta',
                 'no_telepon' => '02153650145',
@@ -511,7 +466,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 46,
-                'id_admin' => 6,
                 'nama' => 'PT. Pegadaian',
                 'alamat' => 'Jl. Kramat Raya No. 162, Jakarta',
                 'no_telepon' => '0213155550',
@@ -522,7 +476,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 47,
-                'id_admin' => 7,
                 'nama' => 'PT. Pos Indonesia',
                 'alamat' => 'Jl. Cilaki No. 73, Bandung',
                 'no_telepon' => '0224233333',
@@ -533,7 +486,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 48,
-                'id_admin' => 8,
                 'nama' => 'PT. Taspen',
                 'alamat' => 'Jl. Letjen Suprapto No. 45, Jakarta',
                 'no_telepon' => '0214203805',
@@ -544,7 +496,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 49,
-                'id_admin' => 9,
                 'nama' => 'PT. Jasa Marga Tbk',
                 'alamat' => 'Plaza Tol Taman Mini Indonesia Indah, Jakarta',
                 'no_telepon' => '02184591666',
@@ -555,7 +506,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 50,
-                'id_admin' => 10,
                 'nama' => 'PT. Angkasa Pura I',
                 'alamat' => 'Kota Baru Bandar Kemayoran Blok B12 Kav. 2, Jakarta',
                 'no_telepon' => '02165411961',
@@ -566,7 +516,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 51,
-                'id_admin' => 1,
                 'nama' => 'PT. Angkasa Pura II',
                 'alamat' => 'Soekarno-Hatta International Airport, Tangerang',
                 'no_telepon' => '02155912049',
@@ -577,7 +526,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 52,
-                'id_admin' => 2,
                 'nama' => 'PT. PLN',
                 'alamat' => 'Jl. Trunojoyo Blok M-I No. 135, Jakarta',
                 'no_telepon' => '02123560123',
@@ -588,7 +536,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 53,
-                'id_admin' => 3,
                 'nama' => 'PT. Toyota Astra Motor',
                 'alamat' => 'Jl. Gaya Motor Selatan No. 5, Jakarta',
                 'no_telepon' => '02165158000',
@@ -599,7 +546,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 54,
-                'id_admin' => 4,
                 'nama' => 'PT. Honda Prospect Motor',
                 'alamat' => 'Jl. Gaya Motor I, Jakarta',
                 'no_telepon' => '02165156655',
@@ -610,7 +556,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 55,
-                'id_admin' => 5,
                 'nama' => 'PT. Suzuki Indomobil Motor',
                 'alamat' => 'Jl. Raya Bekasi Km. 19, Jakarta',
                 'no_telepon' => '02148898042',
@@ -621,7 +566,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 56,
-                'id_admin' => 6,
                 'nama' => 'PT. Daihatsu Astra',
                 'alamat' => 'Jl. Gaya Motor III No. 5, Jakarta',
                 'no_telepon' => '02165318888',
@@ -632,7 +576,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 57,
-                'id_admin' => 7,
                 'nama' => 'PT. Samsung Electronics Indonesia',
                 'alamat' => 'Cikarang Industrial Estate, Bekasi',
                 'no_telepon' => '02189837114',
@@ -643,7 +586,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 58,
-                'id_admin' => 8,
                 'nama' => 'PT. LG Electronics Indonesia',
                 'alamat' => 'Jl. Jend. S. Parman Kav. 77, Jakarta',
                 'no_telepon' => '0215501010',
@@ -654,7 +596,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 59,
-                'id_admin' => 9,
                 'nama' => 'PT. Panasonic Gobel Indonesia',
                 'alamat' => 'Jl. Dewi Sartika No. 14, Jakarta',
                 'no_telepon' => '0218015710',
@@ -665,7 +606,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 60,
-                'id_admin' => 10,
                 'nama' => 'PT. Sharp Electronics Indonesia',
                 'alamat' => 'Jl. Swadaya IV, Jakarta',
                 'no_telepon' => '0218650971',
@@ -676,7 +616,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 61,
-                'id_admin' => 1,
                 'nama' => 'PT. Prudential Life Assurance',
                 'alamat' => 'Prudential Tower, Jl. Jend. Sudirman Kav. 79, Jakarta',
                 'no_telepon' => '02129958888',
@@ -687,7 +626,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 62,
-                'id_admin' => 2,
                 'nama' => 'PT. Manulife Indonesia',
                 'alamat' => 'Sampoerna Strategic Square, Jakarta',
                 'no_telepon' => '0215804000',
@@ -698,7 +636,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 63,
-                'id_admin' => 3,
                 'nama' => 'PT. AIA Financial',
                 'alamat' => 'AIA Central, Jl. Jend. Sudirman Kav. 48A, Jakarta',
                 'no_telepon' => '02154991500',
@@ -709,7 +646,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 64,
-                'id_admin' => 4,
                 'nama' => 'PT. Allianz Life Indonesia',
                 'alamat' => 'Allianz Tower, Jl. HR Rasuna Said, Jakarta',
                 'no_telepon' => '0212926999',
@@ -720,7 +656,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 65,
-                'id_admin' => 5,
                 'nama' => 'PT. Traveloka Indonesia',
                 'alamat' => 'Wisma 77 Tower 2, Jakarta',
                 'no_telepon' => '02127508800',
@@ -731,7 +666,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 66,
-                'id_admin' => 6,
                 'nama' => 'PT. Bukit Asam Tbk',
                 'alamat' => 'Jl. Parigi No. 1, Tanjung Enim',
                 'no_telepon' => '0218507070',
@@ -742,7 +676,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 67,
-                'id_admin' => 7,
                 'nama' => 'PT. Vale Indonesia Tbk',
                 'alamat' => 'The Energy Building, Jakarta',
                 'no_telepon' => '0215249000',
@@ -753,7 +686,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 68,
-                'id_admin' => 8,
                 'nama' => 'PT. Freeport Indonesia',
                 'alamat' => 'Plaza 89, Jl. H.R. Rasuna Said Kav. X-7 No. 6, Jakarta',
                 'no_telepon' => '02125504000',
@@ -764,7 +696,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 69,
-                'id_admin' => 9,
                 'nama' => 'PT. Bank BTPN Tbk',
                 'alamat' => 'Menara BTPN, Jakarta',
                 'no_telepon' => '02130026200',
@@ -775,7 +706,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 70,
-                'id_admin' => 10,
                 'nama' => 'PT. Bank Danamon Indonesia Tbk',
                 'alamat' => 'Menara Bank Danamon, Jakarta',
                 'no_telepon' => '0215799999',
@@ -786,7 +716,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 71,
-                'id_admin' => 1,
                 'nama' => 'PT. Nippon Indosari Corpindo Tbk (Sari Roti)',
                 'alamat' => 'Kawasan Industri MM2100, Bekasi',
                 'no_telepon' => '02189844959',
@@ -797,7 +726,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 72,
-                'id_admin' => 2,
                 'nama' => 'PT. Mustika Ratu Tbk',
                 'alamat' => 'Jl. Raya Bogor Km. 26,4, Jakarta',
                 'no_telepon' => '0218710906',
@@ -808,7 +736,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 73,
-                'id_admin' => 3,
                 'nama' => 'PT. Mitra Adiperkasa Tbk',
                 'alamat' => 'Wisma 46 Kota BNI, Jakarta',
                 'no_telepon' => '0215701888',
@@ -819,7 +746,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 74,
-                'id_admin' => 4,
                 'nama' => 'PT. Matahari Department Store Tbk',
                 'alamat' => 'Menara Matahari, Tangerang',
                 'no_telepon' => '02155470555',
@@ -830,7 +756,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 75,
-                'id_admin' => 5,
                 'nama' => 'PT. Ramayana Lestari Sentosa Tbk',
                 'alamat' => 'Jl. K.H. Wahid Hasyim No. 220 A-B, Jakarta',
                 'no_telepon' => '0213102888',
@@ -841,7 +766,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 76,
-                'id_admin' => 6,
                 'nama' => 'PT. Erajaya Swasembada Tbk',
                 'alamat' => 'Jl. Gedong Panjang No. 29-31, Jakarta',
                 'no_telepon' => '0216515588',
@@ -852,7 +776,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 77,
-                'id_admin' => 7,
                 'nama' => 'PT. MAP Aktif Adiperkasa Tbk',
                 'alamat' => 'Sahid Sudirman Center Lt. 29, Jakarta',
                 'no_telepon' => '0218064 3777',
@@ -863,7 +786,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 78,
-                'id_admin' => 8,
                 'nama' => 'PT. Midi Utama Indonesia Tbk (Alfamidi)',
                 'alamat' => 'Gedung Alfa Tower, BSD City, Tangerang',
                 'no_telepon' => '02180821555',
@@ -874,7 +796,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 79,
-                'id_admin' => 9,
                 'nama' => 'PT. Fast Food Indonesia Tbk (KFC)',
                 'alamat' => 'Jl. M.T. Haryono Kav. 7, Jakarta',
                 'no_telepon' => '0218307000',
@@ -885,7 +806,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 80,
-                'id_admin' => 10,
                 'nama' => 'PT. Sinar Mas Agro Resources and Technology Tbk',
                 'alamat' => 'Plaza BII Tower II, Jakarta',
                 'no_telepon' => '0215033888',
@@ -896,7 +816,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 81,
-                'id_admin' => 1,
                 'nama' => 'PT. Wings Group Indonesia',
                 'alamat' => 'Jl. Tipar Cakung Kav. F 5-7, Jakarta',
                 'no_telepon' => '0214600086',
@@ -907,7 +826,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 82,
-                'id_admin' => 2,
                 'nama' => 'PT. Nutrifood Indonesia',
                 'alamat' => 'Jl. Rawabali II No. 3, Jakarta',
                 'no_telepon' => '0214603020',
@@ -918,7 +836,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 83,
-                'id_admin' => 3,
                 'nama' => 'PT. Kino Indonesia Tbk',
                 'alamat' => 'Kino Tower, Jakarta',
                 'no_telepon' => '02180508888',
@@ -929,7 +846,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 84,
-                'id_admin' => 4,
                 'nama' => 'PT. Tempo Scan Pacific Tbk',
                 'alamat' => 'Tempo Scan Tower, Jakarta',
                 'no_telepon' => '0221323567',
@@ -940,7 +856,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 85,
-                'id_admin' => 5,
                 'nama' => 'PT. Bunda Medik',
                 'alamat' => 'Jl. Teuku Cik Ditiro No. 28, Jakarta',
                 'no_telepon' => '0213908671',
@@ -951,7 +866,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 86,
-                'id_admin' => 6,
                 'nama' => 'PT. Siloam International Hospitals Tbk',
                 'alamat' => 'Jl. Boulevard Gajah Mada No. 2096, Lippo Karawaci',
                 'no_telepon' => '02155800000',
@@ -962,7 +876,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 87,
-                'id_admin' => 7,
                 'nama' => 'PT. Mitra Keluarga Karyasehat Tbk',
                 'alamat' => 'Jl. Raya Gading Kirana Kav. 2, Jakarta',
                 'no_telepon' => '0214585800',
@@ -973,7 +886,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 88,
-                'id_admin' => 8,
                 'nama' => 'PT. Wijaya Karya Tbk',
                 'alamat' => 'Jl. D.I. Panjaitan Kav. 9-10, Jakarta',
                 'no_telepon' => '02180679200',
@@ -984,7 +896,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 89,
-                'id_admin' => 9,
                 'nama' => 'PT. Waskita Karya Tbk',
                 'alamat' => 'Jl. M.T. Haryono Kav. 10, Jakarta',
                 'no_telepon' => '0218507608',
@@ -995,7 +906,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 90,
-                'id_admin' => 10,
                 'nama' => 'PT. Adhi Karya Tbk',
                 'alamat' => 'Jl. Raya Pasar Minggu KM. 18, Jakarta',
                 'no_telepon' => '0217975312',
@@ -1006,7 +916,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 91,
-                'id_admin' => 1,
                 'nama' => 'PT. Pembangunan Perumahan Tbk',
                 'alamat' => 'Plaza PP, Jl. TB. Simatupang No. 57, Jakarta',
                 'no_telepon' => '02188638000',
@@ -1017,7 +926,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 92,
-                'id_admin' => 2,
                 'nama' => 'PT. Pakuwon Jati Tbk',
                 'alamat' => 'EastCoast Center Lt. 5, Surabaya',
                 'no_telepon' => '0315820888',
@@ -1028,7 +936,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 93,
-                'id_admin' => 3,
                 'nama' => 'PT. Summarecon Agung Tbk',
                 'alamat' => 'Plaza Summarecon, Bekasi',
                 'no_telepon' => '0214535688',
@@ -1039,7 +946,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 94,
-                'id_admin' => 4,
                 'nama' => 'PT. Gudang Garam Tbk',
                 'alamat' => 'Jl. Semampir II/1, Kediri',
                 'no_telepon' => '0354682091',
@@ -1050,7 +956,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 95,
-                'id_admin' => 5,
                 'nama' => 'PT. HM Sampoerna Tbk',
                 'alamat' => 'Jl. Rungkut Industri Raya No. 18, Surabaya',
                 'no_telepon' => '0318431699',
@@ -1061,7 +966,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 96,
-                'id_admin' => 6,
                 'nama' => 'PT. Bentoel Internasional Investama Tbk',
                 'alamat' => 'Jl. Raya Karanglo, Malang',
                 'no_telepon' => '0341487000',
@@ -1072,7 +976,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 97,
-                'id_admin' => 7,
                 'nama' => 'PT. Ultra Jaya Milk Industry Tbk',
                 'alamat' => 'Jl. Raya Cimareme No. 131, Bandung',
                 'no_telepon' => '0226803888',
@@ -1083,7 +986,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 98,
-                'id_admin' => 8,
                 'nama' => 'PT. Garudafood Putra Putri Jaya Tbk',
                 'alamat' => 'Jl. Bintaro Raya No. 10A, Jakarta',
                 'no_telepon' => '02129869888',
@@ -1094,7 +996,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 99,
-                'id_admin' => 9,
                 'nama' => 'PT. Bisi International Tbk',
                 'alamat' => 'Jl. Raya Surabaya-Mojokerto Km. 19, Sidoarjo',
                 'no_telepon' => '0318910983',
@@ -1105,7 +1006,6 @@ class PerusahaanSeeder extends Seeder
             ],
             [
                 'id_perusahaan' => 100,
-                'id_admin' => 10,
                 'nama' => 'PT. Chandra Asri Petrochemical Tbk',
                 'alamat' => 'Wisma Barito Pacific Tower A, Jakarta',
                 'no_telepon' => '0215304710',
