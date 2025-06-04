@@ -10,10 +10,14 @@ class EditPenggunaadmin extends EditRecord
 {
     protected static string $resource = PenggunaadminResource::class;
 
-    protected function getHeaderActions(): array
+    protected function afterSave(): void
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        $admin = $this->record->admin;
+
+        if ($admin) {
+            $admin->update([
+                'nip' => $this->data['nip'],
+            ]);
+        }
     }
 }

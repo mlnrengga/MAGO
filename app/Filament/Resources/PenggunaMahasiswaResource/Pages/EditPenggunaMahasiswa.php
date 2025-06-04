@@ -2,18 +2,22 @@
 
 namespace App\Filament\Resources\PenggunaMahasiswaResource\Pages;
 
-use App\Filament\Resources\PenggunaMahasiswaResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\PenggunaMahasiswaResource;
 
 class EditPenggunaMahasiswa extends EditRecord
 {
     protected static string $resource = PenggunaMahasiswaResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+   protected function afterSave(): void
+{
+    $mahasiswa = $this->record->mahasiswa;
+
+    if ($mahasiswa) {
+        $mahasiswa->update([
+            'nim' => $this->data['nim'],
+            'id_prodi' => $this->data['id_prodi'],
+        ]);
     }
+}
 }
