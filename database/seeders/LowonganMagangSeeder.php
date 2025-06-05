@@ -208,7 +208,8 @@ class LowonganMagangSeeder extends Seeder
             $fullDeskripsi = "DESKRIPSI:\n" . $deskripsiAwal . "\n\nKUALIFIKASI:\n" . $kualifikasi . "\n\nTANGGUNG JAWAB:\n" . $tanggungJawab . "\n\nBENEFIT:\n" . $benefit;
             
             // Tentukan sisa field
-            $id_jenis_magang = rand(1, 5);
+            $jenis_magang_options = [1, 2, 3, 5];
+            $id_jenis_magang = $jenis_magang_options[array_rand($jenis_magang_options)];
             $id_perusahaan = ($i % 100) + 1; // Memanfaatkan 100 perusahaan yang ada
             $id_daerah_magang = rand(1, 514); // Asumsi ada 514 daerah di Indonesia
             

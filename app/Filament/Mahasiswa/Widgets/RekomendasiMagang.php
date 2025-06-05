@@ -75,6 +75,7 @@ class RekomendasiMagang extends BaseWidget
                     ->size('lg'),
                 Tables\Columns\TextColumn::make('judul_lowongan')
                     ->searchable()
+                    ->copyable()
                     ->limit(25)
                     ->label('Lowongan')
                     ->weight('bold')
@@ -148,6 +149,9 @@ class RekomendasiMagang extends BaseWidget
         $lowonganCollection = LowonganMagangModel::query()
             ->with(['bidangKeahlian', 'jenisMagang', 'daerahMagang', 'waktuMagang', 'insentif', 'perusahaan'])
             ->where('status', 'Aktif')
+            ->whereHas('jenisMagang', function ($query) {
+                $query->where('nama_jenis_magang', '!=', 'Magang Mandiri');
+            })
             ->get();
 
         if ($lowonganCollection->isEmpty()) {
@@ -156,27 +160,41 @@ class RekomendasiMagang extends BaseWidget
 
         // Mendapatkan preferensi jenis magang dan bidang keahlian
         $preferensiJenisMagang = $preferensi->jenisMagang->pluck('id_jenis_magang')->toArray();
-        $preferensiBidang = $preferensi->bidangKeahlian->pluck('id_bidang')->toArray();
+        
 
         // Membuat matriks keputusan (matrix)
         $matrix = [];
         $lowonganIds = [];
 
-        // Menambahkan alternatif optimal sebagai baris pertama (A0)
-        $matrix[0] = [
-            'daerah' => 1,
-            'waktu' => 1,
-            'insentif' => 1,
-            'jenis' => 1,
-            'bidang' => 1,
-        ];
-
+        // STEP 1: Hitung nilai untuk semua alternatif (lowongan)
         foreach ($lowonganCollection as $index => $lowongan) {
             $rowIndex = $index + 1;
             $lowonganIds[$rowIndex] = $lowongan->id_lowongan;
 
             // Menghitung kesesuaian daerah
-            $daerah = ($lowongan->id_daerah_magang == $preferensi->id_daerah_magang) ? 1 : 0;
+            $daerahPreferensi = $preferensi->daerahMagang;
+            $daerahLowongan = $lowongan->daerahMagang;
+
+            $earthRadius = 6371; // Radius Bumi dalam kilometer
+
+            if (
+                $daerahPreferensi->latitude == $daerahLowongan->latitude &&
+                $daerahPreferensi->longitude == $daerahLowongan->longitude
+            ) {
+                $daerah = 1;
+            } else {
+                $lat1 = deg2rad($daerahPreferensi->latitude);
+                $lon1 = deg2rad($daerahPreferensi->longitude);
+                $lat2 = deg2rad($daerahLowongan->latitude);
+                $lon2 = deg2rad($daerahLowongan->longitude);
+
+                // Haversine formula
+                $latDelta = $lat2 - $lat1;
+                $lonDelta = $lon2 - $lon1;
+                $a = sin($latDelta / 2) ** 2 + cos($lat1) * cos($lat2) * sin($lonDelta / 2) ** 2;
+                $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+                $daerah = $earthRadius * $c;
+            }
 
             // Menghitung kesesuaian waktu
             $waktu = ($lowongan->id_waktu_magang == $preferensi->id_waktu_magang) ? 1 : 0;
@@ -189,6 +207,7 @@ class RekomendasiMagang extends BaseWidget
 
             // Menghitung kesesuaian bidang keahlian
             $lowonganBidang = $lowongan->bidangKeahlian->pluck('id_bidang')->toArray();
+            $preferensiBidang = $preferensi->bidangKeahlian->pluck('id_bidang')->toArray();
             $bidangCount = count($lowonganBidang);
             $matchCount = 0;
 
@@ -212,17 +231,40 @@ class RekomendasiMagang extends BaseWidget
             ];
         }
 
+        // STEP 2: Temukan nilai optimal untuk setiap kriteria
+        $maxBidang = 0;
+
+        foreach ($matrix as $i => $row) {
+            if ($row['bidang'] > $maxBidang) {
+                $maxBidang = $row['bidang'];
+            }
+        }
+
+        // Tambahkan alternatif optimal sebagai baris pertama (A0)
+        $matrix[0] = [
+            'daerah' => 1,  // Cost
+            'waktu' => 1,    // Benefit
+            'insentif' => 1, // Benefit
+            'jenis' => 1,    // Benefit
+            'bidang' => $maxBidang,  // Benefit
+        ];
+
         // Menghitung jumlah setiap kolom untuk normalisasi
         $colSums = [
-            'daerah' => 0,
             'waktu' => 0,
             'insentif' => 0,
             'jenis' => 0,
             'bidang' => 0,
         ];
 
-        foreach ($matrix as $row) {
-            $colSums['daerah'] += $row['daerah'];
+        $invertedDaerah = [];
+        $sumInvertedDaerah = 0;
+
+        foreach ($matrix as $i => $row) {
+            $invertedDaerah[$i] = 1 / $row['daerah'];
+
+            $sumInvertedDaerah += $invertedDaerah[$i];
+
             $colSums['waktu'] += $row['waktu'];
             $colSums['insentif'] += $row['insentif'];
             $colSums['jenis'] += $row['jenis'];
@@ -233,7 +275,7 @@ class RekomendasiMagang extends BaseWidget
         $normalizedMatrix = [];
         foreach ($matrix as $i => $row) {
             $normalizedMatrix[$i] = [
-                'daerah' => ($colSums['daerah'] > 0) ? $row['daerah'] / $colSums['daerah'] : 0,
+                'daerah' => ($sumInvertedDaerah > 0) ? $invertedDaerah[$i] / $sumInvertedDaerah : 0,
                 'waktu' => ($colSums['waktu'] > 0) ? $row['waktu'] / $colSums['waktu'] : 0,
                 'insentif' => ($colSums['insentif'] > 0) ? $row['insentif'] / $colSums['insentif'] : 0,
                 'jenis' => ($colSums['jenis'] > 0) ? $row['jenis'] / $colSums['jenis'] : 0,

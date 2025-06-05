@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Mahasiswa\Resources\PengajuanMagangMahasiswaResource\Pages;
+namespace App\Filament\Mahasiswa\Resources\LamarMagangMahasiswaResource\Pages;
 
-use App\Filament\Mahasiswa\Resources\PengajuanMagangMahasiswaResource;
+use App\Filament\Mahasiswa\Resources\LamarMagangMahasiswaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Http\Request;
 
-class CreatePengajuanMagangMahasiswa extends CreateRecord
+class CreateLamarMagangMahasiswa extends CreateRecord
 {
-    protected static string $resource = PengajuanMagangMahasiswaResource::class;
+    protected static string $resource = LamarMagangMahasiswaResource::class;
 
     protected function getRedirectUrl(): string
     {

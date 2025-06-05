@@ -24,6 +24,23 @@ class ViewLowongan extends ViewRecord
                         Infolists\Components\TextEntry::make('perusahaan.nama')
                             ->label('Perusahaan'),
                         
+                        Infolists\Components\TextEntry::make('perusahaan.no_telepon')
+                            ->label('Nomor Telepon Perusahaan')
+                            ->icon('heroicon-m-phone'),
+
+                        Infolists\Components\TextEntry::make('perusahaan.website')
+                            ->label('Website Perusahaan')
+                            ->icon('heroicon-m-globe-alt'),
+                        
+                        Infolists\Components\TextEntry::make('perusahaan.partnership')
+                            ->label('Status Perusahaan')
+                            ->badge()
+                            ->color(fn (string $state): string => match ($state) {
+                                'Perusahaan Mitra' => 'success',
+                                'Perusahaan Non-Mitra' => 'danger',
+                                default => 'gray',
+                            }),
+                        
                         Infolists\Components\TextEntry::make('perusahaan.alamat')
                             ->label('Alamat Perusahaan')
                             ->columnSpanFull(),
@@ -32,7 +49,7 @@ class ViewLowongan extends ViewRecord
                             ->label('Deskripsi Lowongan')
                             ->html()
                             ->columnSpanFull(),
-                    ])->columns(2),
+                    ])->columns(3),
 
                 Infolists\Components\Section::make('Detail Magang')
                     ->schema([

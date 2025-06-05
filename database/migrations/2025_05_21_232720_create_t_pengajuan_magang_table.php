@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('tanggal_pengajuan');
             $table->enum('status', ['Diajukan', 'Diterima', 'Ditolak']);
             $table->date('tanggal_diterima')->nullable();
+            $table->text('alasan_penolakan')->nullable();
             $table->timestamps();
 
             $table->foreign('id_mahasiswa')->references('id_mahasiswa')->on('m_mahasiswa');

@@ -17,19 +17,16 @@ class PerusahaanModel extends Model
 
     public $incrementing = true;
 
-    protected $fillable = [
-        'id_admin',
+      protected $fillable = [
         'nama',
         'alamat',
         'no_telepon',
         'email',
         'website',
+        'partnership',
+        'extra_field',
     ];
 
-    public function admin()
-    {
-        return $this->belongsTo(AdminModel::class, 'id_admin', 'id_admin');
-    }
 
     public function lowonganMagang(): HasMany
     {

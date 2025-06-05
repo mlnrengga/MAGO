@@ -21,6 +21,7 @@ class PengajuanMagangModel extends Model
         'tanggal_pengajuan',
         'status',
         'tanggal_diterima',
+        'alasan_penolakan',
     ];
     
     protected $casts = [
