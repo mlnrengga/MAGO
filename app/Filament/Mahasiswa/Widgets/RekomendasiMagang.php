@@ -233,16 +233,22 @@ class RekomendasiMagang extends BaseWidget
 
         // STEP 2: Temukan nilai optimal untuk setiap kriteria
         $maxBidang = 0;
+        $minDaerah = PHP_INT_MAX;
 
         foreach ($matrix as $i => $row) {
             if ($row['bidang'] > $maxBidang) {
                 $maxBidang = $row['bidang'];
             }
+            if ($row['daerah'] < $minDaerah) {
+                $minDaerah = $row['daerah'];
+            } else if ($row['daerah'] == 0) {
+                $minDaerah = 1;
+            }
         }
 
         // Tambahkan alternatif optimal sebagai baris pertama (A0)
         $matrix[0] = [
-            'daerah' => 1,  // Cost
+            'daerah' => $minDaerah,  // Cost
             'waktu' => 1,    // Benefit
             'insentif' => 1, // Benefit
             'jenis' => 1,    // Benefit
