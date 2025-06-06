@@ -17,14 +17,13 @@ class PerusahaanModel extends Model
 
     public $incrementing = true;
 
-      protected $fillable = [
+    protected $fillable = [
         'nama',
         'alamat',
         'no_telepon',
         'email',
         'website',
         'partnership',
-        'extra_field',
     ];
 
 

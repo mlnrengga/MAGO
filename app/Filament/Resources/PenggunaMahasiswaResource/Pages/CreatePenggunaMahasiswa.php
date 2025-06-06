@@ -17,13 +17,17 @@ class CreatePenggunaMahasiswa extends CreateRecord
         $nim = $this->data['nim'];
 
         MahasiswaModel::create([
-             'id_user' => $this->record->id_user,
-        'nim' => $this->data['nim'],
-        'id_prodi' => $this->data['id_prodi'],
-         'ipk'       => 0.00,
+            'id_user' => $this->record->id_user,
+            'nim' => $this->data['nim'],
+            'id_prodi' => $this->data['id_prodi'],
+            'ipk'       => 0.00,
             'semester'  => 1,
-       
-    ]);
+
+        ]);
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }
-
