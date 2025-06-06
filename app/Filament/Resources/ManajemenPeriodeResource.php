@@ -12,22 +12,17 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ManajemenPeriodeResource extends Resource
 {
     protected static ?string $model = PeriodeModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    protected static ?string $pluralModelLabel = 'Manajemen Periode';
-    protected static ?string $navigationLabel = 'Manajemen Periode';
+    protected static ?string $navigationIcon = 'heroicon-s-clock';
+    protected static ?string $navigationLabel = 'Periode';
+    protected static ?string $slug = 'manajemen-periode';
+    protected static ?string $modelLabel = 'Manajemen - Periode';
+    protected static ?string $pluralModelLabel = 'Data Periode';
+    protected static ?string $navigationGroup = 'Data Referensi';
 
     public static function form(Form $form): Form
     {
@@ -48,7 +43,7 @@ class ManajemenPeriodeResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id_periode')
                     ->label('ID')
-                    ->sortable(), 
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('nama_periode')
                     ->label('Nama Periode')
                     ->searchable()

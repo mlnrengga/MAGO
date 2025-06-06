@@ -27,9 +27,4 @@ class AdminModel extends Model
     {
         return $this->belongsTo(UserModel::class, 'id_user');
     }
-
-    public function perusahaan(): HasMany
-    {
-        return $this->hasMany(PerusahaanModel::class, 'id_admin', 'id_admin');
-    }
 }

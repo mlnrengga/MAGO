@@ -9,15 +9,8 @@ class EditPenggunaMahasiswa extends EditRecord
 {
     protected static string $resource = PenggunaMahasiswaResource::class;
 
-   protected function afterSave(): void
-{
-    $mahasiswa = $this->record->mahasiswa;
-
-    if ($mahasiswa) {
-        $mahasiswa->update([
-            'nim' => $this->data['nim'],
-            'id_prodi' => $this->data['id_prodi'],
-        ]);
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
-}
 }

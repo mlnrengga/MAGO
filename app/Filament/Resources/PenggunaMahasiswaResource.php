@@ -10,13 +10,15 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PenggunaMahasiswaResource\Pages;
+use App\Filament\Resources\PenggunaMahasiswaResource\Pages\CreatePenggunaMahasiswa;
+use Illuminate\Database\Eloquent\Model;
 
 class PenggunaMahasiswaResource extends Resource
 {
     protected static ?string $model = UserModel::class;
 
     protected static ?string $navigationLabel = 'Manajemen Mahasiswa';
-    protected static ?string $navigationIcon = 'heroicon-s-academic-cap';
+    protected static ?string $navigationIcon = 'heroicon-s-users';
     protected static ?string $modelLabel = 'Manajemen - Mahasiswa';
     protected static ?string $pluralModelLabel = 'Data Mahasiswa';
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
@@ -49,32 +51,43 @@ class PenggunaMahasiswaResource extends Resource
                     ->label('Password')
                     ->password()
                     ->revealable()
-                    ->required(fn ($livewire) => $livewire instanceof Pages\CreatePenggunaMahasiswa)
-                    ->dehydrated(fn ($state) => filled($state)),
+                    ->required(fn($livewire) => $livewire instanceof Pages\CreatePenggunaMahasiswa)
+                    ->dehydrated(fn($state) => filled($state)),
+
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->label('Konfirmasi Password')
+                    ->password()
+                    ->revealable()
+                    ->required(fn($livewire) => $livewire instanceof CreatePenggunaMahasiswa)
+                    ->dehydrated(false)
+                    ->rule('min:8')
+                    ->same('password'),
 
                 Forms\Components\FileUpload::make('profile_picture')
                     ->label('Foto Profil')
                     ->image()
-                    ->directory('profile_pictures')
-                    ->disk('public'),
-Forms\Components\TextInput::make('nim')
-    ->label('NIM')
-    ->required(fn ($livewire) => $livewire instanceof Pages\CreatePenggunaMahasiswa)
-    ->disabled(fn ($livewire) => !($livewire instanceof Pages\CreatePenggunaMahasiswa))
-    ->afterStateHydrated(function ($component) {
-        $mahasiswa = optional($component->getRecord()?->mahasiswa);
-        $component->state($mahasiswa->nim);
-    })
-    ->dehydrated(false),
+                    ->directory('foto-profil')
+                    ->disk('public')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif'])
+                    ->maxSize(2048),
 
-Forms\Components\Select::make('id_prodi')
-    ->label('Program Studi')
-    ->options(\App\Models\Reference\ProdiModel::pluck('nama_prodi', 'id_prodi'))
-    ->required()
-    ->afterStateHydrated(function ($component) {
-        $component->state(optional($component->getRecord()?->mahasiswa)->id_prodi);
-    })
-    ->dehydrated(false),
+                Forms\Components\TextInput::make('nim')
+                    ->label('NIM')
+                    ->required()
+                    ->afterStateHydrated(function ($component) {
+                        $mahasiswa = optional($component->getRecord()?->mahasiswa);
+                        $component->state($mahasiswa->nim);
+                    })
+                    ->dehydrated(false),
+
+                Forms\Components\Select::make('id_prodi')
+                    ->label('Program Studi')
+                    ->options(\App\Models\Reference\ProdiModel::pluck('nama_prodi', 'id_prodi'))
+                    ->required()
+                    ->afterStateHydrated(function ($component) {
+                        $component->state(optional($component->getRecord()?->mahasiswa)->id_prodi);
+                    })
+                    ->dehydrated(false),
 
 
             ])->columns(2),
@@ -102,17 +115,23 @@ Forms\Components\Select::make('id_prodi')
                 ->label('Alamat')
                 ->sortable(),
 
-            Tables\Columns\ImageColumn::make('profile_picture_url')
+            Tables\Columns\ImageColumn::make('profile_picture')
                 ->label('Foto Profil')
+                ->defaultImageUrl(asset('assets/images/default.png'))
                 ->circular(),
         ])->actions([
             Tables\Actions\ViewAction::make(),
             Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
+            Tables\Actions\DeleteAction::make()
+                ->before(function (Model $record) {
+                    if ($record->mahasiswa) {
+                        $record->mahasiswa->delete();
+                    }
+                }),
         ])->bulkActions([
             Tables\Actions\DeleteBulkAction::make(),
         ])->emptyStateHeading('Belum ada data mahasiswa')
-          ->emptyStateIcon('heroicon-s-academic-cap');
+            ->emptyStateIcon('heroicon-s-academic-cap');
     }
 
     public static function getPages(): array
@@ -121,7 +140,6 @@ Forms\Components\Select::make('id_prodi')
             'index' => Pages\ListPenggunaMahasiswas::route('/'),
             'create' => Pages\CreatePenggunaMahasiswa::route('/create'),
             'edit' => Pages\EditPenggunaMahasiswa::route('/{record}/edit'),
-            // 'view' => Pages\ViewPenggunaMahasiswa::route('/{record}/view'),
         ];
     }
 }
