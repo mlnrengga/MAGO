@@ -22,13 +22,11 @@ class PerusahaanResource extends Resource
     protected static ?string $model = PerusahaanModel::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-building-office';
-    protected static ?string $navigationLabel = 'Perusahaan Mitra';
-    protected static ?string $navigationGroup = 'Pengguna & Mitra';
-    protected static ?int $navigationSort = 1;
-
+    protected static ?string $navigationLabel = 'Perusahaan';
+    protected static ?string $navigationGroup = 'Data Referensi';
     protected static ?string $slug = 'manajemen-perusahaan';
     protected static ?string $modelLabel = 'Perusahaan';
-    protected static ?string $pluralModelLabel = 'Data Perusahaan Mitra';
+    protected static ?string $pluralModelLabel = 'Data Perusahaan';
 
     public static function form(Form $form): Form
     {
@@ -51,19 +49,16 @@ class PerusahaanResource extends Resource
                     ->email()
                     ->required(),
 
-
-                TextInput::make('partnership')
-                    ->label('Jenis Kemitraan')
-                    ->maxLength(100),
-
-                Hidden::make('id_admin')
-                    ->default(function () {
-                        $user = auth()->user();
-                        return $user && $user->admin ? $user->admin->id_admin : null;
-                    })
+                TextInput::make('website')
                     ->required(),
 
-                TextInput::make('website')
+                Select::make('partnership')
+                    ->label('Jenis Kemitraan')
+                    ->options([
+                        'Perusahaan Mitra' => 'Perusahaan Mitra',
+                        'Perusahaan Non-Mitra' => 'Perusahaan Non-Mitra',
+                    ])
+                    ->default('Perusahaan Mitra')
                     ->required(),
             ]);
     }
@@ -72,40 +67,49 @@ class PerusahaanResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama')->searchable()->label('Nama Perusahaan'),
-                TextColumn::make('alamat')->limit(50),
-                TextColumn::make('no_telepon')->label('No Telepon'),
-                TextColumn::make('email'),
-                TextColumn::make('partnership')
-                    ->label('Jenis Kemitraan')
+                TextColumn::make('nama')
+                    ->searchable()
+                    ->sortable()
+                    ->tooltip(fn($record) => $record->nama)
+                    ->limit(20)
+                    ->label('Nama Perusahaan'),
+                TextColumn::make('alamat')
+                    ->label('Alamat')
+                    ->searchable()
+                    ->sortable()
+                    ->tooltip(fn($record) => $record->alamat)
+                    ->limit(20),
+                TextColumn::make('no_telepon')
+                    ->label('No Telepon'),
+                TextColumn::make('email')
+                    ->label('Email')
+                    ->limit(10)
+                    ->tooltip(fn($record) => $record->email)
                     ->sortable(),
-
-
                 TextColumn::make('website')
                     ->label('Website')
+                    ->limit(15)
+                    ->tooltip(fn($record) => $record->website)
                     ->url(fn($record) => $record->website ? (str_starts_with($record->website, 'http') ? $record->website : "https://{$record->website}") : null)
                     ->openUrlInNewTab(),
-
-
-
-                // // ====== Perbaikan: Tampilkan nama admin via relasi ======
-                // TextColumn::make('admin.user.nama')->label('Nama Admin'),
+                TextColumn::make('partnership')
+                    ->label('Jenis Kemitraan')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Perusahaan Mitra' => 'success',
+                        'Perusahaan Non-Mitra' => 'warning',
+                        default => 'gray',
+                    }),
             ])
             ->filters([
-                // Tambahkan filter jika dibutuhkan
-
                 Tables\Filters\SelectFilter::make('partnership')
-                    ->label('Kemitraan')
                     ->options([
-                        'Nasional' => 'Nasional',
-                        'Internasional' => 'Internasional',
-                        'Lokal' => 'Lokal',
-                    ])
-                    ->attribute('partnership'),
-
+                        'Perusahaan Mitra' => 'Perusahaan Mitra',
+                        'Perusahaan Non-Mitra' => 'Perusahaan Non-Mitra',
+                    ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(), // View pakai bawaan
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->before(function ($record, $action) {
@@ -134,7 +138,6 @@ class PerusahaanResource extends Resource
         return [
             'index' => Pages\ListPerusahaans::route('/'),
             'create' => Pages\CreatePerusahaan::route('/create'),
-            'view' => Pages\ViewPerusahaan::route('/{record}'), // Aktifkan halaman view
             'edit' => Pages\EditPerusahaan::route('/{record}/edit'),
         ];
     }

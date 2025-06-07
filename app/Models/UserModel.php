@@ -91,16 +91,4 @@ class UserModel extends Authenticatable implements FilamentUser, HasName
             $this->attributes['password'] = $value;
         }
     }
-public function getProfilePictureUrlAttribute()
-{
-    $path = 'profile_pictures/' . $this->profile_picture;
-
-    if (!$this->profile_picture || !Storage::disk('public')->exists($path)) {
-        // Mengarah ke public/assets/images/default.png
-        return asset('assets/images/default.png');
-    }
-
-    return asset('storage/' . $path);
-}
-
 }

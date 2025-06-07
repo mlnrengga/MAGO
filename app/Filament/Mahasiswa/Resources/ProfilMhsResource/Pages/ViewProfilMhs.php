@@ -49,6 +49,7 @@ class ViewProfilMhs extends ViewRecord
                                     ->visibility('private')
                                     ->width(225)
                                     ->height(250)
+                                    ->defaultImageUrl(asset('assets/images/default.png'))
                                     ->disk('public'),
 
                                 Grid::make()

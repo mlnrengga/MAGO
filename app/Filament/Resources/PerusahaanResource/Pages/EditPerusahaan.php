@@ -31,19 +31,8 @@ class EditPerusahaan extends EditRecord
 
             TextInput::make('email')->email()->required(),
 
-            TextInput::make('admin_user_nama')
-                ->label('Admin Penanggung Jawab')
-                ->disabled()
-                ->getStateUsing(fn ($get, $record) => optional(optional($record->admin)->user)->nama ?? '❌ TIDAK ADA')
-                ->dehydrated(false),
-
             TextInput::make('website')->required(),
         ];
-    }
-
-    public function getRecord(): Model
-    {
-        return parent::getRecord()->loadMissing(['admin.user']);
     }
 
     public function save(bool $shouldRedirect = true, bool $shouldSendSavedNotification = true): void
@@ -55,5 +44,10 @@ class EditPerusahaan extends EditRecord
             ->body('Data perusahaan berhasil diperbarui.')
             ->success()
             ->send();
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }

@@ -19,4 +19,9 @@ class CreatePenggunaadmin extends CreateRecord
             'nip' => $this->data['nip'],
         ]);
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
