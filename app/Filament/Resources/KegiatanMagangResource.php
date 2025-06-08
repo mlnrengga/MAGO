@@ -233,8 +233,8 @@ class KegiatanMagangResource extends Resource
                         Infolists\Components\TextEntry::make('lowongan.batas_akhir_lamaran')
                             ->label('Batas Akhir Lamaran')
                             ->date(),
-                        
-                            Infolists\Components\TextEntry::make('lowongan.deskripsi_lowongan')
+
+                        Infolists\Components\TextEntry::make('lowongan.deskripsi_lowongan')
                             ->label('Deskripsi Lowongan')
                             ->html()
                             ->columnSpanFull(),
@@ -362,7 +362,7 @@ class KegiatanMagangResource extends Resource
                     ->relationship('lowongan.jenisMagang', 'nama_jenis_magang')
                     ->searchable()
                     ->preload(),
-                
+
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status')
                     ->options([
@@ -370,7 +370,7 @@ class KegiatanMagangResource extends Resource
                         'Diterima' => 'Diterima',
                         'Ditolak' => 'Ditolak',
                     ]),
-                
+
                 Tables\Filters\SelectFilter::make('perusahaan')
                     ->label('Perusahaan')
                     ->relationship('lowongan.perusahaan', 'nama')
@@ -382,33 +382,38 @@ class KegiatanMagangResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->modalHeading('Hapus Pengajuan Magang')
-                    ->modalDescription('Apakah Anda yakin ingin menghapus pengajuan magang ini? Jika pengajuan sudah diterima, data penempatan magang terkait juga akan dihapus.')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus pengajuan magang ini?')
                     ->modalSubmitActionLabel('Ya, Hapus')
                     ->modalCancelActionLabel('Batal')
-                    ->before(function (PengajuanMagangModel $record) {
-                        if ($record->penempatan) {
-                            DB::table('r_bimbingan')
-                                ->where('id_penempatan', $record->penempatan->id_penempatan)
-                                ->delete();
-
-                            $record->penempatan->delete();
-                        }
+                    ->hidden(function (PengajuanMagangModel $record) {
+                        return $record->status === 'Diterima';
                     }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
                         ->modalHeading('Hapus Pengajuan Magang')
-                        ->modalDescription('Apakah Anda yakin ingin menghapus pengajuan magang ini? Jika pengajuan sudah diterima, data penempatan magang terkait juga akan dihapus.')
+                        ->modalDescription('Apakah Anda yakin ingin menghapus pengajuan magang ini? Pengajuan dengan status Diterima tidak akan dihapus.')
                         ->modalSubmitActionLabel('Ya, Hapus')
                         ->modalCancelActionLabel('Batal')
-                        ->before(function (PengajuanMagangModel $record) {
-                            if ($record->penempatan) {
-                                DB::table('r_bimbingan')
-                                    ->where('id_penempatan', $record->penempatan->id_penempatan)
-                                    ->delete();
+                        ->deselectRecordsAfterCompletion()
+                        ->before(function ($records, $livewire) {
+                            $cannotDeleteRecords = [];
 
-                                $record->penempatan->delete();
+                            foreach ($records as $key => $record) {
+                                if ($record->status === 'Diterima') {
+                                    $cannotDeleteRecords[] = $record->mahasiswa->user->nama ?? ('Pengajuan #' . $record->id_pengajuan);
+                                    $records->forget($records->search($record));
+                                }
+                            }
+
+                            if (count($cannotDeleteRecords) > 0) {
+                                $livewire->notify('warning', 'Beberapa pengajuan magang dengan status Diterima tidak dapat dihapus: ' . implode(', ', $cannotDeleteRecords));
+                            }
+
+                            if ($records->isEmpty()) {
+                                $livewire->notify('danger', 'Semua pengajuan yang dipilih memiliki status Diterima dan tidak dapat dihapus.');
+                                return false;
                             }
                         }),
                 ]),
