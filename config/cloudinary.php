@@ -32,11 +32,17 @@ return [
     |
     */
     // 'cloud_url' => env('CLOUDINARY_URL'),
-    'cloud_url' => env('CLOUDINARY_URL', 
-                    env('CLOUDINARY_API_KEY') && env('CLOUDINARY_API_SECRET') && env('CLOUDINARY_CLOUD_NAME') ? 
-                    'cloudinary://'.env('CLOUDINARY_API_KEY').':'.env('CLOUDINARY_API_SECRET').'@'.env('CLOUDINARY_CLOUD_NAME') : 
-                    null),
+    'cloud_url' => env('CLOUDINARY_URL', function () {
+        $apiKey = env('CLOUDINARY_API_KEY');
+        $apiSecret = env('CLOUDINARY_API_SECRET');
+        $cloudName = env('CLOUDINARY_CLOUD_NAME');
 
+        if ($apiKey && $apiSecret && $cloudName) {
+            return 'cloudinary://' . $apiKey . ':' . $apiSecret . '@' . $cloudName;
+        }
+
+        return null;
+    }),
     // konfigurasi terpisah
     'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
     'api_key' => env('CLOUDINARY_API_KEY'),
