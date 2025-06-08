@@ -9,7 +9,6 @@ class LogMagangModel extends Model
 {
     protected $table = 't_log_magang';
     protected $primaryKey = 'id_log';
-    public $timestamps = false;
 
     protected $fillable = [
         'id_penempatan',

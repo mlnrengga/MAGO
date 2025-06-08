@@ -17,6 +17,18 @@ class AppServiceProvider extends ServiceProvider
             LogoutResponse::class,
             CustomLogoutResponse::class
         );
+        
+        \Illuminate\Support\Facades\Storage::extend('cloudinary', function ($app, $config) {
+            $cloudinaryConfig = [
+                'cloud_name' => $config['cloud_name'] ?? env('CLOUDINARY_CLOUD_NAME'),
+                'api_key' => $config['api_key'] ?? env('CLOUDINARY_API_KEY'),
+                'api_secret' => $config['api_secret'] ?? env('CLOUDINARY_API_SECRET'),
+            ];
+            
+            return new \CloudinaryLabs\CloudinaryLaravel\CloudinaryAdapter(
+                new \Cloudinary\Cloudinary($cloudinaryConfig)
+            );
+        });
     }
 
     /**
