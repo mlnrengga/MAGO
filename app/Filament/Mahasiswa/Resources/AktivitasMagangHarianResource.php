@@ -224,7 +224,10 @@ class AktivitasMagangHarianResource extends Resource
                                 $idLowongan = $get('id_lowongan');
                                 if (!$idLowongan) return 'Tidak ada deskripsi';
                                 
-                                $lowongan = LowonganMagangModel::find($idLowongan);
+                                static $lowongan = null;
+                                if ($lowongan === null) {
+                                    $lowongan = LowonganMagangModel::with(['periode'])->find($idLowongan);
+                                }
                                 return $lowongan ? $lowongan->deskripsi_lowongan ?? 'Tidak ada deskripsi' : 'Tidak ada deskripsi';
                             })
                             ->columnSpanFull(),
