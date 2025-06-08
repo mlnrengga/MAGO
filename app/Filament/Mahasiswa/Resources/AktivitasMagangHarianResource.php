@@ -157,7 +157,7 @@ class AktivitasMagangHarianResource extends Resource
                                 Forms\Components\Group::make()
                                     ->schema([
                                         Forms\Components\Placeholder::make('placeholder_lokasi_kantor')
-                                            ->label('Lokasi Perusahaan')
+                                            ->label('Alamat Perusahaan Pusat')
                                             ->content(function (Get $get) {
                                                 $idLowongan = $get('id_lowongan');
                                                 if (!$idLowongan) return 'N/A';
@@ -167,7 +167,7 @@ class AktivitasMagangHarianResource extends Resource
                                                     ? $lowongan->perusahaan->alamat ?? 'N/A'
                                                     : 'N/A';
                                             })
-                                            ->hintIcon('heroicon-o-building-office'),
+                                            ->hintIcon('heroicon-o-map-pin'),
                                     ]),
 
                                 Forms\Components\Group::make()
@@ -184,12 +184,12 @@ class AktivitasMagangHarianResource extends Resource
                                                     return 'N/A';
                                                 }
                                                 
-                                                // Menggunakan accessor yang ada pada model
+                                                // menggunakan accessor yang ada pada model
                                                 if (method_exists($lowongan->daerahMagang, 'namaLengkapDenganProvinsi')) {
                                                     return $lowongan->daerahMagang->namaLengkapDenganProvinsi;
                                                 }
                                                 
-                                                // Fallback jika accessor tidak tersedia
+                                                // fallback jika accessor tidak tersedia
                                                 $daerah = $lowongan->daerahMagang;
                                                 $provinsi = $daerah->provinsi ? $daerah->provinsi->nama_provinsi : 'N/A';
                                                 return "{$daerah->nama_daerah}, {$daerah->jenis_daerah}, {$provinsi}";
@@ -197,11 +197,59 @@ class AktivitasMagangHarianResource extends Resource
                                             ->hintIcon('heroicon-o-map-pin'),
                                     ]),
 
-                                // periode waktu magang
                                 Forms\Components\Group::make()
                                     ->schema([
                                         Forms\Components\Placeholder::make('placeholder_periode_magang')
                                             ->label('Periode Magang')
+                                            ->content(function (Get $get) {
+                                                $idLowongan = $get('id_lowongan');
+                                                if (!$idLowongan) return 'N/A';
+                                                
+                                                $lowongan = LowonganMagangModel::with(['periode'])->find($idLowongan);
+
+                                                if (!$lowongan || !$lowongan->periode) {
+                                                    return 'N/A';
+                                                }
+
+                                                return $lowongan->periode->nama_periode ?? 'N/A';
+                                            })
+                                            ->hintIcon('heroicon-o-calendar'),
+                                    ]),
+                            ])
+                            ->columns(2),
+                            
+                        Forms\Components\Placeholder::make('placeholder_deskripsi')
+                            ->label('Deskripsi Lowongan')
+                            ->content(function (Get $get) {
+                                $idLowongan = $get('id_lowongan');
+                                if (!$idLowongan) return 'Tidak ada deskripsi';
+                                
+                                static $lowongan = null;
+                                if ($lowongan === null) {
+                                    $lowongan = LowonganMagangModel::with(['periode'])->find($idLowongan);
+                                }
+                                return $lowongan ? $lowongan->deskripsi_lowongan ?? 'Tidak ada deskripsi' : 'Tidak ada deskripsi';
+                            })
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false)
+                    ->visible(fn (Get $get): bool => (bool) $get('id_lowongan'))
+                    ->extraAttributes([
+                        'class' => 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg',
+                    ]),
+
+                // Section InfoList Detail Magang
+                Forms\Components\Section::make('Status Pelaksanaan Magang')
+                    ->description('Ringkasan waktu pelaksanaan dan status durasi magang berdasarkan lowongan terpilih')
+                    ->schema([
+                        Forms\Components\Grid::make()
+                            ->schema([
+                                // Masa Magang
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('placeholder_estimasi_magang')
+                                            ->label('Masa Magang')
                                             ->content(function (Get $get) {
                                                 $idLowongan = $get('id_lowongan');
                                                 if (!$idLowongan) return 'N/A';
@@ -221,11 +269,11 @@ class AktivitasMagangHarianResource extends Resource
                                                     return 'N/A';
                                                 }
                                                 
-                                                // Tanggal mulai adalah tanggal diterima
+                                                // tanggal mulai adalah tanggal diterima
                                                 $dariTanggal = Carbon::parse($pengajuan->tanggal_diterima);
                                                 $mulaiFormatted = $dariTanggal->format('d M Y');
                                                 
-                                                // Mendapatkan waktu magang dari lowongan
+                                                // mendapatkan waktu magang dari lowongan
                                                 $lowongan = LowonganMagangModel::find($idLowongan);
                                                 if (!$lowongan || !$lowongan->id_waktu_magang) {
                                                     return "Mulai: {$mulaiFormatted}";
@@ -236,7 +284,7 @@ class AktivitasMagangHarianResource extends Resource
                                                     return "Mulai: {$mulaiFormatted}";
                                                 }
                                                 
-                                                // Ekstrak angka bulan dari string waktu magang (misalnya "6 Bulan" => 6)
+                                                // ekstrak angka bulan dari string waktu magang (misalnya "6 Bulan" => 6)
                                                 preg_match('/(\d+)/', $waktuMagang->waktu_magang, $matches);
                                                 if (!isset($matches[1])) {
                                                     return "Mulai: {$mulaiFormatted}";
@@ -248,24 +296,81 @@ class AktivitasMagangHarianResource extends Resource
                                                 
                                                 return "Mulai: {$mulaiFormatted} - Selesai: {$selesaiFormatted}";
                                             })
-                                            ->hintIcon('heroicon-o-calendar'),
+                                            ->hintIcon('heroicon-o-calendar-date-range'),
+                                    ]),
+                                
+                                // Status Durasi (Group Baru)
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('placeholder_sisa_waktu')
+                                            ->label('Status Durasi Magang')
+                                            ->content(function (Get $get) {
+                                                $idLowongan = $get('id_lowongan');
+                                                if (!$idLowongan) return 'N/A';
+                                                
+                                                // mendapatkan tanggal berakhir magang
+                                                $userId = Auth::id();
+                                                $pengajuan = PengajuanMagangModel::where('id_lowongan', $idLowongan)
+                                                    ->whereHas('mahasiswa', function (Builder $query) use ($userId) {
+                                                        $query->whereHas('user', function (Builder $query) use ($userId) {
+                                                            $query->where('id_user', $userId);
+                                                        });
+                                                    })
+                                                    ->where('status', 'Diterima')
+                                                    ->first();
+                                                    
+                                                if (!$pengajuan || !$pengajuan->tanggal_diterima) {
+                                                    return 'N/A';
+                                                }
+                                                
+                                                // tanggal mulai adalah tanggal diterima
+                                                $dariTanggal = Carbon::parse($pengajuan->tanggal_diterima);
+                                                
+                                                // mendapatkan waktu magang dari lowongan
+                                                $lowongan = LowonganMagangModel::find($idLowongan);
+                                                if (!$lowongan || !$lowongan->id_waktu_magang) {
+                                                    return 'N/A';
+                                                }
+                                                
+                                                $waktuMagang = WaktuMagangModel::find($lowongan->id_waktu_magang);
+                                                if (!$waktuMagang) {
+                                                    return 'N/A';
+                                                }
+                                                
+                                                // ekstrak angka bulan dari string waktu magang
+                                                preg_match('/(\d+)/', $waktuMagang->waktu_magang, $matches);
+                                                if (!isset($matches[1])) {
+                                                    return 'N/A';
+                                                }
+                                                
+                                                $bulan = (int)$matches[1];
+                                                $sampaiTanggal = $dariTanggal->copy()->addMonths($bulan);
+                                                
+                                                // Hitung selisih dengan hari ini
+                                                $hariIni = Carbon::now();
+                                                
+                                                if ($hariIni > $sampaiTanggal) {
+                                                    return '<span class="text-danger-500 font-medium">Magang telah berakhir</span>';
+                                                }
+                                                
+                                                $diffInMonths = $hariIni->diffInMonths($sampaiTanggal);
+                                                $diffInDays = $hariIni->copy()->addMonths($diffInMonths)->diffInDays($sampaiTanggal);
+                                                
+                                                if ($diffInMonths > 0 && $diffInDays > 0) {
+                                                    return "$diffInMonths bulan $diffInDays hari lagi";
+                                                } elseif ($diffInMonths > 0) {
+                                                    return "$diffInMonths bulan lagi";
+                                                } elseif ($diffInDays > 0) {
+                                                    return "$diffInDays hari lagi";
+                                                } else {
+                                                    return 'Hari terakhir magang';
+                                                }
+                                            })
+                                            ->hintIcon('heroicon-o-clock'),
                                     ]),
                             ])
                             ->columns(2),
-                            
-                        Forms\Components\Placeholder::make('placeholder_deskripsi')
-                            ->label('Deskripsi Lowongan')
-                            ->content(function (Get $get) {
-                                $idLowongan = $get('id_lowongan');
-                                if (!$idLowongan) return 'Tidak ada deskripsi';
-                                
-                                $lowongan = LowonganMagangModel::find($idLowongan);
-                                return $lowongan ? $lowongan->deskripsi_lowongan ?? 'Tidak ada deskripsi' : 'Tidak ada deskripsi';
-                            })
-                            ->columnSpanFull(),
                     ])
-                    ->collapsible()
-                    ->collapsed(false)
                     ->visible(fn (Get $get): bool => (bool) $get('id_lowongan'))
                     ->extraAttributes([
                         'class' => 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg',
@@ -352,15 +457,15 @@ class AktivitasMagangHarianResource extends Resource
             ->defaultPaginationPageOption(12)
             ->defaultSort('created_at', 'desc') 
             ->columns([
-                // Tables\Columns\ImageColumn::make('file_bukti')
-                //     ->disk('cloudinary')
-                //     ->height(200)
-                //     ->extraImgAttributes(['class' => 'w-full object-cover rounded-t-lg'])
-                //     ->alignCenter(),
-                Tables\Columns\ViewColumn::make('file_bukti')
-                    ->label('Bukti')
-                    ->view('filament.components.bukti-indicator')
+                Tables\Columns\ImageColumn::make('file_bukti')
+                    ->disk('cloudinary')
+                    ->height(200)
+                    ->extraImgAttributes(['class' => 'w-full object-cover rounded-t-lg'])
                     ->alignCenter(),
+                // Tables\Columns\ViewColumn::make('file_bukti')
+                //     ->label('Bukti')
+                //     ->view('filament.components.bukti-indicator')
+                //     ->alignCenter(),
                 
                 Tables\Columns\Layout\Stack::make([
                     Tables\Columns\TextColumn::make('tanggal_log')
