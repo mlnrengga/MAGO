@@ -90,6 +90,27 @@ class PenggunaMahasiswaResource extends Resource
                     ->dehydrated(false),
 
 
+                Forms\Components\TextInput::make('ipk')
+                    ->label('IPK')
+                    ->numeric()
+                    ->minValue(0)
+                    ->maxValue(4)
+                    ->step(0.01)
+                    ->afterStateHydrated(fn($component) =>
+                    $component->state(optional($component->getRecord()?->mahasiswa)->ipk))
+                    ->dehydrated(false),
+
+                Forms\Components\TextInput::make('semester')
+                    ->label('Semester')
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(14)
+                    ->afterStateHydrated(fn($component) =>
+                    $component->state(optional($component->getRecord()?->mahasiswa)->semester))
+                    ->dehydrated(false),
+
+
+
             ])->columns(2),
         ]);
     }
