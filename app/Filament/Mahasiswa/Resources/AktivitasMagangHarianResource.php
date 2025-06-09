@@ -34,8 +34,8 @@ class AktivitasMagangHarianResource extends Resource
     protected static ?string $modelLabel = 'Aktivitas Magang';
     protected static ?string $pluralModelLabel = 'Data Aktivitas Magang Harian';
     protected static ?string $navigationSubheading = 'Kelola aktivitas magang harian Anda';
-    
-    protected static ?string $navigationGroup = 'Magang';
+    protected static ?string $navigationGroup = 'Aktivitas & Evaluasi';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

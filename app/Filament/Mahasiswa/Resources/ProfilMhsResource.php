@@ -29,6 +29,7 @@ class ProfilMhsResource extends Resource
     protected static ?string $navigationLabel = 'Profil';
     protected static ?string $pluralModelLabel = 'Profil Saya';
     protected static ?string $navigationGroup = 'Tentang Saya';
+    protected static ?int $navigationSort = 6;
 
     public static function getEloquentQuery(): Builder
     {
