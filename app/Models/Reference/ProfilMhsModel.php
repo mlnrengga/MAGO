@@ -2,10 +2,7 @@
 
 namespace App\Models\Reference;
 
-use App\Models\Auth\MahasiswaModel;
-use App\Models\Pivot\PreferensiBidangModel;
 use App\Models\UserModel;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProfilMhsModel extends Model
