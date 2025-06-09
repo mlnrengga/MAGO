@@ -32,6 +32,7 @@ class LowonganResource extends Resource
     protected static ?string $modelLabel = 'Lowongan';
     protected static ?string $pluralModelLabel = 'Data Lowongan Magang';
     protected static ?string $navigationGroup = 'Administrasi Magang';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

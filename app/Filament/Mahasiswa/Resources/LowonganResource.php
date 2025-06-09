@@ -19,7 +19,8 @@ class LowonganResource extends Resource
     protected static ?string $pluralModelLabel = 'Data Lowongan Magang';
     protected static ?string $navigationLabel = 'Lowongan Magang';
     protected static ?string $slug = 'lowongan-magang';
-    protected static ?string $navigationGroup = 'Magang';
+    protected static ?string $navigationGroup = 'Pencarian Magang';
+    protected static ?int $navigationSort = 2;
 
     public static function canCreate(): bool
     {
