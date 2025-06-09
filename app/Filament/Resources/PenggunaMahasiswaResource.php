@@ -41,6 +41,7 @@ class PenggunaMahasiswaResource extends Resource
                     ->required(),
 
                 Forms\Components\TextInput::make('alamat')
+                    ->required()
                     ->label('Alamat'),
 
                 Forms\Components\TextInput::make('no_telepon')
@@ -91,6 +92,7 @@ class PenggunaMahasiswaResource extends Resource
 
 
                 Forms\Components\TextInput::make('ipk')
+                    ->required()
                     ->label('IPK')
                     ->numeric()
                     ->minValue(0)
@@ -102,6 +104,7 @@ class PenggunaMahasiswaResource extends Resource
 
                 Forms\Components\TextInput::make('semester')
                     ->label('Semester')
+                    ->required()
                     ->numeric()
                     ->minValue(1)
                     ->maxValue(14)
