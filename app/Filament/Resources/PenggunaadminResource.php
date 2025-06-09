@@ -21,7 +21,7 @@ class PenggunaadminResource extends Resource
     protected static ?string $modelLabel = 'Manajemen - Admin';
     protected static ?string $pluralModelLabel = 'Data Admin';
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 5;
 
     public static function getEloquentQuery(): Builder
     {
