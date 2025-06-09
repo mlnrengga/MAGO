@@ -22,6 +22,7 @@ class PenggunaMahasiswaResource extends Resource
     protected static ?string $modelLabel = 'Manajemen - Mahasiswa';
     protected static ?string $pluralModelLabel = 'Data Mahasiswa';
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
+    protected static ?int $navigationSort = 4;
 
     public static function getEloquentQuery(): Builder
     {

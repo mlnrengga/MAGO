@@ -41,7 +41,8 @@ class PengajuanMagangMandiriResource extends Resource
     protected static ?string $pluralModelLabel = 'Data Pengajuan Magang Mandiri';
     protected static ?string $modelLabel = 'Pengajuan Magang Mandiri';
     protected static ?string $slug = 'pengajuan-magang-mandiri';
-    protected static ?string $navigationGroup = 'Magang';
+    protected static ?string $navigationGroup = 'Pencarian Magang';
+    protected static ?int $navigationSort = 1;
 
     public static function getEloquentQuery(): Builder
     {

@@ -26,6 +26,7 @@ class ProdiResource extends Resource
     protected static ?string $pluralModelLabel = 'Data Program Studi';
     protected static ?string $modelLabel = 'Program Studi';
     protected static ?string $navigationGroup = 'Data Referensi';
+    protected static ?int $navigationSort = 11;
 
     public static function form(Form $form): Form
     {
