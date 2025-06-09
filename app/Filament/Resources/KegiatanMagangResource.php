@@ -27,6 +27,7 @@ class KegiatanMagangResource extends Resource
     protected static ?string $modelLabel = 'Pengajuan Magang';
     protected static ?string $pluralModelLabel = 'Data Pengajuan & Lamaran Magang';
     protected static ?string $navigationGroup = 'Administrasi Magang';
+    protected static ?int $navigationSort = 1;
 
     public static function infolist(Infolist $infolist): Infolist
     {

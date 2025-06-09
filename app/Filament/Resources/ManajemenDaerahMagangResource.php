@@ -28,6 +28,7 @@ class ManajemenDaerahMagangResource extends Resource
     protected static ?string $modelLabel = 'Daerah Magang';
     protected static ?string $pluralModelLabel = 'Data Daerah Magang';
     protected static ?string $navigationGroup = 'Data Referensi';
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {

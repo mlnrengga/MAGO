@@ -28,14 +28,14 @@ class AktivitasMagangHarianResource extends Resource
 {
     protected static ?string $model = LogMagangModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-clipboard-document-check';
+    protected static ?string $navigationIcon = 'heroicon-s-clipboard-document-list';
     protected static ?string $navigationLabel = 'Aktivitas Magang Harian';
     protected static ?string $slug = 'aktivitas-magang-harian';
     protected static ?string $modelLabel = 'Aktivitas Magang';
     protected static ?string $pluralModelLabel = 'Data Aktivitas Magang Harian';
     protected static ?string $navigationSubheading = 'Kelola aktivitas magang harian Anda';
-    
-    protected static ?string $navigationGroup = 'Magang';
+    protected static ?string $navigationGroup = 'Aktivitas & Evaluasi';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

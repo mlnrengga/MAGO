@@ -24,6 +24,7 @@ class BidangKeahlianResource extends Resource
     protected static ?string $modelLabel = 'Bidang Keahlian';
     protected static ?string $pluralModelLabel = 'Data Bidang Keahlian';
     protected static ?string $navigationGroup = 'Data Referensi';
+    protected static ?int $navigationSort = 6;
     
 
     public static function form(Form $form): Form

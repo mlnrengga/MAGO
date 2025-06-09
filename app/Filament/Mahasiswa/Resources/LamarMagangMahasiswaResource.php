@@ -28,9 +28,10 @@ class LamarMagangMahasiswaResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-s-rocket-launch';
     protected static ?string $modelLabel = 'Lamaran Magang';
     protected static ?string $pluralModelLabel = 'Data Lamaran Magang';
-    protected static ?string $navigationLabel = 'Lamar Magang';
+    protected static ?string $navigationLabel = 'Lamaran Magang';
     protected static ?string $slug = 'lamaran-magang';
-    protected static ?string $navigationGroup = 'Magang';
+    protected static ?string $navigationGroup = 'Histori Lamaran';
+    protected static ?int $navigationSort = 3;
 
     // public static function getWidgets(): array
     // {

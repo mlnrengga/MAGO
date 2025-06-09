@@ -25,6 +25,7 @@ class PenggunaDospemResource extends Resource
     protected static ?string $modelLabel = 'Manajemen - Dosen';
     protected static ?string $pluralModelLabel = 'Data Dosen Pembimbing';
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
+    protected static ?int $navigationSort = 3;
 
     public static function getEloquentQuery(): Builder
     {
