@@ -608,7 +608,7 @@ class RekomendasiMagang extends BaseWidget
         $html = '<div class="text-sm">';
 
         // Tampilkan info preferensi
-        $html .= '<div class="mb-6 bg-gray-50 p-4 rounded-lg">';
+        $html .= '<div class="mb-6 bg-blue-50 p-4 rounded-lg">';
         $html .= '<h3 class="font-bold text-lg mb-2">Preferensi Mahasiswa</h3>';
         $html .= '<div class="grid grid-cols-2 gap-4">';
         $html .= '<div><span class="font-medium">Lokasi Preferensi:</span> ' . $preferensi->daerahMagang->namaLengkapDenganProvinsi . '</div>';
@@ -635,7 +635,7 @@ class RekomendasiMagang extends BaseWidget
         $html .= '<h3 class="font-bold text-lg mb-2">1. Matriks Keputusan</h3>';
         $html .= '<div class="overflow-x-auto mb-6">';
         $html .= '<table class="w-full border-collapse border border-gray-300">';
-        $html .= '<thead class="bg-gray-100">';
+        $html .= '<thead class="bg-blue-100">';
         $html .= '<tr>';
         $html .= '<th class="border border-gray-300 p-2">Alternatif</th>';
         $html .= '<th class="border border-gray-300 p-2">Daerah (km)</th>';
@@ -682,7 +682,7 @@ class RekomendasiMagang extends BaseWidget
         $html .= '<h3 class="font-bold text-lg mb-2">2. Matriks Ternormalisasi</h3>';
         $html .= '<div class="overflow-x-auto mb-6">';
         $html .= '<table class="w-full border-collapse border border-gray-300">';
-        $html .= '<thead class="bg-gray-100">';
+        $html .= '<thead class="bg-blue-100">';
         $html .= '<tr>';
         $html .= '<th class="border border-gray-300 p-2">Alternatif</th>';
         $html .= '<th class="border border-gray-300 p-2">Daerah</th>';
@@ -727,7 +727,7 @@ class RekomendasiMagang extends BaseWidget
         $html .= '<h3 class="font-bold text-lg mb-2">3. Matriks Terbobot</h3>';
         $html .= '<div class="overflow-x-auto mb-6">';
         $html .= '<table class="w-full border-collapse border border-gray-300">';
-        $html .= '<thead class="bg-gray-100">';
+        $html .= '<thead class="bg-blue-100">';
         $html .= '<tr>';
         $html .= '<th class="border border-gray-300 p-2">Alternatif</th>';
         $html .= '<th class="border border-gray-300 p-2">Daerah</th>';
@@ -780,7 +780,7 @@ class RekomendasiMagang extends BaseWidget
         $html .= '</tbody></table>';
         $html .= '</div>';
 
-        $html .= '<div class="text-sm mt-4 p-4 bg-gray-50 rounded-lg">';
+        $html .= '<div class="text-sm mt-4 p-4 bg-blue-50 rounded-lg">';
         $html .= '<h3 class="font-bold">Keterangan:</h3>';
         $html .= '<ul class="list-disc list-inside">';
         $html .= '<li><b>Daerah:</b> Jarak antara preferensi dan lokasi lowongan (KM). Semakin kecil nilainya semakin baik (cost)</li>';
