@@ -7,7 +7,7 @@ use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\ImageEntry; 
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Infolist;
 
 class ViewProfilDospem extends ViewRecord
@@ -35,14 +35,16 @@ class ViewProfilDospem extends ViewRecord
                         TextEntry::make('user.nama')
                             ->label('Nama'),
                         TextEntry::make('nip')
-                            ->label('NIP'), 
+                            ->label('NIP'),
                         TextEntry::make('user.no_telepon')
                             ->label('No. Telepon'),
                         TextEntry::make('user.alamat')
                             ->label('Alamat'),
-                        ImageEntry::make('user.profile_picture')
+                        ImageEntry::make('profile_picture')
                             ->label('Foto Profil')
-                            ->disk('public'), 
+                            ->disk('public')
+                            ->getStateUsing(fn($record) => $record->user?->profile_picture),
+
                     ])->columns(2),
 
                 Section::make('Bidang Keahlian')
@@ -50,8 +52,8 @@ class ViewProfilDospem extends ViewRecord
                     ->schema([
                         TextEntry::make('bidangKeahlian.nama_bidang_keahlian')
                             ->label('Bidang Keahlian')
-                            ->listWithLineBreaks() 
-                            ->bulleted(), 
+                            ->listWithLineBreaks()
+                            ->bulleted(),
                     ]),
             ]);
     }

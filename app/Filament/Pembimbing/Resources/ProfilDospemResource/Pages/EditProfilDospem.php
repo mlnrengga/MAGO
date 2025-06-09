@@ -21,6 +21,7 @@ class EditProfilDospem extends EditRecord
             unset($data['user']); 
 
             $userModel = $record->user; 
+            
 
             if ($userModel) {
                 // Perbarui atribut user
