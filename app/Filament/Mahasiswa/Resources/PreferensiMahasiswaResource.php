@@ -39,7 +39,7 @@ class PreferensiMahasiswaResource extends Resource
     protected static ?string $navigationLabel = 'Preferensi Profil';
     protected static ?string $pluralModelLabel = 'Preferensi Profil Saya';
     protected static ?string $navigationGroup = 'Tentang Saya';
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 6;
 
     public static function getEloquentQuery(): Builder
     {

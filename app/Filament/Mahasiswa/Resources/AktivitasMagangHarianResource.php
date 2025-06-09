@@ -28,7 +28,7 @@ class AktivitasMagangHarianResource extends Resource
 {
     protected static ?string $model = LogMagangModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-clipboard-document-check';
+    protected static ?string $navigationIcon = 'heroicon-s-clipboard-document-list';
     protected static ?string $navigationLabel = 'Aktivitas Magang Harian';
     protected static ?string $slug = 'aktivitas-magang-harian';
     protected static ?string $modelLabel = 'Aktivitas Magang';
