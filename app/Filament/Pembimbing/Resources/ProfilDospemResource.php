@@ -25,10 +25,11 @@ class ProfilDospemResource extends Resource
 {
     protected static ?string $model = DosenPembimbingModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Manajemen Profil dan Akun';
-
-    protected static ?string $pluralModelLabel = 'Manajemen Profil & Akun';
+    protected static ?string $navigationIcon = 'heroicon-s-user';
+    protected static ?string $navigationLabel = 'Profil';
+    protected static ?string $pluralModelLabel = 'Profil Saya';
+    protected static ?string $navigationGroup = 'Tentang Saya';
+    protected static ?int $navigationSort = 3;
 
     public static function getNavigationUrl(): string
     {
@@ -66,21 +67,18 @@ class ProfilDospemResource extends Resource
                             ->required()
                             ->maxLength(255),
                         FileUpload::make('user.profile_picture')
-                            ->label('Foto Profil')
+                            ->label('Foto Profil Saat Ini')
+                            ->previewable(true)
                             ->image()
+                            // ->imagePreviewHeight('150')
                             ->disk('public')
-                            ->directory('profile-pictures')
+                            ->directory('foto-profil')
                             ->visibility('public')
-                            ->preserveFilenames()
-                            ->previewable()
+                            ->panelLayout('integrated')
                             ->openable()
                             ->downloadable()
-                            ->panelLayout('integrated')
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->helperText('Kosongkan jika tidak ingin mengubah foto')
-                            ->nullable()
-                            ->dehydrateStateUsing(fn($state) => $state)
-                            ->afterStateHydrated(fn($component, $state) => $component->state($state)),
+                            ->nullable(),
                     ])->columns(2),
 
                 Section::make('Bidang Keahlian')
