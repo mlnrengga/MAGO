@@ -66,21 +66,18 @@ class ProfilDospemResource extends Resource
                             ->required()
                             ->maxLength(255),
                         FileUpload::make('user.profile_picture')
-                            ->label('Foto Profil')
+                            ->label('Foto Profil Saat Ini')
+                            ->previewable(true)
                             ->image()
+                            // ->imagePreviewHeight('150')
                             ->disk('public')
-                            ->directory('profile-pictures')
+                            ->directory('foto-profil')
                             ->visibility('public')
-                            ->preserveFilenames()
-                            ->previewable()
+                            ->panelLayout('integrated')
                             ->openable()
                             ->downloadable()
-                            ->panelLayout('integrated')
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->helperText('Kosongkan jika tidak ingin mengubah foto')
-                            ->nullable()
-                            ->dehydrateStateUsing(fn($state) => $state)
-                            ->afterStateHydrated(fn($component, $state) => $component->state($state)),
+                            ->nullable(),
                     ])->columns(2),
 
                 Section::make('Bidang Keahlian')
