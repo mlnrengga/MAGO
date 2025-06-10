@@ -47,7 +47,7 @@ class ViewProfilMhs extends ViewRecord
                                     ->label('')
                                     ->circular()
                                     ->visibility('private')
-                                    ->width(225)
+                                    ->width(250)
                                     ->height(250)
                                     ->defaultImageUrl(asset('assets/images/default.png'))
                                     ->disk('public'),

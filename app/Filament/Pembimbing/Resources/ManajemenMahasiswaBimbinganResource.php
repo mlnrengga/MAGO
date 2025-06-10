@@ -25,7 +25,9 @@ class ManajemenMahasiswaBimbinganResource extends Resource
 
     protected static ?string $navigationLabel = 'Mahasiswa Bimbingan';
     protected static ?string $pluralModelLabel = 'Data Mahasiswa Bimbingan';
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-s-users';
+    protected static ?string $navigationGroup = 'Monitoring & Mahasiswa';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

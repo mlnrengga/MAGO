@@ -412,7 +412,7 @@ class AktivitasMagangHarianResource extends Resource
                     ->directory('bukti-magang')
                     ->visibility('public')
                     ->required()
-                    ->image() // Bisa diganti dengan acceptedFileTypes jika perlu support PDF
+                    ->image()
                     ->imagePreviewHeight('250')
                     ->loadingIndicatorPosition('left')
                     ->panelAspectRatio('2:1')
@@ -420,12 +420,12 @@ class AktivitasMagangHarianResource extends Resource
                     ->removeUploadedFileButtonPosition('right')
                     ->uploadButtonPosition('left')
                     ->uploadProgressIndicatorPosition('left')
-                    ->maxSize(10 * 1024) // 10MB
+                    ->maxSize(5 * 1024) // 10MB
                     ->getUploadedFileNameForStorageUsing(
                         fn (TemporaryUploadedFile $file): string => 
                             'bukti-' . time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension()
                     )
-                    ->helperText('Unggah bukti aktivitas (JPG, PNG, PDF max 5MB)'),
+                    ->helperText('Unggah bukti aktivitas (JPG, PNG max 5MB)'),
             ]);
     }
 

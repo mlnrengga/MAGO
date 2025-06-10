@@ -22,7 +22,7 @@ class MonitoringaktivitasMagangResource extends Resource
     protected static ?string $modelLabel = 'Manajemen - Pengguna';
     protected static ?string $pluralModelLabel = 'Data Pengguna';
     protected static ?string $navigationGroup = 'Monitoring & Mahasiswa';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
 
     public static function form(Form $form): Form

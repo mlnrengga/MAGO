@@ -25,10 +25,11 @@ class ProfilDospemResource extends Resource
 {
     protected static ?string $model = DosenPembimbingModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Manajemen Profil dan Akun';
-
-    protected static ?string $pluralModelLabel = 'Manajemen Profil & Akun';
+    protected static ?string $navigationIcon = 'heroicon-s-user';
+    protected static ?string $navigationLabel = 'Profil';
+    protected static ?string $pluralModelLabel = 'Profil Saya';
+    protected static ?string $navigationGroup = 'Tentang Saya';
+    protected static ?int $navigationSort = 3;
 
     public static function getNavigationUrl(): string
     {

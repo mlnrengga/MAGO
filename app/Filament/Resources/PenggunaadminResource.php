@@ -94,7 +94,8 @@ class PenggunaadminResource extends Resource
 
                 Tables\Columns\TextColumn::make('admin.nip')
                     ->label('NIP')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('no_telepon')
                     ->label('No Telepon')
