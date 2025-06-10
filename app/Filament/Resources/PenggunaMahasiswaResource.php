@@ -127,7 +127,8 @@ class PenggunaMahasiswaResource extends Resource
             Tables\Columns\TextColumn::make('mahasiswa.nim')
                 ->label('NIM')
                 ->sortable()
-                ->toggleable(),
+                ->toggleable()
+                ->searchable(),
 
             Tables\Columns\TextColumn::make('no_telepon')
                 ->label('No Telepon')
