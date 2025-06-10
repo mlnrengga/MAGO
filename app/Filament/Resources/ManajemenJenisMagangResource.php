@@ -25,6 +25,7 @@ class ManajemenJenisMagangResource extends Resource
     protected static ?string $modelLabel = 'Jenis Magang';
     protected static ?string $pluralModelLabel = 'Data Jenis Magang';
     protected static ?string $navigationGroup = 'Data Referensi';
+    protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
     {

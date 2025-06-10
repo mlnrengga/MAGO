@@ -20,7 +20,7 @@ class MonitoringaktivitasMagangResource extends Resource
     protected static ?string $modelLabel = 'Log Aktivitas';
     protected static ?string $pluralModelLabel = 'Monitoring Aktivitas';
     protected static ?string $navigationGroup = 'Monitoring & Mahasiswa';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function getEloquentQuery(): Builder
     {

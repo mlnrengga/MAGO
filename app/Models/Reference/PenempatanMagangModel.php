@@ -7,6 +7,7 @@ use App\Models\Auth\MahasiswaModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PenempatanMagangModel extends Model
 {
@@ -45,10 +46,9 @@ class PenempatanMagangModel extends Model
         );
     }
 
-    public function bimbingan()
-{
-    return $this->hasMany(DosenPembimbingModel::class, 'id_penempatan');
-}
-
-
+    
+    public function hasilMagang(): HasOne
+    {
+        return $this->hasOne(HasilMagangModel::class, 'id_penempatan', 'id_penempatan');
+    }
 }

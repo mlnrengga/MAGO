@@ -28,14 +28,14 @@ class AktivitasMagangHarianResource extends Resource
 {
     protected static ?string $model = LogMagangModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-clipboard-document-check';
+    protected static ?string $navigationIcon = 'heroicon-s-clipboard-document-list';
     protected static ?string $navigationLabel = 'Aktivitas Magang Harian';
     protected static ?string $slug = 'aktivitas-magang-harian';
     protected static ?string $modelLabel = 'Aktivitas Magang';
     protected static ?string $pluralModelLabel = 'Data Aktivitas Magang Harian';
     protected static ?string $navigationSubheading = 'Kelola aktivitas magang harian Anda';
-    
-    protected static ?string $navigationGroup = 'Magang';
+    protected static ?string $navigationGroup = 'Aktivitas & Evaluasi';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -412,7 +412,7 @@ class AktivitasMagangHarianResource extends Resource
                     ->directory('bukti-magang')
                     ->visibility('public')
                     ->required()
-                    ->image() // Bisa diganti dengan acceptedFileTypes jika perlu support PDF
+                    ->image()
                     ->imagePreviewHeight('250')
                     ->loadingIndicatorPosition('left')
                     ->panelAspectRatio('2:1')
@@ -420,12 +420,12 @@ class AktivitasMagangHarianResource extends Resource
                     ->removeUploadedFileButtonPosition('right')
                     ->uploadButtonPosition('left')
                     ->uploadProgressIndicatorPosition('left')
-                    ->maxSize(10 * 1024) // 10MB
+                    ->maxSize(5 * 1024) // 10MB
                     ->getUploadedFileNameForStorageUsing(
                         fn (TemporaryUploadedFile $file): string => 
                             'bukti-' . time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension()
                     )
-                    ->helperText('Unggah bukti aktivitas (JPG, PNG, PDF max 5MB)'),
+                    ->helperText('Unggah bukti aktivitas (JPG, PNG max 5MB)'),
             ]);
     }
 

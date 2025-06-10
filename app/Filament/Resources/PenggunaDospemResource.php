@@ -25,6 +25,7 @@ class PenggunaDospemResource extends Resource
     protected static ?string $modelLabel = 'Manajemen - Dosen';
     protected static ?string $pluralModelLabel = 'Data Dosen Pembimbing';
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
+    protected static ?int $navigationSort = 3;
 
     public static function getEloquentQuery(): Builder
     {
@@ -92,9 +93,9 @@ class PenggunaDospemResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')->label('Nama Lengkap')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('dosenPembimbing.nip')->label('NIP')->sortable(),
-                Tables\Columns\TextColumn::make('no_telepon')->label('No Telepon')->sortable(),
-                Tables\Columns\TextColumn::make('alamat')->label('Alamat')->sortable(),
+                Tables\Columns\TextColumn::make('dosenPembimbing.nip')->label('NIP')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('no_telepon')->label('No Telepon')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('alamat')->label('Alamat')->sortable()->searchable(),
                 Tables\Columns\ImageColumn::make('profile_picture')
                     ->label('Foto Profil')
                     ->defaultImageUrl(asset('assets/images/default.png'))

@@ -25,19 +25,21 @@ class ProfilDospemResource extends Resource
 {
     protected static ?string $model = DosenPembimbingModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Manajemen Profil dan Akun';
-
-    protected static ?string $pluralModelLabel = 'Manajemen Profil & Akun';
+    protected static ?string $navigationIcon = 'heroicon-s-user';
+    protected static ?string $navigationLabel = 'Profil';
+    protected static ?string $pluralModelLabel = 'Profil Saya';
+    protected static ?string $navigationGroup = 'Tentang Saya';
+    protected static ?int $navigationSort = 3;
 
     public static function getNavigationUrl(): string
     {
         $user = Auth::user();
         if ($user && $user->dosenPembimbing) {
-            return static::getUrl('view', ['record' => $user->dosenPembimbing->id_dospem]); 
+            return static::getUrl('view', ['record' => $user->dosenPembimbing->id_dospem]);
         }
         return static::getUrl('dashboard');
     }
+
 
     public static function form(Form $form): Form
     {
@@ -46,16 +48,16 @@ class ProfilDospemResource extends Resource
                 Section::make('Informasi Dosen Pembimbing')
                     ->description('Perbarui detail pribadi dan kontak Anda.')
                     ->schema([
-                        TextInput::make('user.nama') 
+                        TextInput::make('user.nama')
                             ->label('Nama Lengkap')
                             ->required()
                             ->maxLength(255),
-                        TextInput::make('nip') 
+                        TextInput::make('nip')
                             ->label('NIP')
                             ->maxLength(20)
-                            ->readOnly() 
+                            ->readOnly()
                             ->helperText('NIP tidak dapat diubah.'),
-                        TextInput::make('user.no_telepon') 
+                        TextInput::make('user.no_telepon')
                             ->label('Nomor Telepon')
                             ->tel()
                             ->required()
@@ -64,22 +66,30 @@ class ProfilDospemResource extends Resource
                             ->label('Alamat')
                             ->required()
                             ->maxLength(255),
-                        FileUpload::make('user.profile_picture') 
-                            ->label('Foto Profil')
+                        FileUpload::make('user.profile_picture')
+                            ->label('Foto Profil Saat Ini')
+                            ->previewable(true)
                             ->image()
-                            ->directory('profile-pictures') 
+                            // ->imagePreviewHeight('150')
+                            ->disk('public')
+                            ->directory('foto-profil')
+                            ->visibility('public')
+                            ->panelLayout('integrated')
+                            ->openable()
+                            ->downloadable()
+                            ->helperText('Kosongkan jika tidak ingin mengubah foto')
                             ->nullable(),
                     ])->columns(2),
 
                 Section::make('Bidang Keahlian')
                     ->description('Pilih bidang keahlian yang relevan.')
                     ->schema([
-                        Select::make('bidangKeahlian') 
+                        Select::make('bidangKeahlian')
                             ->label('Bidang Keahlian')
                             ->multiple()
                             ->relationship('bidangKeahlian', 'nama_bidang_keahlian')
-                            ->preload() 
-                            ->searchable() 
+                            ->preload()
+                            ->searchable()
                             ->helperText('Pilih satu atau lebih bidang keahlian Anda.'),
                     ]),
 
@@ -90,10 +100,10 @@ class ProfilDospemResource extends Resource
                             ->label('Password Baru')
                             ->password()
                             ->maxLength(255)
-                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state)) 
+                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
                             ->dehydrated(fn(?string $state): bool => filled($state))
-                            ->required(fn(string $operation): bool => $operation === 'create') 
-                            ->confirmed() 
+                            ->required(fn(string $operation): bool => $operation === 'create')
+                            ->confirmed()
                             ->autocomplete('new-password')
                             ->helperText('Biarkan kosong jika tidak ingin mengubah password.'),
                         TextInput::make('user.password_confirmation')
@@ -105,6 +115,7 @@ class ProfilDospemResource extends Resource
                     ])->columns(2),
             ]);
     }
+
 
     // public static function table(Table $table): Table
     // {
@@ -139,6 +150,4 @@ class ProfilDospemResource extends Resource
             'edit' => Pages\EditProfilDospem::route('/{record}/edit'),
         ];
     }
-
-
 }

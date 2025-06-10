@@ -27,6 +27,7 @@ class PerusahaanResource extends Resource
     protected static ?string $slug = 'manajemen-perusahaan';
     protected static ?string $modelLabel = 'Perusahaan';
     protected static ?string $pluralModelLabel = 'Data Perusahaan';
+    protected static ?int $navigationSort = 10;
 
     public static function form(Form $form): Form
     {

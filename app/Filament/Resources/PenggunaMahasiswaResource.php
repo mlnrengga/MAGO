@@ -22,6 +22,7 @@ class PenggunaMahasiswaResource extends Resource
     protected static ?string $modelLabel = 'Manajemen - Mahasiswa';
     protected static ?string $pluralModelLabel = 'Data Mahasiswa';
     protected static ?string $navigationGroup = 'Manajemen Pengguna';
+    protected static ?int $navigationSort = 4;
 
     public static function getEloquentQuery(): Builder
     {
@@ -41,6 +42,7 @@ class PenggunaMahasiswaResource extends Resource
                     ->required(),
 
                 Forms\Components\TextInput::make('alamat')
+                    ->required()
                     ->label('Alamat'),
 
                 Forms\Components\TextInput::make('no_telepon')
@@ -91,6 +93,7 @@ class PenggunaMahasiswaResource extends Resource
 
 
                 Forms\Components\TextInput::make('ipk')
+                    ->required()
                     ->label('IPK')
                     ->numeric()
                     ->minValue(0)
@@ -102,6 +105,7 @@ class PenggunaMahasiswaResource extends Resource
 
                 Forms\Components\TextInput::make('semester')
                     ->label('Semester')
+                    ->required()
                     ->numeric()
                     ->minValue(1)
                     ->maxValue(14)
@@ -126,7 +130,8 @@ class PenggunaMahasiswaResource extends Resource
             Tables\Columns\TextColumn::make('mahasiswa.nim')
                 ->label('NIM')
                 ->sortable()
-                ->toggleable(),
+                ->toggleable()
+                ->searchable(),
 
             Tables\Columns\TextColumn::make('no_telepon')
                 ->label('No Telepon')

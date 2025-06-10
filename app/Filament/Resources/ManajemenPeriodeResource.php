@@ -23,6 +23,7 @@ class ManajemenPeriodeResource extends Resource
     protected static ?string $modelLabel = 'Manajemen - Periode';
     protected static ?string $pluralModelLabel = 'Data Periode';
     protected static ?string $navigationGroup = 'Data Referensi';
+    protected static ?int $navigationSort = 9;
 
     public static function form(Form $form): Form
     {
