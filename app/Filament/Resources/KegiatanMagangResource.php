@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 
 class KegiatanMagangResource extends Resource
@@ -398,7 +399,7 @@ class KegiatanMagangResource extends Resource
                         ->modalSubmitActionLabel('Ya, Hapus')
                         ->modalCancelActionLabel('Batal')
                         ->deselectRecordsAfterCompletion()
-                        ->before(function ($records, $livewire) {
+                        ->before(function ($records) {
                             $cannotDeleteRecords = [];
 
                             foreach ($records as $key => $record) {
@@ -409,11 +410,19 @@ class KegiatanMagangResource extends Resource
                             }
 
                             if (count($cannotDeleteRecords) > 0) {
-                                $livewire->notify('warning', 'Beberapa pengajuan magang dengan status Diterima tidak dapat dihapus: ' . implode(', ', $cannotDeleteRecords));
+                                Notification::make()
+                                    ->warning()
+                                    ->title('Perhatian')
+                                    ->body('Beberapa pengajuan magang dengan status Diterima tidak dapat dihapus: ' . implode(', ', $cannotDeleteRecords))
+                                    ->send();
                             }
 
                             if ($records->isEmpty()) {
-                                $livewire->notify('danger', 'Semua pengajuan yang dipilih memiliki status Diterima dan tidak dapat dihapus.');
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Gagal')
+                                    ->body('Semua pengajuan yang dipilih memiliki status Diterima dan tidak dapat dihapus.')
+                                    ->send();
                                 return false;
                             }
                         }),
