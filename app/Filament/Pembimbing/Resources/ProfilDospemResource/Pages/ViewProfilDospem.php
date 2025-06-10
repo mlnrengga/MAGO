@@ -9,6 +9,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Infolist;
+use Illuminate\Database\Eloquent\Builder;
 
 class ViewProfilDospem extends ViewRecord
 {
@@ -40,10 +41,14 @@ class ViewProfilDospem extends ViewRecord
                             ->label('No. Telepon'),
                         TextEntry::make('user.alamat')
                             ->label('Alamat'),
-                        ImageEntry::make('profile_picture')
+                        ImageEntry::make('user.profile_picture')
                             ->label('Foto Profil')
-                            ->disk('public')
-                            ->getStateUsing(fn($record) => $record->user?->profile_picture),
+                            ->circular()
+                            ->visibility('private')
+                            ->width(250)
+                            ->height(250)
+                            ->defaultImageUrl(asset('assets/images/default.png'))
+                            ->disk('public'),
 
                     ])->columns(2),
 
@@ -56,5 +61,10 @@ class ViewProfilDospem extends ViewRecord
                             ->bulleted(),
                     ]),
             ]);
+    }
+
+    protected function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with('user');
     }
 }

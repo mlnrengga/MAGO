@@ -5,8 +5,8 @@ namespace App\Filament\Pembimbing\Resources\ProfilDospemResource\Pages;
 use App\Filament\Pembimbing\Resources\ProfilDospemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Database\Eloquent\Model; 
-use Illuminate\Support\Facades\DB;   
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class EditProfilDospem extends EditRecord
 {
@@ -18,10 +18,10 @@ class EditProfilDospem extends EditRecord
         return DB::transaction(function () use ($record, $data) {
 
             $userData = $data['user'];
-            unset($data['user']); 
+            unset($data['user']);
 
-            $userModel = $record->user; 
-            
+            $userModel = $record->user;
+
 
             if ($userModel) {
                 // Perbarui atribut user
@@ -31,7 +31,7 @@ class EditProfilDospem extends EditRecord
 
 
                 if (!empty($userData['password'])) {
-                    $userModel->password = $userData['password']; 
+                    $userModel->password = $userData['password'];
                 }
 
                 // Tangani foto profil
@@ -41,10 +41,10 @@ class EditProfilDospem extends EditRecord
                     $userModel->profile_picture = null;
                 }
 
-                $userModel->save(); 
+                $userModel->save();
             }
 
-            return $record; 
+            return $record;
         });
     }
     protected static ?string $title = 'Edit Profil & Akun';
@@ -54,6 +54,18 @@ class EditProfilDospem extends EditRecord
         return [
             // Anda bisa menambahkan Actions lain di sini jika perlu
         ];
+    }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $user = $this->getRecord()->user;
+        $data['user'] = [
+            'nama' => $user->nama,
+            'no_telepon' => $user->no_telepon,
+            'alamat' => $user->alamat,
+            'profile_picture' => $user->profile_picture,
+        ];
+        return $data;
     }
 
     /**
@@ -68,11 +80,10 @@ class EditProfilDospem extends EditRecord
      * @return string|\Illuminate\Http\RedirectResponse
      */
     protected function getRedirectUrl(): ?string
-{
-    // Gunakan getKey() untuk mendapatkan primary key yang benar (id_dospem)
-    return static::getResource()::getUrl('view', ['record' => $this->getRecord()->getKey()]);
-}
-
+    {
+        // Gunakan getKey() untuk mendapatkan primary key yang benar (id_dospem)
+        return static::getResource()::getUrl('view', ['record' => $this->getRecord()->getKey()]);
+    }
     /**
      * Mengatur pesan sukses setelah update.
      *
