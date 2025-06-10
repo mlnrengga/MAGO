@@ -44,4 +44,11 @@ class PenempatanMagangModel extends Model
             'id_dospem'
         );
     }
+
+    public function bimbingan()
+{
+    return $this->hasMany(DosenPembimbingModel::class, 'id_penempatan');
+}
+
+
 }
