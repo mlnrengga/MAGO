@@ -78,8 +78,8 @@ class PengajuanMagangMandiriResource extends Resource
                             })
                             ->searchable()
                             ->preload()
-                            ->visible(fn (callable $get) => $get('perusahaan_tipe') === 'lama')
-                            ->required(fn (callable $get) => $get('perusahaan_tipe') === 'lama')
+                            ->visible(fn(callable $get) => $get('perusahaan_tipe') === 'lama')
+                            ->required(fn(callable $get) => $get('perusahaan_tipe') === 'lama')
                             ->reactive(),
                     ])
                     ->columns(2),
@@ -88,38 +88,34 @@ class PengajuanMagangMandiriResource extends Resource
                     ->schema([
                         TextInput::make('nama_perusahaan')
                             ->label('Nama Perusahaan')
-                            ->required(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
-                            ->visible(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
+                            ->required(fn(callable $get) => $get('perusahaan_tipe') === 'baru')
                             ->placeholder('Nama Perusahaan Baru')
                             ->maxLength(100),
 
                         Textarea::make('alamat_perusahaan')
                             ->label('Alamat Perusahaan')
-                            ->required(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
-                            ->visible(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
+                            ->required(fn(callable $get) => $get('perusahaan_tipe') === 'baru')
                             ->placeholder('Alamat lengkap perusahaan')
                             ->rows(2),
 
                         TextInput::make('no_telepon_perusahaan')
                             ->label('Nomor Telepon Perusahaan')
                             ->tel()
-                            ->required(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
-                            ->visible(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
+                            ->required(fn(callable $get) => $get('perusahaan_tipe') === 'baru')
                             ->placeholder('08123456789'),
 
                         TextInput::make('email_perusahaan')
                             ->label('Email Perusahaan')
                             ->email()
-                            ->required(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
-                            ->visible(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
+                            ->required(fn(callable $get) => $get('perusahaan_tipe') === 'baru')
                             ->placeholder('bM8oF@example.com'),
 
                         TextInput::make('website_perusahaan')
                             ->label('Website Perusahaan')
-                            ->required(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
-                            ->visible(fn (callable $get) => $get('perusahaan_tipe') === 'baru')
+                            ->required(fn(callable $get) => $get('perusahaan_tipe') === 'baru')
                             ->placeholder('www.example.com'),
                     ])
+                    ->visible(fn(callable $get) => $get('perusahaan_tipe') === 'baru')
                     ->columns(2),
 
                 Section::make('Detail Magang')
@@ -299,7 +295,14 @@ class PengajuanMagangMandiriResource extends Resource
             ])
             ->bulkActions([])
             ->emptyStateHeading('Belum ada pengajuan magang mandiri')
-            ->emptyStateDescription('Buat pengajuan magang mandiri untuk perusahaan yang tidak terdaftar dalam sistem');
+            ->emptyStateDescription('Buat pengajuan magang mandiri untuk perusahaan yang tidak terdaftar dalam sistem')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Ajukan Magang Mandiri')
+                    ->icon('heroicon-o-plus')
+                    ->color('primary')
+                    ->modalHeading('Ajukan Magang Mandiri Baru'),
+            ]);
     }
 
     public static function getRelations(): array
