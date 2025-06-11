@@ -67,14 +67,37 @@ class MonitoringaktivitasMagangResource extends Resource
     {
         return $table
             ->columns([
+               Tables\Columns\ImageColumn::make('file_bukti')
+    ->label('Dokumentasi')
+    ->height(60)
+    ->width(60)
+    ->circular(),
+
+
                 Tables\Columns\TextColumn::make('penempatan.mahasiswa.user.nama')->label('Mahasiswa'),
                 Tables\Columns\TextColumn::make('tanggal_log')->label('Tanggal')->date(),
                 Tables\Columns\TextColumn::make('keterangan')->label('Aktivitas')->limit(50),
                 Tables\Columns\TextColumn::make('status')->label('Status Kehadiran'),
                 Tables\Columns\TextColumn::make('feedback_progres')->label('Feedback')->limit(50),
             ])
+             
+            ->filters([
+            Tables\Filters\SelectFilter::make('id_penempatan')
+                ->label('Nama Mahasiswa')
+                ->searchable()
+                ->options(function () {
+                    return \App\Models\Reference\PenempatanMagangModel::with('mahasiswa.user')
+                        ->get()
+                        ->pluck('mahasiswa.user.nama', 'id_penempatan');
+                })
+                ->placeholder('Semua Mahasiswa'),
+        ])
+
+
+
             ->actions([
                 Tables\Actions\EditAction::make()->label('Beri Feedback'),
+              Tables\Actions\ViewAction::make()->label('Lihat'), // 👈 Tambah tombol "Lihat"
             ])
             ->headerActions([]) // Tidak bisa create log baru
             ->bulkActions([]);  // Tidak bisa hapus massal
@@ -85,6 +108,7 @@ class MonitoringaktivitasMagangResource extends Resource
         return [
             'index' => Pages\ListMonitoringaktivitasMagangs::route('/'),
             'edit' => Pages\EditMonitoringaktivitasMagang::route('/{record}/edit'),
+            'view' => Pages\ViewMonitoringaktivitasMagang::route('/{record}'),
         ];
     }
 }
