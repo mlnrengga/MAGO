@@ -77,6 +77,7 @@ class AdminStatistikMahasiswaMagangBulanan extends ChartWidget
             if ($penempatan->status == 'Selesai' && $penempatan->updated_at) {
                 $updateAt = Carbon::parse($penempatan->updated_at);
                 if ($updateAt->lt($tanggalSelesai)) { // lt = less than
+
                     $tanggalSelesai = $updateAt;
                 }
             }
