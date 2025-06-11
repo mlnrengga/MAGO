@@ -26,4 +26,6 @@ class LogMagangModel extends Model
     {
         return $this->belongsTo(PenempatanMagangModel::class, 'id_penempatan');
     }
+
+    
 }
