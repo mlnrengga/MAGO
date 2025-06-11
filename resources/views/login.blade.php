@@ -100,7 +100,7 @@
                 Masuk
             </button> --}}
             <button type="submit" id="login-button"
-                class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-transparent shadow-sm text-m font-bold rounded-md text-white bg-blue-900 hover:bg-blue-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-transparent shadow-sm text-m font-bold rounded-md text-white bg-[#2162EB] hover:bg-[#3981F6] dark:bg-[#3981F6] dark:hover:bg-[#5FA4FA] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
                 <span id="button-text">Masuk</span>
                 <svg id="spinner" class="hidden animate-spin ml-2 h-4 w-4 text-white"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
