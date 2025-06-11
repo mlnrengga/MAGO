@@ -20,6 +20,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class LamarMagangMahasiswaResource extends Resource
 {
@@ -32,13 +33,6 @@ class LamarMagangMahasiswaResource extends Resource
     protected static ?string $slug = 'lamaran-magang';
     protected static ?string $navigationGroup = 'Histori Lamaran';
     protected static ?int $navigationSort = 3;
-
-    // public static function getWidgets(): array
-    // {
-    //     return [
-    //         MahasiswaStatusPengajuanTable::class,
-    //     ];
-    // }
 
     public static function form(Form $form): Form
     {
@@ -165,12 +159,10 @@ class LamarMagangMahasiswaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('mahasiswa.user.nama')
-                    ->label('Mahasiswa')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('lowongan.judul_lowongan')
-                    ->label('Lowongan')
+                    ->label('Posisi Magang')
+                    ->limit(15)
+                    ->tooltip(fn($record) => $record->lowongan->judul_lowongan ?? '-')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('lowongan.jenisMagang.nama_jenis_magang')
@@ -195,6 +187,15 @@ class LamarMagangMahasiswaResource extends Resource
                     })
                     ->sortable(),
             ])
+            ->emptyStateHeading('Belum ada lamaran magang')
+            ->emptyStateDescription('Ajukan lamaran magang baru untuk melihat daftar lamaran Anda.')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Lamar Magang Baru')
+                    ->icon('heroicon-o-plus')
+                    ->color('primary')
+                    ->modalHeading('Lamar Magang Baru'),
+            ])
             ->filters([
                 // Anda bisa menambahkan filter lain di sini jika perlu (misal filter berdasarkan Status)
             ])
@@ -212,13 +213,10 @@ class LamarMagangMahasiswaResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // Ambil query default
         return parent::getEloquentQuery()
-            // Eager load relasi yang dibutuhkan untuk tampilan tabel dan filter
-            ->with(['mahasiswa.user', 'lowongan.perusahaan', 'lowongan.jenisMagang', 'lowongan.daerahMagang.provinsi'])
-            // Filter: Hanya tampilkan pengajuan di mana jenis magang BUKAN 'Magang Mandiri'
-            ->whereHas('lowongan.jenisMagang', function (Builder $query) {
-                $query->where('nama_jenis_magang', '!=', 'Magang Mandiri');
+            ->where('id_mahasiswa', Auth::user()->mahasiswa->id_mahasiswa ?? null)
+            ->whereHas('lowongan', function ($query) {
+                $query->where('id_jenis_magang', '!=', 4);
             });
     }
 
@@ -232,6 +230,7 @@ class LamarMagangMahasiswaResource extends Resource
         return [
             'index' => Pages\ListLamarMagangMahasiswas::route('/'),
             'create' => Pages\CreateLamarMagangMahasiswa::route('/create'),
+            'view' => Pages\ViewLamarMagangMahasiswa::route('/{record}'),
         ];
     }
 }

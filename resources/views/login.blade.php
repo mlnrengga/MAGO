@@ -68,7 +68,7 @@
                     class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIM/NIP</label>
                 <input type="text" name="identifier" id="identifier" required autofocus
                     value="{{ old('identifier') }}"
-                    class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm placeholder:text-sm leading-tight py-2 px-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white text-sm placeholder:text-sm leading-tight py-2 px-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
                 <p id="identifier-error" class="text-red-500 text-sm mt-1 hidden">NIM/NIP harus berupa angka dan tidak
                     boleh kosong.</p>
             </div>
@@ -79,7 +79,7 @@
                     class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
                 <div class="mt-1 relative">
                     <input type="password" name="password" id="password" required
-                        class="block w-full pr-10 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm py-2 px-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        class="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 dark:text-white text-sm placeholder:text-sm leading-tight py-2 px-3 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
                     <button type="button" onclick="togglePasswordVisibility()" tabindex="-1"
                         class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white">
                         <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -100,7 +100,7 @@
                 Masuk
             </button> --}}
             <button type="submit" id="login-button"
-                class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-transparent shadow-sm text-m font-bold rounded-md text-white bg-[#2162EB] hover:bg-[#3981F6] dark:bg-[#3981F6] dark:hover:bg-[#5FA4FA] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
                 <span id="button-text">Masuk</span>
                 <svg id="spinner" class="hidden animate-spin ml-2 h-4 w-4 text-white"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
