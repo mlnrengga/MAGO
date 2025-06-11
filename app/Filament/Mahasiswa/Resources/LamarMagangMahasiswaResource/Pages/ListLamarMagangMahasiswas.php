@@ -14,34 +14,11 @@ class ListLamarMagangMahasiswas extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Lamar Magang Baru')
+                ->icon('heroicon-o-plus')
+                ->color('primary')
+                ->modalHeading('Lamar Magang Baru'),
         ];
-    }
-
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            MahasiswaStatusPengajuanTable::class,
-        ];
-    }
-
-    protected function isTableRenderable(): bool
-    {
-        return false;
-    }
-
-    public function getTable(): \Filament\Tables\Table
-    {
-        $table = parent::getTable();
-
-        $table->paginated(false);
-        $table->striped(false);
-        $table->defaultSort(null);
-        $table->columns([]);
-        $table->filters([]);
-        $table->actions([]);
-        $table->bulkActions([]);
-
-        return $table;
     }
 }
