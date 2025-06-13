@@ -45,8 +45,19 @@ class MonitoringaktivitasMagangResource extends Resource
  public static function form(Form $form): Form
 {
     return $form
-        ->schema([
-            Forms\Components\Section::make('Beri Feedback')
+    ->schema([
+         Forms\Components\Section::make('Keterangan Aktivitas Mahasiswa')
+                ->schema([
+                    Forms\Components\Placeholder::make('keterangan')
+                        ->content(fn ($record) => $record->keterangan)
+                        ->extraAttributes(['class' => 'text-gray-700']),
+                ])
+                ->collapsible(),   
+        
+        
+        
+        
+        Forms\Components\Section::make('Beri Feedback')
                 ->description('Berikan masukan untuk aktivitas magang mahasiswa')
                 ->schema([
                     Forms\Components\Textarea::make('feedback_progres')
