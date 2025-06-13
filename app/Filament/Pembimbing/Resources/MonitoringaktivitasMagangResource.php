@@ -28,7 +28,7 @@ class MonitoringaktivitasMagangResource extends Resource
         $dosen = $user->dosenPembimbing;
 
         if (!$dosen) {
-            return parent::getEloquentQuery()->whereRaw('1 = 0'); 
+            return parent::getEloquentQuery()->whereRaw('1 = 0');
         }
 
         $penempatanIds = $dosen->mahasiswaBimbingan()
@@ -37,16 +37,17 @@ class MonitoringaktivitasMagangResource extends Resource
 
         return parent::getEloquentQuery()
             ->whereIn('id_penempatan', $penempatanIds)
-            ->with(['penempatan.mahasiswa.user']);
+            ->with(['penempatan.mahasiswa.user']); // ✅ Tambahan: eager loading relasi untuk mencegah N+1
     }
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('penempatan.mahasiswa.user.nama')
-                ->label('Nama Mahasiswa')
-                ->disabled()
-                ->dehydrated(false),
+          Forms\Components\TextInput::make('nama_mahasiswa')
+    ->label('Nama Mahasiswa')
+    ->disabled()
+    ->dehydrated(false), // ✅ Dibiarkan kosong, akan diisi manual di halaman View/Edit
+
 
             Forms\Components\DatePicker::make('tanggal_log')
                 ->label('Tanggal Log')
@@ -66,38 +67,47 @@ class MonitoringaktivitasMagangResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-               Tables\Columns\ImageColumn::make('file_bukti')
-    ->label('Dokumentasi')
-    ->height(60)
-    ->width(60)
-    ->circular(),
+             ->columns([
+                Tables\Columns\ImageColumn::make('file_bukti')
+                    ->label('Dokumentasi')
+                    ->height(60)
+                    ->width(60)
+                    ->circular()
+                    // ✅ Perubahan penting: override URL agar Cloudinary bisa dibaca
+                    ->getStateUsing(function ($record) {
+                        return $record->file_bukti
+                            ? 'https://res.cloudinary.com/dxwwjhtup/image/upload/' . ltrim($record->file_bukti, '/')
+                            : null;
+                    }),
 
+                Tables\Columns\TextColumn::make('penempatan.mahasiswa.user.nama')
+                    ->label('Mahasiswa')
+                    ->default('-'), // ✅ Diperbaiki: fallback jika relasi null
 
-                Tables\Columns\TextColumn::make('penempatan.mahasiswa.user.nama')->label('Mahasiswa'),
                 Tables\Columns\TextColumn::make('tanggal_log')->label('Tanggal')->date(),
                 Tables\Columns\TextColumn::make('keterangan')->label('Aktivitas')->limit(50),
                 Tables\Columns\TextColumn::make('status')->label('Status Kehadiran'),
                 Tables\Columns\TextColumn::make('feedback_progres')->label('Feedback')->limit(50),
             ])
-             
+
             ->filters([
-            Tables\Filters\SelectFilter::make('id_penempatan')
-                ->label('Nama Mahasiswa')
-                ->searchable()
-                ->options(function () {
-                    return \App\Models\Reference\PenempatanMagangModel::with('mahasiswa.user')
-                        ->get()
-                        ->pluck('mahasiswa.user.nama', 'id_penempatan');
-                })
-                ->placeholder('Semua Mahasiswa'),
-        ])
+                Tables\Filters\SelectFilter::make('id_penempatan')
+                    ->label('Nama Mahasiswa')
+                    ->searchable()
+                    ->options(function () {
+                        return \App\Models\Reference\PenempatanMagangModel::with('mahasiswa.user')
+                            ->get()
+                            ->filter(fn($p) => $p->mahasiswa && $p->mahasiswa->user) // ✅ Ditambahkan: filter data null
+                            ->pluck('mahasiswa.user.nama', 'id_penempatan');
+                    })
+                    ->placeholder('Semua Mahasiswa'),
+            ])
 
 
 
             ->actions([
                 Tables\Actions\EditAction::make()->label('Beri Feedback'),
-              Tables\Actions\ViewAction::make()->label('Lihat'), // 👈 Tambah tombol "Lihat"
+                Tables\Actions\ViewAction::make()->label('Lihat'), // 👈 Tambah tombol "Lihat"
             ])
             ->headerActions([]) // Tidak bisa create log baru
             ->bulkActions([]);  // Tidak bisa hapus massal
