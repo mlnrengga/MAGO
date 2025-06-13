@@ -3,32 +3,61 @@
 namespace App\Filament\Pembimbing\Resources\MonitoringaktivitasMagangResource\Pages;
 
 use App\Filament\Pembimbing\Resources\MonitoringaktivitasMagangResource;
-use App\Models\Reference\LogMagangModel;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Notifications\Notification;
 
 class EditMonitoringaktivitasMagang extends EditRecord
 {
     protected static string $resource = MonitoringaktivitasMagangResource::class;
 
-    protected function getHeaderActions(): array
+    public function getHeading(): string
+    {
+        return 'Beri Feedback';
+    }
+
+    public function getSubheading(): ?string
+    {
+        return null;
+    }
+
+    protected function getFormActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            $this->getSaveFormAction()
+                ->label('Simpan Feedback')
+                ->icon('heroicon-o-check'),
+                
+            $this->getCancelFormAction()
+                ->label('Batalkan')
+                ->icon('heroicon-o-x-mark')
         ];
     }
 
-    // ✅ Agar relasi dimuat
-    protected function resolveRecordUsing($key): \Illuminate\Database\Eloquent\Model
+    protected function afterSave(): void
     {
-        return LogMagangModel::with(['penempatan.mahasiswa.user'])->findOrFail($key);
+        Notification::make()
+            ->title('Feedback berhasil disimpan')
+            ->success()
+            ->send();
     }
 
-    // ✅ Tambahan agar field nama_mahasiswa diisi otomatis
-    protected function afterFormFilled(): void
+    protected function getSavedNotificationTitle(): ?string
     {
-        $this->form->fill([
-            'nama_mahasiswa' => optional($this->record->penempatan?->mahasiswa?->user)->nama ?? '-',
-        ]);
+        return null;
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\ViewAction::make()
+                ->label('Kembali ke Detail')
+                ->color('gray'),
+        ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }
