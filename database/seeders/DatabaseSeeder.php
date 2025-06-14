@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             DospemBidangKeahlianSeeder::class,
             LowonganBidangSeeder::class,
             PenempatanMagangSeeder::class,
+            BimbinganSeeder::class,
         ]);
 
     }
