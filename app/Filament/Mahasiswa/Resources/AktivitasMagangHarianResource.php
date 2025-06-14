@@ -425,6 +425,151 @@ class AktivitasMagangHarianResource extends Resource
                     ->extraAttributes([
                         'class' => 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg',
                     ]),
+
+                Forms\Components\Section::make('Informasi Dosen Pembimbing')
+                    ->description('Detail dosen pembimbing untuk magang ini')
+                    ->schema([
+                        Forms\Components\Grid::make()
+                            ->schema([
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('nama_dosen')
+                                            ->label('Nama Dosen Pembimbing')
+                                            ->content(function (Get $get) {
+                                                $idLowongan = $get('id_lowongan');
+                                                if (!$idLowongan) return 'N/A';
+                                                
+                                                // Dapatkan pengajuan dan penempatan terkait
+                                                $pengajuan = PengajuanMagangModel::where('id_lowongan', $idLowongan)
+                                                    ->whereHas('mahasiswa', function (Builder $query) {
+                                                        $query->whereHas('user', function (Builder $query) {
+                                                            $query->where('id_user', Auth::id());
+                                                        });
+                                                    })
+                                                    ->where('status', 'Diterima')
+                                                    ->first();
+                                                
+                                                if (!$pengajuan) return 'N/A';
+                                                
+                                                $penempatan = PenempatanMagangModel::where('id_pengajuan', $pengajuan->id_pengajuan)->first();
+                                                
+                                                if (!$penempatan || !$penempatan->dosenPembimbing()->exists()) {
+                                                    return 'Belum ditentukan';
+                                                }
+                                                
+                                                return $penempatan->dosenPembimbing()->first()->user->nama ?? 'N/A';
+                                            })
+                                            ->hintIcon('heroicon-o-user'),
+                                    ]),
+                                    
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('nip_dosen')
+                                            ->label('NIP Dosen')
+                                            ->content(function (Get $get) {
+                                                $idLowongan = $get('id_lowongan');
+                                                if (!$idLowongan) return 'N/A';
+                                                
+                                                // Dapatkan pengajuan dan penempatan terkait
+                                                $pengajuan = PengajuanMagangModel::where('id_lowongan', $idLowongan)
+                                                    ->whereHas('mahasiswa', function (Builder $query) {
+                                                        $query->whereHas('user', function (Builder $query) {
+                                                            $query->where('id_user', Auth::id());
+                                                        });
+                                                    })
+                                                    ->where('status', 'Diterima')
+                                                    ->first();
+                                                
+                                                if (!$pengajuan) return 'N/A';
+                                                
+                                                $penempatan = PenempatanMagangModel::where('id_pengajuan', $pengajuan->id_pengajuan)->first();
+                                                
+                                                if (!$penempatan || !$penempatan->dosenPembimbing()->exists()) {
+                                                    return 'Belum ditentukan';
+                                                }
+                                                
+                                                return $penempatan->dosenPembimbing()->first()->nip ?? 'N/A';
+                                            })
+                                            ->hintIcon('heroicon-o-identification'),
+                                    ]),
+                                    
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('telepon_dosen')
+                                            ->label('Nomor Telepon Dosen')
+                                            ->content(function (Get $get) {
+                                                $idLowongan = $get('id_lowongan');
+                                                if (!$idLowongan) return 'N/A';
+                                                
+                                                // Dapatkan pengajuan dan penempatan terkait
+                                                $pengajuan = PengajuanMagangModel::where('id_lowongan', $idLowongan)
+                                                    ->whereHas('mahasiswa', function (Builder $query) {
+                                                        $query->whereHas('user', function (Builder $query) {
+                                                            $query->where('id_user', Auth::id());
+                                                        });
+                                                    })
+                                                    ->where('status', 'Diterima')
+                                                    ->first();
+                                                
+                                                if (!$pengajuan) return 'N/A';
+                                                
+                                                $penempatan = PenempatanMagangModel::where('id_pengajuan', $pengajuan->id_pengajuan)->first();
+                                                
+                                                if (!$penempatan || !$penempatan->dosenPembimbing()->exists()) {
+                                                    return 'Belum ditentukan';
+                                                }
+                                                
+                                                return $penempatan->dosenPembimbing()->first()->user->no_telepon ?? 'N/A';
+                                            })
+                                            ->hintIcon('heroicon-o-phone'),
+                                    ]),
+                                
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('bidang_keahlian_dosen')
+                                            ->label('Bidang Keahlian Dosen')
+                                            ->content(function (Get $get) {
+                                                $idLowongan = $get('id_lowongan');
+                                                if (!$idLowongan) return 'N/A';
+                                                
+                                                // Dapatkan pengajuan dan penempatan terkait
+                                                $pengajuan = PengajuanMagangModel::where('id_lowongan', $idLowongan)
+                                                    ->whereHas('mahasiswa', function (Builder $query) {
+                                                        $query->whereHas('user', function (Builder $query) {
+                                                            $query->where('id_user', Auth::id());
+                                                        });
+                                                    })
+                                                    ->where('status', 'Diterima')
+                                                    ->first();
+                                                
+                                                if (!$pengajuan) return 'N/A';
+                                                
+                                                $penempatan = PenempatanMagangModel::where('id_pengajuan', $pengajuan->id_pengajuan)->first();
+                                                
+                                                if (!$penempatan || !$penempatan->dosenPembimbing()->exists()) {
+                                                    return 'Belum ditentukan';
+                                                }
+                                                
+                                                $dosen = $penempatan->dosenPembimbing()->first();
+                                                $bidangKeahlian = $dosen->bidangKeahlian;
+                                                
+                                                if ($bidangKeahlian->isEmpty()) {
+                                                    return 'Tidak ada bidang keahlian terdaftar';
+                                                }
+                                                
+                                                return $bidangKeahlian->pluck('nama_bidang_keahlian')->implode(', ');
+                                            })
+                                            ->hintIcon('heroicon-o-academic-cap'),
+                                    ]),
+                            ])
+                            ->columns(2)
+                    ])
+                    ->collapsible()
+                    ->collapsed(true)
+                    ->visible(fn (Get $get): bool => (bool) $get('id_lowongan'))
+                    ->extraAttributes([
+                        'class' => 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg',
+                    ]),
                     
                 Forms\Components\DatePicker::make('tanggal_log')
                     ->native(false)
