@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Mawar Satu No. 1',
                 'no_telepon' => '081234567890',
-                'profile_picture' => 'zzz', 
+                'profile_picture' => '', 
                 'id_role' => 1,
             ],
             [
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Ahmad Yani No. 45',
                 'no_telepon' => '081234567891',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 1,
             ],
             [
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Sudirman Blok C2 No. 7',
                 'no_telepon' => '085678912345',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 1,
             ],
             [
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Griya Indah Blok F No. 12',
                 'no_telepon' => '087812345678',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 1,
             ],
             [
@@ -57,7 +57,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Gatot Subroto No. 34',
                 'no_telepon' => '089876543210',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 1,
             ],
             [
@@ -66,7 +66,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Permata Hijau Blok A3 No. 9',
                 'no_telepon' => '081345678901',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 1,
             ],
             [
@@ -75,7 +75,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Cendrawasih No. 56',
                 'no_telepon' => '085234567890',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 1,
             ],
             [
@@ -84,7 +84,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Diponegoro No. 78',
                 'no_telepon' => '082345678901',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 1,
             ],
             [
@@ -93,7 +93,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Bumi Asri Blok D No. 23',
                 'no_telepon' => '089012345678',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 1,
             ],
             [
@@ -102,7 +102,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Veteran No. 67',
                 'no_telepon' => '081456789012',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 1,
             ],
         ];
@@ -115,7 +115,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Melati No. 2',
                 'no_telepon' => '081234567891',
-                'profile_picture' => 'zzz', 
+                'profile_picture' => '', 
                 'id_role' => 2,
             ],
             [
@@ -124,7 +124,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Pahlawan No. 15',
                 'no_telepon' => '082156789012',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -133,7 +133,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Graha Indah Blok B3 No. 7',
                 'no_telepon' => '083167890123',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -142,7 +142,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Mangga No. 24',
                 'no_telepon' => '084178901234',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -151,7 +151,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Anggrek No. 37',
                 'no_telepon' => '085189012345',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -160,7 +160,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Permata Asri Blok C5 No. 12',
                 'no_telepon' => '086190123456',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -169,7 +169,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Kenari No. 43',
                 'no_telepon' => '087201234567',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -178,7 +178,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Cempaka No. 19',
                 'no_telepon' => '088212345678',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -187,7 +187,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Taman Sari Blok E2 No. 8',
                 'no_telepon' => '089223456789',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -196,7 +196,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Dahlia No. 51',
                 'no_telepon' => '081234567892',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -205,7 +205,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Teratai No. 29',
                 'no_telepon' => '082345678903',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -214,7 +214,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Bumi Asri Blok F7 No. 15',
                 'no_telepon' => '083456789014',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -223,7 +223,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Flamboyan No. 63',
                 'no_telepon' => '084567890125',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -232,7 +232,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Delima No. 37',
                 'no_telepon' => '085678901236',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -241,7 +241,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Indah Permai Blok D8 No. 21',
                 'no_telepon' => '086789012347',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -250,7 +250,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Meranti No. 42',
                 'no_telepon' => '087890123458',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -259,7 +259,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Seruni No. 27',
                 'no_telepon' => '088901234569',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -268,7 +268,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Griya Indah Blok G1 No. 3',
                 'no_telepon' => '089012345670',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -277,7 +277,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Kenanga No. 54',
                 'no_telepon' => '081234567893',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -286,7 +286,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Kemuning No. 31',
                 'no_telepon' => '082345678904',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -295,7 +295,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Bukit Indah Blok C4 No. 9',
                 'no_telepon' => '083456789015',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -304,7 +304,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Cendana No. 47',
                 'no_telepon' => '084567890126',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -313,7 +313,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Beringin No. 22',
                 'no_telepon' => '085678901237',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -322,7 +322,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Taman Harapan Blok B6 No. 14',
                 'no_telepon' => '086789012348',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -331,7 +331,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Bougenville No. 39',
                 'no_telepon' => '087890123459',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -340,7 +340,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Kamboja No. 26',
                 'no_telepon' => '088901234570',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -349,7 +349,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Citra Garden Blok D5 No. 11',
                 'no_telepon' => '089012345681',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -358,7 +358,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Belimbing No. 49',
                 'no_telepon' => '081234567894',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -367,7 +367,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Nangka No. 35',
                 'no_telepon' => '082345678905',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -376,7 +376,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Graha Asri Blok E3 No. 17',
                 'no_telepon' => '083456789016',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -385,7 +385,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Durian No. 53',
                 'no_telepon' => '084567890127',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -394,7 +394,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Salak No. 28',
                 'no_telepon' => '085678901238',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -403,7 +403,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Puri Indah Blok F2 No. 19',
                 'no_telepon' => '086789012349',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -412,7 +412,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Kelapa No. 41',
                 'no_telepon' => '087890123460',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -421,7 +421,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Rambutan No. 33',
                 'no_telepon' => '088901234571',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -430,7 +430,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Bumi Sejahtera Blok C7 No. 23',
                 'no_telepon' => '089012345682',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -439,7 +439,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Semangka No. 57',
                 'no_telepon' => '081234567895',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -448,7 +448,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Pepaya No. 36',
                 'no_telepon' => '082345678906',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -457,7 +457,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Griya Alam Blok D4 No. 13',
                 'no_telepon' => '083456789017',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -466,7 +466,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Pisang No. 44',
                 'no_telepon' => '084567890128',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -475,7 +475,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Jeruk No. 25',
                 'no_telepon' => '085678901239',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -484,7 +484,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Taman Sari Blok G3 No. 18',
                 'no_telepon' => '086789012350',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -493,7 +493,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Apel No. 38',
                 'no_telepon' => '087890123461',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -502,7 +502,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Kiwi No. 29',
                 'no_telepon' => '088901234572',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -511,7 +511,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Pesona Indah Blok E6 No. 24',
                 'no_telepon' => '089012345683',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -520,7 +520,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Manggis No. 52',
                 'no_telepon' => '081234567896',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -529,7 +529,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Sirsak No. 34',
                 'no_telepon' => '082345678907',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -538,7 +538,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Graha Persada Blok F4 No. 16',
                 'no_telepon' => '083456789018',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -547,7 +547,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Jambu No. 46',
                 'no_telepon' => '084567890129',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -556,7 +556,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Markisa No. 27',
                 'no_telepon' => '085678901240',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -565,7 +565,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Citra Garden Blok G5 No. 22',
                 'no_telepon' => '086789012351',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -574,7 +574,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Sawo No. 42',
                 'no_telepon' => '087890123462',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -583,7 +583,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Sukun No. 31',
                 'no_telepon' => '088901234573',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -592,7 +592,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Taman Asri Blok B8 No. 27',
                 'no_telepon' => '089012345684',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -601,7 +601,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Nanas No. 55',
                 'no_telepon' => '081234567897',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -610,7 +610,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Duku No. 32',
                 'no_telepon' => '082345678908',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -619,7 +619,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Bumi Indah Blok C9 No. 21',
                 'no_telepon' => '083456789019',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -628,7 +628,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Mangga Dua No. 48',
                 'no_telepon' => '084567890130',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -637,7 +637,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Kedondong No. 30',
                 'no_telepon' => '085678901241',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -646,7 +646,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Permata Indah Blok D7 No. 19',
                 'no_telepon' => '086789012352',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -655,7 +655,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Langsat No. 40',
                 'no_telepon' => '087890123463',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -664,7 +664,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Leci No. 25',
                 'no_telepon' => '088901234574',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -673,7 +673,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Griya Husada Blok F8 No. 15',
                 'no_telepon' => '089012345685',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -682,7 +682,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Cermai No. 59',
                 'no_telepon' => '081234567898',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -691,7 +691,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Srikaya No. 37',
                 'no_telepon' => '082345678909',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -700,7 +700,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Taman Permata Blok E7 No. 20',
                 'no_telepon' => '083456789020',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -709,7 +709,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Alpukat No. 45',
                 'no_telepon' => '084567890131',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -718,7 +718,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Melon No. 28',
                 'no_telepon' => '085678901242',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -727,7 +727,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Puri Harmoni Blok B9 No. 25',
                 'no_telepon' => '086789012353',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
             [
@@ -736,7 +736,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Anggur No. 51',
                 'no_telepon' => '087890123464',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 2,
             ],
         ];
@@ -749,7 +749,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Kenanga No. 3',
                 'no_telepon' => '081234567892',
-                'profile_picture' => 'zzz', 
+                'profile_picture' => '', 
                 'id_role' => 3,
             ],
             [
@@ -758,7 +758,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Menteng No. 45',
                 'no_telepon' => '082345678910',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -767,7 +767,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Dosen Blok A No. 12',
                 'no_telepon' => '083456789021',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -776,7 +776,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Cendrawasih No. 28',
                 'no_telepon' => '084567890132',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -785,7 +785,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Elite Blok B No. 7',
                 'no_telepon' => '085678901243',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -794,7 +794,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Garuda No. 19',
                 'no_telepon' => '086789012354',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -803,7 +803,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Rajawali No. 33',
                 'no_telepon' => '087890123465',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -812,7 +812,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Permata Hijau Blok D No. 15',
                 'no_telepon' => '088901234576',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -821,7 +821,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Merpati No. 27',
                 'no_telepon' => '089012345687',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -830,7 +830,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Griya Ilmu Blok C No. 9',
                 'no_telepon' => '081234567899',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -839,7 +839,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Elang No. 42',
                 'no_telepon' => '082345678911',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -848,7 +848,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Kakatua No. 31',
                 'no_telepon' => '083456789022',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -857,7 +857,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Dosen Blok E No. 18',
                 'no_telepon' => '084567890133',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -866,7 +866,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Cenderawasih No. 24',
                 'no_telepon' => '085678901244',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -875,7 +875,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Taman Ilmu Blok F No. 11',
                 'no_telepon' => '086789012355',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -884,7 +884,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Merak No. 37',
                 'no_telepon' => '087890123466',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -893,7 +893,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Perkutut No. 29',
                 'no_telepon' => '088901234577',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -902,7 +902,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Komplek Griya Cendekia Blok G No. 21',
                 'no_telepon' => '089012345688',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -911,7 +911,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Jalak No. 47',
                 'no_telepon' => '081234567800',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
             [
@@ -920,7 +920,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Perumahan Bumi Akademisi Blok D No. 23',
                 'no_telepon' => '082345678912',
-                'profile_picture' => 'zzz',
+                'profile_picture' => '',
                 'id_role' => 3,
             ],
         ];
