@@ -39,10 +39,11 @@ class AktivitasMagangHarianResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $lowonganOptions = [];
         $userId = Auth::id();
         
-        // Mendapatkan lowongan magang yang tersedia untuk user saat ini
-        $lowonganOptions = LowonganMagangModel::whereHas('pengajuanMagang', function (Builder $query) use ($userId) {
+        // Mendapatkan semua lowongan yang terkait dengan penempatan berlangsung
+        $lowongans = LowonganMagangModel::whereHas('pengajuanMagang', function (Builder $query) use ($userId) {
             $query->whereHas('mahasiswa', function (Builder $query) use ($userId) {
                 $query->whereHas('user', function (Builder $query) use ($userId) {
                     $query->where('id_user', $userId);
@@ -51,8 +52,43 @@ class AktivitasMagangHarianResource extends Resource
             ->whereHas('penempatan', function (Builder $query) {
                 $query->where('status', PenempatanMagangModel::STATUS_BERLANGSUNG);
             });
-        })->pluck('judul_lowongan', 'id_lowongan')->toArray();
+        })->with(['periode', 'waktuMagang'])->get();
         
+        foreach ($lowongans as $lowongan) {
+            // Menghitung tanggal berakhir magang berdasarkan periode dan durasi
+            if ($lowongan->periode && $lowongan->waktuMagang) {
+                // Extract year and semester type from period
+                $periodeNama = $lowongan->periode->nama_periode;
+                $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
+                if (preg_match($pattern, $periodeNama, $matches)) {
+                    $tahunAwal = (int)$matches[1];
+                    $tahunAkhir = (int)$matches[2];
+                    $jenisSemester = $matches[3];
+                    
+                    // Determine start date based on semester type
+                    if ($jenisSemester == 'Ganjil') {
+                        $startDate = Carbon::create($tahunAwal, 7, 1);
+                    } elseif ($jenisSemester == 'Genap') {
+                        $startDate = Carbon::create($tahunAkhir, 1, 1);
+                    } else {
+                        $startDate = Carbon::create($tahunAwal, 6, 1);
+                    }
+                    
+                    // Extract duration and calculate end date
+                    preg_match('/(\d+)/', $lowongan->waktuMagang->waktu_magang, $matches);
+                    if (isset($matches[1])) {
+                        $bulan = (int)$matches[1];
+                        $endDate = $startDate->copy()->addMonths($bulan);
+                        
+                        // Hanya tambahkan lowongan yang belum berakhir
+                        if (Carbon::now()->lte($endDate)) {
+                            $lowonganOptions[$lowongan->id_lowongan] = $lowongan->judul_lowongan;
+                        }
+                    }
+                }
+            }
+        }
+
         return $form
             ->schema([
                 Forms\Components\Select::make('id_lowongan')
@@ -357,47 +393,47 @@ class AktivitasMagangHarianResource extends Resource
                                                     return 'Hari terakhir magang';
                                                 }
                                             })
-                                            ->extraAttributes(function (Get $get) {
-                                                $idLowongan = $get('id_lowongan');
-                                                if (!$idLowongan) return [];
+                                            // ->extraAttributes(function (Get $get) {
+                                            //     $idLowongan = $get('id_lowongan');
+                                            //     if (!$idLowongan) return [];
                                                 
-                                                $lowongan = LowonganMagangModel::with(['periode', 'waktuMagang'])->find($idLowongan);
-                                                if (!$lowongan || !$lowongan->periode || !$lowongan->waktuMagang) {
-                                                    return [];
-                                                }
+                                            //     $lowongan = LowonganMagangModel::with(['periode', 'waktuMagang'])->find($idLowongan);
+                                            //     if (!$lowongan || !$lowongan->periode || !$lowongan->waktuMagang) {
+                                            //         return [];
+                                            //     }
                                                 
-                                                // Calculate end date as in the content function
-                                                $periodeNama = $lowongan->periode->nama_periode;
-                                                $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
-                                                if (!preg_match($pattern, $periodeNama, $matches)) {
-                                                    return [];
-                                                }
+                                            //     // Calculate end date as in the content function
+                                            //     $periodeNama = $lowongan->periode->nama_periode;
+                                            //     $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
+                                            //     if (!preg_match($pattern, $periodeNama, $matches)) {
+                                            //         return [];
+                                            //     }
                                                 
-                                                $tahunAwal = (int)$matches[1];
-                                                $tahunAkhir = (int)$matches[2];
-                                                $jenisSemester = $matches[3];
+                                            //     $tahunAwal = (int)$matches[1];
+                                            //     $tahunAkhir = (int)$matches[2];
+                                            //     $jenisSemester = $matches[3];
                                                 
-                                                if ($jenisSemester == 'Ganjil') {
-                                                    $startDate = Carbon::create($tahunAwal, 7, 1);
-                                                } elseif ($jenisSemester == 'Genap') {
-                                                    $startDate = Carbon::create($tahunAkhir, 1, 1);
-                                                } else {
-                                                    $startDate = Carbon::create($tahunAwal, 6, 1);
-                                                }
+                                            //     if ($jenisSemester == 'Ganjil') {
+                                            //         $startDate = Carbon::create($tahunAwal, 7, 1);
+                                            //     } elseif ($jenisSemester == 'Genap') {
+                                            //         $startDate = Carbon::create($tahunAkhir, 1, 1);
+                                            //     } else {
+                                            //         $startDate = Carbon::create($tahunAwal, 6, 1);
+                                            //     }
                                                 
-                                                preg_match('/(\d+)/', $lowongan->waktuMagang->waktu_magang, $matches);
-                                                if (!isset($matches[1])) {
-                                                    return [];
-                                                }
+                                            //     preg_match('/(\d+)/', $lowongan->waktuMagang->waktu_magang, $matches);
+                                            //     if (!isset($matches[1])) {
+                                            //         return [];
+                                            //     }
                                                 
-                                                $bulan = (int)$matches[1];
-                                                $endDate = $startDate->copy()->addMonths($bulan);
+                                            //     $bulan = (int)$matches[1];
+                                            //     $endDate = $startDate->copy()->addMonths($bulan);
                                                 
-                                                // Return style for expired
-                                                return $endDate < Carbon::now() 
-                                                    ? ['class' => 'text-danger-500 font-medium'] 
-                                                    : [];
-                                            })
+                                            //     // Return style for expired
+                                            //     return $endDate < Carbon::now() 
+                                            //         ? ['class' => 'text-danger-500 font-medium'] 
+                                            //         : [];
+                                            // })
                                             ->hintIcon('heroicon-o-clock'),
                                     ]),
                             ])
