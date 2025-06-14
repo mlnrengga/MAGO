@@ -43,9 +43,11 @@ class EvaluasiHasilMagangResource extends Resource
                                     ->schema([
                                         Forms\Components\Placeholder::make('lowongan')
                                             ->label('Lowongan Magang')
-                                            ->content(function (Get $get, $record) {
+                                            ->content(function ($record, $livewire) {
                                                 if ($record && $record->penempatanMagang) {
                                                     return $record->penempatanMagang->pengajuan->lowongan->judul_lowongan;
+                                                } else if (isset($livewire->penempatan)) {
+                                                    return $livewire->penempatan->pengajuan->lowongan->judul_lowongan;
                                                 }
                                                 
                                                 return 'N/A';
