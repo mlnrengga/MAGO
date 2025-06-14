@@ -45,6 +45,7 @@ class PenempatanMagangModel extends Model
             'id_dospem'
         );
     }
+
     
     public function hasilMagang(): HasOne
     {

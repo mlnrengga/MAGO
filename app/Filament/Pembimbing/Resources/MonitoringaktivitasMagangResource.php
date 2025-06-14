@@ -3,68 +3,257 @@
 namespace App\Filament\Pembimbing\Resources;
 
 use App\Filament\Pembimbing\Resources\MonitoringaktivitasMagangResource\Pages;
-use App\Filament\Pembimbing\Resources\MonitoringaktivitasMagangResource\RelationManagers;
-use App\Models\MonitoringaktivitasMagang;
+use App\Models\Reference\LogMagangModel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components;
 
 class MonitoringaktivitasMagangResource extends Resource
 {
-    // protected static ?string $model = MonitoringaktivitasMagang::class;
+    protected static ?string $model = LogMagangModel::class;
 
     protected static ?string $navigationLabel = 'Monitoring Magang';
     protected static ?string $navigationIcon = 'heroicon-s-user-group';
-    protected static ?string $modelLabel = 'Manajemen - Pengguna';
-    protected static ?string $pluralModelLabel = 'Data Pengguna';
+    protected static ?string $modelLabel = 'Log Aktivitas';
+    protected static ?string $pluralModelLabel = 'Monitoring Aktivitas';
     protected static ?string $navigationGroup = 'Monitoring & Mahasiswa';
     protected static ?int $navigationSort = 2;
 
-
-    public static function form(Form $form): Form
+    public static function getEloquentQuery(): Builder
     {
-        return $form
-            ->schema([
-                //
-            ]);
+        $user = auth()->user();
+        $dosen = $user->dosenPembimbing;
+
+        if (!$dosen) {
+            return parent::getEloquentQuery()->whereRaw('1 = 0');
+        }
+
+        $penempatanIds = $dosen->mahasiswaBimbingan()
+            ->pluck('t_penempatan_magang.id_penempatan')
+            ->toArray();
+
+        return parent::getEloquentQuery()
+            ->whereIn('id_penempatan', $penempatanIds)
+            ->with(['penempatan.mahasiswa.user', 'penempatan.pengajuan.lowongan.perusahaan']);
     }
+
+ public static function form(Form $form): Form
+{
+    return $form
+    ->schema([
+         Forms\Components\Section::make('Keterangan Aktivitas Mahasiswa')
+                ->schema([
+                    Forms\Components\Placeholder::make('keterangan')
+                        ->content(fn ($record) => $record->keterangan)
+                        ->extraAttributes(['class' => 'text-gray-700']),
+                ])
+                ->collapsible(),   
+        
+        
+        
+        
+        Forms\Components\Section::make('Beri Feedback')
+                ->description('Berikan masukan untuk aktivitas magang mahasiswa')
+                ->schema([
+                    Forms\Components\Textarea::make('feedback_progres')
+                        ->label('Feedback Dosen Pembimbing')
+                        ->required()
+                        ->maxLength(500)
+                        ->columnSpanFull(),
+                ])
+        ]);
+}
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                //
+            Tables\Columns\ImageColumn::make('file_bukti')
+                ->label('Dokumentasi')
+                ->height(60)
+                ->width(60)
+                ->square() // Mengubah dari circular ke square
+                ->grow(false)
+                ->getStateUsing(function ($record) {
+                    return $record->file_bukti
+                        ? 'https://res.cloudinary.com/dxwwjhtup/image/upload/' . ltrim($record->file_bukti, '/')
+                        : null;
+                })
+                ->extraImgAttributes([
+                    'class' => 'object-cover border border-gray-200 rounded-md',
+                    'style' => 'aspect-ratio: 1/1' // Memastikan rasio 1:1
+                ]),
+
+                Tables\Columns\TextColumn::make('penempatan.mahasiswa.user.nama')
+                    ->label('Mahasiswa')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('tanggal_log')
+                    ->label('Tanggal')
+                    ->date('M d, Y')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('keterangan')
+                    ->label('Aktivitas')
+                    ->limit(30)
+                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= $column->getCharacterLimit()) {
+                            return null;
+                        }
+                        return $state;
+                    }),
+
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status Kehadiran')
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state))
+                    ->color(fn (string $state): string => match ($state) {
+                        'masuk' => 'success',
+                        'izin' => 'warning',
+                        'sakit' => 'danger',
+                        'cuti' => 'info',
+                        default => 'gray',
+                    }),
+
+              Tables\Columns\TextColumn::make('feedback_progres')
+                ->label('Feedback')
+                ->formatStateUsing(function ($state) {
+                    return $state ?: '🔄 BELUM ADA FEEDBACK';
+                })
+                ->color(fn ($state) => $state ? 'gray' : 'danger')
+                ->weight(fn ($state) => $state ? null : 'bold')
+                ->limit(25)
+                ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
+                    $state = $column->getState();
+                    return strlen($state) > 25 ? $state : null;
+                }),
+                    
+                 
+
+
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('id_penempatan')
+                    ->label('Filter Mahasiswa')
+                    ->searchable()
+                    ->options(function () {
+                        $user = auth()->user();
+                        $dosen = $user->dosenPembimbing;
+                        
+                        return $dosen->mahasiswaBimbingan()
+                            ->with('mahasiswa.user')
+                            ->get()
+                            ->pluck('mahasiswa.user.nama', 'id_penempatan');
+                    })
+                    ->placeholder('Semua Mahasiswa'),
+                    
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status Kehadiran')
+                    ->options([
+                        'masuk' => 'Masuk',
+                        'izin' => 'Izin',
+                        'sakit' => 'Sakit',
+                        'cuti' => 'Cuti',
+                    ])
+                    ->placeholder('Semua Status'),
+                  Tables\Filters\Filter::make('tanpa_feedback')
+                ->label('Belum Diberi Feedback')
+                ->query(fn (Builder $query) => $query->whereNull('feedback_progres'))
+                ->default() // Opsional: aktifkan filter secara default
+
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Beri Feedback')
+                    ->icon(null),
+                    
+                Tables\Actions\ViewAction::make()
+                    ->label('Lihat')
+                    ->icon(null),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([])
+            ->defaultSort('tanggal_log', 'desc')
+            ->emptyStateHeading('Belum Ada Aktivitas Magang')
+            ->emptyStateDescription('Mahasiswa bimbingan Anda belum melaporkan aktivitas magang.');
     }
 
-    public static function getRelations(): array
+    public static function infolist(Infolist $infolist): Infolist
     {
-        return [
-            //
-        ];
+        return $infolist
+            ->schema([
+                Components\Section::make('Detail Aktivitas Magang')
+                    ->schema([
+                        Components\Grid::make(2)
+                            ->schema([
+                                Components\Group::make([
+                                    Components\TextEntry::make('penempatan.mahasiswa.user.nama')
+                                        ->label('Mahasiswa'),
+                                    
+                                    Components\TextEntry::make('penempatan.pengajuan.lowongan.perusahaan.nama')
+                                        ->label('Perusahaan'),
+                                ]),
+                                
+                                Components\Group::make([
+                                    Components\TextEntry::make('tanggal_log')
+                                        ->label('Tanggal')
+                                        ->date('d F Y'),
+                                    
+                                    Components\TextEntry::make('status')
+                                        ->badge()
+                                        ->formatStateUsing(fn (string $state): string => ucfirst($state))
+                                        ->color(fn (string $state): string => match ($state) {
+                                            'masuk' => 'success',
+                                            'izin' => 'warning',
+                                            'sakit' => 'danger',
+                                            'cuti' => 'info',
+                                            default => 'gray',
+                                        }),
+                                ]),
+                            ]),
+                            
+                        Components\Section::make('Keterangan Aktivitas')
+                            ->schema([
+                                Components\TextEntry::make('keterangan')
+                                    ->prose()
+                                    ->markdown()
+                                    ->columnSpanFull(),
+                            ])
+                            ->collapsible(),
+                        
+                        Components\Section::make('Feedback Pembimbing')
+                            ->schema([
+                                Components\TextEntry::make('feedback_progres')
+                                    ->prose()
+                                    ->markdown()
+                                    ->placeholder('Belum ada feedback')
+                                    ->columnSpanFull(),
+                            ])
+                            ->collapsible(),
+                            
+                        Components\Section::make('Bukti Aktivitas')
+                            ->schema([
+                                Components\ImageEntry::make('file_bukti')
+                                    ->disk('cloudinary')
+                                    ->height(400)
+                                    ->extraImgAttributes(['class' => 'rounded-lg object-contain shadow-sm']),
+                            ]),
+                    ]),
+            ]);
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListMonitoringaktivitasMagangs::route('/'),
-            'create' => Pages\CreateMonitoringaktivitasMagang::route('/create'),
             'edit' => Pages\EditMonitoringaktivitasMagang::route('/{record}/edit'),
+            'view' => Pages\ViewMonitoringaktivitasMagang::route('/{record}'),
         ];
     }
 }
