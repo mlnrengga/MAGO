@@ -772,7 +772,7 @@ class AktivitasMagangHarianResource extends Resource
                                         Forms\Components\DatePicker::make('dari_tanggal')
                                             ->native(false)
                                             ->label('Dari Tanggal')
-                                            ->hint('Tanggal Anda diterima magang')
+                                            ->hint('Tanggal anda mulai magang')
                                             ->displayFormat('D, d M Y') // Format Flatpickr
                                             ->format('Y-m-d') // format nilai yang disimpan - penting untuk konsistensi
                                             ->locale('id')
@@ -788,7 +788,7 @@ class AktivitasMagangHarianResource extends Resource
                                         Forms\Components\DatePicker::make('sampai_tanggal')
                                             ->native(false)
                                             ->label('Sampai Tanggal')
-                                            ->hint('Tanggal sesuai waktu magang')
+                                            ->hint('Tanggal anda selesai magang')
                                             ->displayFormat('D, d M Y')
                                             ->format('Y-m-d') // format nilai yang disimpan - penting untuk konsistensi
                                             ->locale('id')
