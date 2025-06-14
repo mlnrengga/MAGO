@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'alamat' => 'Jl. Mawar Satu No. 1',
                 'no_telepon' => '081234567890',
-                'profile_picture' => '', 
+                'profile_picture' => null, 
                 'id_role' => 1,
             ],
             [
