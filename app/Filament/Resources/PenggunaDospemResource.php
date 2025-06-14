@@ -20,7 +20,7 @@ class PenggunaDospemResource extends Resource
 {
     protected static ?string $model = UserModel::class;
 
-    protected static ?string $navigationLabel = 'Dosen Pembimbing';
+    protected static ?string $navigationLabel = 'Manajemen Dosen Pembimbing';
     protected static ?string $navigationIcon = 'heroicon-s-users';
     protected static ?string $modelLabel = 'Manajemen - Dosen';
     protected static ?string $pluralModelLabel = 'Data Dosen Pembimbing';
