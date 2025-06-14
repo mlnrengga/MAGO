@@ -55,7 +55,8 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                 Tables\Columns\TextColumn::make('lowongan.judul_lowongan')
                     ->label('Lowongan')
                     ->searchable()
-                    ->limit(30),
+                    ->limit(30)
+                    ->tooltip(fn ($record) => $record->lowongan->judul_lowongan ?? '-'),
 
                 Tables\Columns\TextColumn::make('lowongan.jenisMagang.nama_jenis_magang')
                     ->label('Jenis Magang')
@@ -63,7 +64,8 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
 
                 Tables\Columns\TextColumn::make('lowongan.daerahMagang.namaLengkap')
                     ->label('Lokasi Magang')
-                    ->limit(10),
+                    ->limit(10)
+                    ->tooltip(fn ($record) => $record->lowongan->daerahMagang->namaLengkap ?? '-'),
 
                 // Kolom tersembunyi untuk pencarian
                 Tables\Columns\TextColumn::make('lowongan.daerahMagang.nama_daerah')

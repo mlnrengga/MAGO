@@ -14,195 +14,154 @@ class LowonganBidangSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('r_lowongan_bidang')->delete();
+        
         // Ambil semua lowongan magang
         $lowongan = DB::table('t_lowongan_magang')->get();
         
         // Ambil semua bidang keahlian
-        $bidangKeahlian = DB::table('m_bidang_keahlian')->get();
-        $bidangCount = $bidangKeahlian->count();
+        $bidangKeahlian = DB::table('m_bidang_keahlian')->pluck('id_bidang', 'nama_bidang_keahlian')->toArray();
         
-        // Pastikan ada bidang keahlian di database
-        if ($bidangCount == 0) {
-            throw new \Exception('Tabel m_bidang_keahlian kosong. Harap isi terlebih dahulu.');
-        }
-        
-        // Mapping bidang keahlian berdasarkan kata kunci yang mungkin muncul di judul lowongan
-        // Ini hanya contoh mapping, bisa disesuaikan dengan data aktual di database
-        $keywordToBidang = [
-            // Web Development
-            'web' => [],
-            'front' => [],
-            'backend' => [],
-            'full stack' => [],
-            'php' => [],
-            'javascript' => [],
-            'html' => [],
-            'css' => [],
-            
-            // Mobile
-            'mobile' => [],
-            'android' => [],
-            'ios' => [],
-            'flutter' => [],
-            'react native' => [],
-            
-            // Data Science
-            'data' => [],
-            'analyst' => [],
-            'analytics' => [],
-            'science' => [],
-            'big data' => [],
-            'machine learning' => [],
-            'ml' => [],
-            'ai' => [],
-            'artificial' => [],
-            
-            // UI/UX
-            'ui' => [],
-            'ux' => [],
-            'design' => [],
-            'interface' => [],
-            'user experience' => [],
-            
-            // Network & Security
-            'network' => [],
-            'security' => [],
-            'cyber' => [],
-            'system' => [],
-            'administrator' => [],
-            'cloud' => [],
-            'devops' => [],
-            
-            // Business & Management
-            'business' => [],
-            'management' => [],
-            'project' => [],
-            'product' => [],
-            'marketing' => [],
-            'digital marketing' => [],
-            
-            // Others
-            'content' => [],
-            'writer' => [],
-            'social media' => [],
-            'graphic' => [],
-            'video' => [],
-            'finance' => [],
-            'accounting' => [],
-            'hr' => [],
-            'human resource' => [],
+        // Mapping yang tepat antara judul lowongan dan bidang keahlian utama dan sekunder
+        $lowonganToBidang = [
+            'Web Developer' => [
+                'utama' => ['Web Development'],
+                'sekunder' => ['DevOps', 'UI/UX Design', 'Software Testing']
+            ],
+            'Mobile Developer' => [
+                'utama' => ['Mobile Development'],
+                'sekunder' => ['UI/UX Design', 'Software Testing']
+            ],
+            'UI/UX Designer' => [
+                'utama' => ['UI/UX Design'],
+                'sekunder' => ['Web Development', 'Mobile Development']
+            ],
+            'Data Analyst' => [
+                'utama' => ['Data Analysis'],
+                'sekunder' => ['Business Intelligence', 'Machine Learning']
+            ],
+            'Network Engineer' => [
+                'utama' => ['Network Engineering'],
+                'sekunder' => ['Cloud Computing', 'IT Support', 'Cyber Security']
+            ],
+            'Security Analyst' => [
+                'utama' => ['Cyber Security'],
+                'sekunder' => ['Network Engineering', 'Digital Forensics']
+            ],
+            'Cyber Security' => [
+                'utama' => ['Cyber Security'],
+                'sekunder' => ['Network Engineering', 'Digital Forensics']
+            ],
+            'DevOps Engineer' => [
+                'utama' => ['DevOps'],
+                'sekunder' => ['Cloud Computing', 'Network Engineering', 'Database Administration']
+            ],
+            'QA Engineer' => [
+                'utama' => ['Software Testing'],
+                'sekunder' => ['Web Development', 'Mobile Development', 'DevOps']
+            ],
+            'Frontend Developer' => [
+                'utama' => ['Web Development'],
+                'sekunder' => ['UI/UX Design']
+            ],
+            'Backend Developer' => [
+                'utama' => ['Web Development'],
+                'sekunder' => ['Database Administration', 'DevOps']
+            ],
+            'Full Stack Developer' => [
+                'utama' => ['Web Development'],
+                'sekunder' => ['Database Administration', 'UI/UX Design', 'DevOps']
+            ],
+            'Business Intelligence' => [
+                'utama' => ['Business Intelligence'],
+                'sekunder' => ['Data Analysis', 'Database Administration']
+            ],
+            'Database Administrator' => [
+                'utama' => ['Database Administration'],
+                'sekunder' => ['DevOps', 'Data Analysis']
+            ],
+            'Machine Learning' => [
+                'utama' => ['Machine Learning'],
+                'sekunder' => ['Artificial Intelligence', 'Data Analysis']
+            ],
+            'IT Support' => [
+                'utama' => ['IT Support'],
+                'sekunder' => ['Network Engineering']
+            ],
+            'AR/VR Developer' => [
+                'utama' => ['AR/VR Development'],
+                'sekunder' => ['Game Development', 'Mobile Development']
+            ],
+            'Cloud Engineer' => [
+                'utama' => ['Cloud Computing'],
+                'sekunder' => ['DevOps', 'Network Engineering']
+            ],
+            'Game Developer' => [
+                'utama' => ['Game Development'],
+                'sekunder' => ['AR/VR Development', 'Mobile Development']
+            ],
+            'Blockchain Developer' => [
+                'utama' => ['Blockchain Development'],
+                'sekunder' => ['Web Development', 'Cyber Security']
+            ],
+            'IoT Engineer' => [
+                'utama' => ['Embedded Systems'],
+                'sekunder' => ['Robotic Process Automation', 'Network Engineering']
+            ]
         ];
-        
-        // Kelompokkan bidang keahlian berdasarkan kategori
-        // Ini adalah kategori berdasarkan topik umum di bidang IT dan bisnis
-        $categories = [
-            'web_development' => [],
-            'mobile_development' => [],
-            'data_science' => [],
-            'ui_ux' => [],
-            'network_security' => [],
-            'business_management' => [],
-            'content_media' => [],
-            'other' => []
-        ];
-        
-        // Distribusikan bidang keahlian ke kategori secara merata
-        // Di implementasi nyata, ini bisa berdasarkan field kategori di tabel m_bidang_keahlian
-        $bidangArray = $bidangKeahlian->toArray();
-        shuffle($bidangArray);
-        
-        $categoryKeys = array_keys($categories);
-        $categoryCount = count($categoryKeys);
-        
-        foreach ($bidangArray as $index => $bidang) {
-            $categoryIndex = $index % $categoryCount;
-            $categories[$categoryKeys[$categoryIndex]][] = $bidang->id_bidang;
-        }
-        
-        // Untuk setiap keyword, pilih bidang keahlian dari kategori yang relevan
-        foreach ($keywordToBidang as $keyword => &$bidangIds) {
-            if (Str::contains($keyword, ['web', 'front', 'backend', 'full stack', 'php', 'javascript', 'html', 'css'])) {
-                $bidangIds = $categories['web_development'];
-            } elseif (Str::contains($keyword, ['mobile', 'android', 'ios', 'flutter', 'react native'])) {
-                $bidangIds = $categories['mobile_development'];
-            } elseif (Str::contains($keyword, ['data', 'analyst', 'analytics', 'science', 'big data', 'machine learning', 'ml', 'ai', 'artificial'])) {
-                $bidangIds = $categories['data_science'];
-            } elseif (Str::contains($keyword, ['ui', 'ux', 'design', 'interface', 'user experience'])) {
-                $bidangIds = $categories['ui_ux'];
-            } elseif (Str::contains($keyword, ['network', 'security', 'cyber', 'system', 'administrator', 'cloud', 'devops'])) {
-                $bidangIds = $categories['network_security'];
-            } elseif (Str::contains($keyword, ['business', 'management', 'project', 'product', 'marketing', 'digital marketing'])) {
-                $bidangIds = $categories['business_management'];
-            } elseif (Str::contains($keyword, ['content', 'writer', 'social media', 'graphic', 'video'])) {
-                $bidangIds = $categories['content_media'];
-            } else {
-                $bidangIds = $categories['other'];
-            }
-        }
         
         $lowonganBidang = [];
         $timestamp = now();
         
         foreach ($lowongan as $job) {
-            // Tentukan berapa banyak bidang keahlian untuk lowongan ini (2-5)
-            $numBidang = rand(2, 5);
+            // Extract job title from full title (removing "di [perusahaan]")
+            $titleParts = explode(' di ', $job->judul_lowongan);
+            $jobTitle = $titleParts[0];
+            
+            // Find matching key in mapping
+            $matchedKey = null;
+            foreach (array_keys($lowonganToBidang) as $key) {
+                if (Str::contains($jobTitle, $key)) {
+                    $matchedKey = $key;
+                    break;
+                }
+            }
+            
+            // Selected bidang IDs to be added
             $selectedBidangIds = [];
             
-            // Cari kata kunci dalam judul lowongan
-            $jobTitle = strtolower($job->judul_lowongan);
-            $matchedKeywords = [];
-            
-            foreach ($keywordToBidang as $keyword => $bidangIds) {
-                if (Str::contains($jobTitle, $keyword)) {
-                    $matchedKeywords[] = $keyword;
-                }
-            }
-            
-            // Jika ada kata kunci yang cocok, pilih bidang dari kategori yang sesuai
-            if (!empty($matchedKeywords)) {
-                // Pilih kata kunci secara acak jika ada beberapa yang cocok
-                $selectedKeyword = $matchedKeywords[array_rand($matchedKeywords)];
-                $relevantBidangIds = $keywordToBidang[$selectedKeyword];
-                
-                if (!empty($relevantBidangIds)) {
-                    // Pilih bidang keahlian yang relevan
-                    $numRelevantToSelect = min(count($relevantBidangIds), ceil($numBidang * 0.7));
-                    
-                    if ($numRelevantToSelect > 0) {
-                        $selectedIndices = array_rand($relevantBidangIds, $numRelevantToSelect);
-                        
-                        if (!is_array($selectedIndices)) {
-                            $selectedIndices = [$selectedIndices];
-                        }
-                        
-                        foreach ($selectedIndices as $idx) {
-                            $selectedBidangIds[] = $relevantBidangIds[$idx];
-                        }
+            if ($matchedKey) {
+                // Add primary bidang keahlian (1-2)
+                foreach ($lowonganToBidang[$matchedKey]['utama'] as $namaBidang) {
+                    if (isset($bidangKeahlian[$namaBidang])) {
+                        $selectedBidangIds[] = $bidangKeahlian[$namaBidang];
                     }
                 }
-            }
-            
-            // Tambahkan bidang keahlian acak untuk melengkapi jumlah yang dibutuhkan
-            $remainingToSelect = $numBidang - count($selectedBidangIds);
-            
-            if ($remainingToSelect > 0) {
-                $allBidangIds = $bidangKeahlian->pluck('id_bidang')->toArray();
-                $remainingBidangIds = array_diff($allBidangIds, $selectedBidangIds);
                 
-                if (!empty($remainingBidangIds)) {
-                    $numRemainingToSelect = min(count($remainingBidangIds), $remainingToSelect);
-                    $additionalIndices = array_rand(array_flip($remainingBidangIds), $numRemainingToSelect);
-                    
-                    if (!is_array($additionalIndices)) {
-                        $additionalIndices = [$additionalIndices];
+                // Add 1-2 secondary bidang keahlian
+                $sekunder = $lowonganToBidang[$matchedKey]['sekunder'];
+                shuffle($sekunder);
+                $secondaryCount = min(count($sekunder), rand(1, 2));
+                
+                for ($i = 0; $i < $secondaryCount; $i++) {
+                    if (isset($bidangKeahlian[$sekunder[$i]])) {
+                        $selectedBidangIds[] = $bidangKeahlian[$sekunder[$i]];
                     }
-                    
-                    $selectedBidangIds = array_merge($selectedBidangIds, $additionalIndices);
+                }
+            } else {
+                // Fallback: get 2-3 random bidang
+                $randBidang = array_rand($bidangKeahlian, min(3, count($bidangKeahlian)));
+                if (!is_array($randBidang)) {
+                    $randBidang = [$randBidang];
+                }
+                
+                foreach ($randBidang as $namaBidang) {
+                    $selectedBidangIds[] = $bidangKeahlian[$namaBidang];
                 }
             }
             
-            // Buat record untuk setiap bidang keahlian yang dipilih
-            foreach ($selectedBidangIds as $bidangId) {
+            // Create records
+            foreach (array_unique($selectedBidangIds) as $bidangId) {
                 $lowonganBidang[] = [
                     'id_lowongan' => $job->id_lowongan,
                     'id_bidang' => $bidangId,
@@ -212,9 +171,11 @@ class LowonganBidangSeeder extends Seeder
             }
         }
         
-        // Insert ke database
-        DB::table('r_lowongan_bidang')->insert($lowonganBidang);
-
-        $this->command->info('Berhasil menyeeder ' . count($lowonganBidang) . ' data lowongan bidang');
+        if (!empty($lowonganBidang)) {
+            DB::table('r_lowongan_bidang')->insert($lowonganBidang);
+            $this->command->info('Berhasil menyeeder ' . count($lowonganBidang) . ' data relasi lowongan bidang');
+        } else {
+            $this->command->error('Tidak ada data relasi lowongan bidang yang dibuat!');
+        }
     }
 }
