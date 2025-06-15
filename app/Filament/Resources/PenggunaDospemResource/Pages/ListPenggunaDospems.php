@@ -10,9 +10,15 @@ class ListPenggunaDospems extends ListRecords
 {
     protected static string $resource = PenggunaDospemResource::class;
 
-   public static function canCreate(): bool
-{
-    return false;
-}
+    public static function canCreate(): bool
+    {
+        return true;
+    }
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\CreateAction::make(),
+        ];
+    }
 }
