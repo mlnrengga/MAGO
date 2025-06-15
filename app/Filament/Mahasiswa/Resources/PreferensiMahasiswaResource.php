@@ -150,7 +150,7 @@ class PreferensiMahasiswaResource extends Resource
                                 5 => '5',
                             ])
                             ->required()
-                           ->rules(function (callable $get) {
+                            ->rules(function (callable $get) {
                                 $used = [
                                     $get('ranking_bidang'),
                                     $get('ranking_jenis_magang'),
@@ -172,8 +172,11 @@ class PreferensiMahasiswaResource extends Resource
                     ->schema([
                         CheckboxList::make('jenisMagang')
                             ->label('Pilih Jenis Magang')
-                            ->options(JenisMagangModel::all()->pluck('nama_jenis_magang', 'id_jenis_magang'))
-                            ->columns(3)
+                            ->options(
+                                JenisMagangModel::where('nama_jenis_magang', '!=', 'Magang Mandiri')
+                                    ->pluck('nama_jenis_magang', 'id_jenis_magang')
+                            )
+                            ->columns(2)
                             ->reactive()
                             ->required(),
 
