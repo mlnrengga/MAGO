@@ -192,12 +192,39 @@ class EvaluasiHasilMagangResource extends Resource
                                                     return 'N/A';
                                                 }
                                                 
-                                                $tanggalDiterima = Carbon::parse($penempatan->pengajuan->tanggal_diterima);
-                                                return $tanggalDiterima->format('d M Y');
+                                                // mengambil informasi periode dari lowongan
+                                                $lowongan = $penempatan->pengajuan->lowongan;
+                                                $periodeNama = $lowongan->periode->nama_periode;
+                                                
+                                                // Extract tahun dan jenis semester dari nama periode
+                                                $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
+                                                
+                                                if (preg_match($pattern, $periodeNama, $matches)) {
+                                                    $tahunAwal = (int)$matches[1];
+                                                    $tahunAkhir = (int)$matches[2];
+                                                    $jenisSemester = $matches[3];
+                                                    
+                                                    // menentukan tanggal mulai berdasarkan jenis semester
+                                                    if ($jenisSemester == 'Ganjil') {
+                                                        // semester ganjil mulai Juli tahun pertama
+                                                        $tanggalMulai = Carbon::create($tahunAwal, 7, 1);
+                                                    } elseif ($jenisSemester == 'Genap') {
+                                                        // semester genap mulai Januari tahun kedua
+                                                        $tanggalMulai = Carbon::create($tahunAkhir, 1, 1);
+                                                    } else {
+                                                        // semester antara, default ke Juni tahun pertama
+                                                        $tanggalMulai = Carbon::create($tahunAwal, 6, 1);
+                                                    }
+                                                    
+                                                    return $tanggalMulai->format('d M Y');
+                                                }
+                                                
+                                                // default return
+                                                return 'Tidak dapat menentukan';
                                             })
                                             ->hintIcon('heroicon-o-calendar'),
                                     ]),
-                                
+
                                 Forms\Components\Group::make()
                                     ->schema([
                                         Forms\Components\Placeholder::make('tgl_selesai')
@@ -215,15 +242,42 @@ class EvaluasiHasilMagangResource extends Resource
                                                     return 'N/A';
                                                 }
                                                 
-                                                $tanggalDiterima = Carbon::parse($penempatan->pengajuan->tanggal_diterima);
-                                                $waktuMagang = $penempatan->pengajuan->lowongan->waktuMagang->waktu_magang;
+                                                // mengambil informasi periode dari lowongan
+                                                $lowongan = $penempatan->pengajuan->lowongan;
+                                                $periodeNama = $lowongan->periode->nama_periode;
+                                                $waktuMagang = $lowongan->waktuMagang->waktu_magang;
                                                 
-                                                // Mengekstrak angka dari waktu magang
-                                                preg_match('/(\d+)/', $waktuMagang, $matches);
-                                                $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
+                                                // Extract tahun dan jenis semester dari nama periode
+                                                $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
                                                 
-                                                $tanggalSelesai = $tanggalDiterima->copy()->addMonths($bulan);
-                                                return $tanggalSelesai->format('d M Y');
+                                                if (preg_match($pattern, $periodeNama, $matches)) {
+                                                    $tahunAwal = (int)$matches[1];
+                                                    $tahunAkhir = (int)$matches[2];
+                                                    $jenisSemester = $matches[3];
+                                                    
+                                                    // menentukan tanggal mulai berdasarkan jenis semester
+                                                    if ($jenisSemester == 'Ganjil') {
+                                                        // semester ganjil mulai Juli tahun pertama
+                                                        $tanggalMulai = Carbon::create($tahunAwal, 7, 1);
+                                                    } elseif ($jenisSemester == 'Genap') {
+                                                        // semester genap mulai Januari tahun kedua
+                                                        $tanggalMulai = Carbon::create($tahunAkhir, 1, 1);
+                                                    } else {
+                                                        // semester antara, default ke Juni tahun pertama
+                                                        $tanggalMulai = Carbon::create($tahunAwal, 6, 1);
+                                                    }
+                                                    
+                                                    // mengambil durasi magang dalam bulan
+                                                    preg_match('/(\d+)/', $waktuMagang, $matches);
+                                                    $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
+                                                    
+                                                    // menghitung tanggal berakhir magang
+                                                    $tanggalSelesai = $tanggalMulai->copy()->addMonths($bulan);
+                                                    return $tanggalSelesai->format('d M Y');
+                                                }
+                                                
+                                                // default return 
+                                                return 'Tidak dapat menentukan';
                                             })
                                             ->hintIcon('heroicon-o-calendar'),
                                     ]),
@@ -453,18 +507,43 @@ class EvaluasiHasilMagangResource extends Resource
                     ->extraHeaderAttributes(['style' => 'width: 150px; min-width: 150px;'])
                     ->extraCellAttributes(['style' => 'width: 150px; min-width: 150px;'])
                     ->getStateUsing(function ($record): string {
-                        // mengambil tanggal diterima dan waktu magang
-                        $tanggalDiterima = Carbon::parse($record->pengajuan->tanggal_diterima);
-                        $waktuMagang = $record->pengajuan->lowongan->waktuMagang->waktu_magang;
-
-                        // mengambil angka dari string waktu magang (contoh: "6 bulan")
-                        preg_match('/(\d+)/', $waktuMagang, $matches);
-                        $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
+                        // Mengambil informasi periode dari lowongan
+                        $lowongan = $record->pengajuan->lowongan;
+                        $periodeNama = $lowongan->periode->nama_periode;
+                        $waktuMagang = $lowongan->waktuMagang->waktu_magang;
                         
-                        // menambahkan bulan ke tanggal diterima
-                        $tanggalBerakhir = $tanggalDiterima->copy()->addMonths($bulan);
+                        // Extract tahun dan jenis semester dari nama periode
+                        $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
                         
-                        return $tanggalBerakhir->format('d M Y');
+                        if (preg_match($pattern, $periodeNama, $matches)) {
+                            $tahunAwal = (int)$matches[1];
+                            $tahunAkhir = (int)$matches[2];
+                            $jenisSemester = $matches[3];
+                            
+                            // Menentukan tanggal mulai berdasarkan jenis semester
+                            if ($jenisSemester == 'Ganjil') {
+                                // Semester ganjil mulai Juli tahun pertama
+                                $tanggalMulai = Carbon::create($tahunAwal, 7, 1);
+                            } elseif ($jenisSemester == 'Genap') {
+                                // Semester genap mulai Januari tahun kedua
+                                $tanggalMulai = Carbon::create($tahunAkhir, 1, 1);
+                            } else {
+                                // Semester antara, default ke Juni tahun pertama
+                                $tanggalMulai = Carbon::create($tahunAwal, 6, 1);
+                            }
+                            
+                            // Mengambil durasi magang dalam bulan
+                            preg_match('/(\d+)/', $waktuMagang, $matches);
+                            $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
+                            
+                            // Menghitung tanggal berakhir magang
+                            $tanggalBerakhir = $tanggalMulai->copy()->addMonths($bulan);
+                            
+                            return $tanggalBerakhir->format('d M Y');
+                        }
+                        
+                        // Fallback jika tidak bisa mengekstrak informasi periode
+                        return 'Tidak dapat menentukan';
                     })
                     ->sortable(),
                     
@@ -473,27 +552,51 @@ class EvaluasiHasilMagangResource extends Resource
                     ->extraHeaderAttributes(['style' => 'width: 160px; min-width: 160px;'])
                     ->extraCellAttributes(['style' => 'width: 160px; min-width: 160px;'])
                     ->getStateUsing(function ($record): string {
-                        // mengambil tanggal diterima dan waktu magang
-                        $tanggalDiterima = Carbon::parse($record->pengajuan->tanggal_diterima);
-                        $waktuMagang = $record->pengajuan->lowongan->waktuMagang->waktu_magang;
+                        // mengambil informasi periode dari lowongan
+                        $lowongan = $record->pengajuan->lowongan;
+                        $periodeNama = $lowongan->periode->nama_periode;
+                        $waktuMagang = $lowongan->waktuMagang->waktu_magang;
                         
-                        // mengambil angka dari string waktu magang (contoh: "6 bulan")
-                        preg_match('/(\d+)/', $waktuMagang, $matches);
-                        $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
+                        // Extract tahun dan jenis semester dari nama periode
+                        $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
                         
-                        // menambahkan bulan ke tanggal diterima
-                        $tanggalBerakhir = $tanggalDiterima->copy()->addMonths($bulan);
-                        
-                        // menghitung selisih dengan hari ini
-                        $sekarang = Carbon::now();
-                        
-                        if ($sekarang > $tanggalBerakhir) {
-                            return 'Magang telah selesai';
+                        if (preg_match($pattern, $periodeNama, $matches)) {
+                            $tahunAwal = (int)$matches[1];
+                            $tahunAkhir = (int)$matches[2];
+                            $jenisSemester = $matches[3];
+                            
+                            // menentukan tanggal mulai berdasarkan jenis semester
+                            if ($jenisSemester == 'Ganjil') {
+                                // semester ganjil mulai Juli tahun pertama
+                                $tanggalMulai = Carbon::create($tahunAwal, 7, 1);
+                            } elseif ($jenisSemester == 'Genap') {
+                                // semester genap mulai Januari tahun kedua
+                                $tanggalMulai = Carbon::create($tahunAkhir, 1, 1);
+                            } else {
+                                // semester antara, default ke Juni tahun pertama
+                                $tanggalMulai = Carbon::create($tahunAwal, 6, 1);
+                            }
+                            
+                            // mengambil durasi waktu magang dalam bulan
+                            preg_match('/(\d+)/', $waktuMagang, $matches);
+                            $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
+                            
+                            // menghitung tanggal berakhir magang
+                            $tanggalBerakhir = $tanggalMulai->copy()->addMonths($bulan);
+                            $sekarang = Carbon::now();
+                            
+                            // menghitung selisih dengan hari ini
+                            if ($sekarang > $tanggalBerakhir) {
+                                return 'Magang telah selesai';
+                            }
+                            
+                            $selisih = $sekarang->diff($tanggalBerakhir);
+                            
+                            return $selisih->format('%m bulan %d hari lagi');
                         }
                         
-                        $selisih = $sekarang->diff($tanggalBerakhir);
-                        
-                        return $selisih->format('%m bulan %d hari lagi');
+                        // jika tidak bisa mengekstrak informasi periode
+                        return 'Tidak dapat menghitung sisa durasi';
                     }),
                     
                 Tables\Columns\TextColumn::make('status_evaluasi')
@@ -503,7 +606,7 @@ class EvaluasiHasilMagangResource extends Resource
                     ->extraCellAttributes(['style' => 'width: 120px; min-width: 120px;'])
                     ->alignCenter()
                     ->getStateUsing(function ($record): string {
-                        // Cek apakah sudah ada data hasil magang
+                        // mengecek apakah sudah ada data hasil magang
                         return $record->hasilMagang()->exists() ? 'Sudah Dievaluasi' : 'Belum Evaluasi';
                     })
                     ->colors([
@@ -511,37 +614,63 @@ class EvaluasiHasilMagangResource extends Resource
                         'danger' => 'Belum Evaluasi',
                     ])
                     ->tooltip(function ($record): string {
-                        // mengambil tanggal diterima dan waktu magang untuk menentukan tanggal selesai
-                        $tanggalDiterima = Carbon::parse($record->pengajuan->tanggal_diterima);
-                        $waktuMagang = $record->pengajuan->lowongan->waktuMagang->waktu_magang;
+                        // mengambil informasi periode dari lowongan
+                        $lowongan = $record->pengajuan->lowongan;
+                        $periodeNama = $lowongan->periode->nama_periode;
+                        $waktuMagang = $lowongan->waktuMagang->waktu_magang;
                         
-                        // mengambil angka bulan dari string waktu magang
-                        preg_match('/(\d+)/', $waktuMagang, $matches);
-                        $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
-
-                        // menghitung tanggal berakhir magang
-                        $tanggalBerakhir = $tanggalDiterima->copy()->addMonths($bulan);
-                        $sekarang = Carbon::now();
+                        // Extract tahun dan jenis semester dari nama periode
+                        $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
+                        $startDate = null;
                         
-                        // sudah dievaluasi
-                        if ($record->hasilMagang()->exists()) {
-                            $tanggalEvaluasi = Carbon::parse($record->hasilMagang->created_at)->format('d M Y');
-                            return "Evaluasi telah dilakukan pada {$tanggalEvaluasi}. Anda dapat melihat detail evaluasi dengan mengklik tombol 'View'.";
-                        } 
-                        // belum evaluasi
-                        else {
-                            // belum saatnya evaluasi (magang belum selesai)
-                            if ($sekarang < $tanggalBerakhir) {
-                                $selisih = $sekarang->diff($tanggalBerakhir);
-                                return "Magang Anda masih berlangsung. Evaluasi dapat dilakukan setelah magang selesai dalam {$selisih->format('%m bulan %d hari')} lagi.";
+                        if (preg_match($pattern, $periodeNama, $matches)) {
+                            $tahunAwal = (int)$matches[1];
+                            $tahunAkhir = (int)$matches[2];
+                            $jenisSemester = $matches[3];
+                            
+                            // menentukan tanggal mulai berdasarkan jenis semester
+                            if ($jenisSemester == 'Ganjil') {
+                                // semester ganjil mulai Juli tahun pertama
+                                $startDate = Carbon::create($tahunAwal, 7, 1);
+                            } elseif ($jenisSemester == 'Genap') {
+                                // semester genap mulai Januari tahun kedua
+                                $startDate = Carbon::create($tahunAkhir, 1, 1);
+                            } else {
+                                // semester antara, default ke Juni tahun pertama
+                                $startDate = Carbon::create($tahunAwal, 6, 1);
+                            }
+                            
+                            // Mengambil durasi magang dalam bulan
+                            preg_match('/(\d+)/', $waktuMagang, $matches);
+                            $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
+                            
+                            // Menghitung tanggal berakhir magang
+                            $tanggalBerakhir = $startDate->copy()->addMonths($bulan);
+                            $sekarang = Carbon::now();
+                            
+                            // Sudah dievaluasi
+                            if ($record->hasilMagang()->exists()) {
+                                $tanggalEvaluasi = Carbon::parse($record->hasilMagang->created_at)->format('d M Y');
+                                return "Evaluasi telah dilakukan pada {$tanggalEvaluasi}. Anda dapat melihat detail evaluasi dengan mengklik tombol 'View'.";
                             } 
-                            // sudah saatnya evaluasi (magang sudah selesai)
+                            // Belum evaluasi
                             else {
-                                $selisih = $tanggalBerakhir->diff($sekarang);
-                                return "Magang Anda telah selesai sejak {$selisih->format('%m bulan %d hari')} yang lalu. Silakan segera lakukan evaluasi.";
+                                // Belum saatnya evaluasi (magang belum selesai)
+                                if ($sekarang < $tanggalBerakhir) {
+                                    $selisih = $sekarang->diff($tanggalBerakhir);
+                                    return "Magang Anda masih berlangsung. Evaluasi dapat dilakukan setelah magang selesai dalam {$selisih->format('%m bulan %d hari')} lagi.";
+                                } 
+                                // Sudah saatnya evaluasi (magang sudah selesai)
+                                else {
+                                    $selisih = $tanggalBerakhir->diff($sekarang);
+                                    return "Magang Anda telah selesai sejak {$selisih->format('%m bulan %d hari')} yang lalu. Silakan segera lakukan evaluasi.";
+                                }
                             }
                         }
-                    }),
+                        
+                        // Fallback jika tidak bisa mengekstrak informasi periode
+                        return "Tidak dapat menentukan status evaluasi.";
+                    })
             ])
             ->striped() 
             ->filters([])
@@ -554,16 +683,76 @@ class EvaluasiHasilMagangResource extends Resource
                         ? static::getUrl('edit', ['record' => $record->hasilMagang->id_hasil_magang])
                         : static::getUrl('create', ['id_penempatan' => $record->id_penempatan])
                     ),
-                    // ->visible(fn ($record) => 
-                    //     Carbon::now() >= Carbon::parse($record->pengajuan->tanggal_diterima)->addMonths(
-                    //         preg_match('/(\d+)/', $record->pengajuan->lowongan->waktuMagang->waktu_magang, $matches) ? (int)$matches[1] : 0
-                    //     )
-                    // ),
-                    // ->disabled(fn ($record) => 
-                    //     Carbon::now() < Carbon::parse($record->pengajuan->tanggal_diterima)->addMonths(
-                    //         preg_match('/(\d+)/', $record->pengajuan->lowongan->waktuMagang->waktu_magang, $matches) ? (int)$matches[1] : 0
-                    //     )
-                    // ),
+                    // ->visible(function ($record) {
+                    //     $lowongan = $record->pengajuan->lowongan;
+                    //     $periodeNama = $lowongan->periode->nama_periode;
+                    //     $waktuMagang = $lowongan->waktuMagang->waktu_magang;
+                        
+                    //     // Extract tahun dan jenis semester dari nama periode
+                    //     $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
+                        
+                    //     if (preg_match($pattern, $periodeNama, $matches)) {
+                    //         $tahunAwal = (int)$matches[1];
+                    //         $tahunAkhir = (int)$matches[2];
+                    //         $jenisSemester = $matches[3];
+                            
+                    //         // menentukan tanggal mulai berdasarkan jenis semester
+                    //         if ($jenisSemester == 'Ganjil') {
+                    //             $tanggalMulai = Carbon::create($tahunAwal, 7, 1);
+                    //         } elseif ($jenisSemester == 'Genap') {
+                    //             $tanggalMulai = Carbon::create($tahunAkhir, 1, 1);
+                    //         } else {
+                    //             $tanggalMulai = Carbon::create($tahunAwal, 6, 1);
+                    //         }
+                            
+                    //         // mengambil durasi magang dalam bulan
+                    //         preg_match('/(\d+)/', $waktuMagang, $matches);
+                    //         $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
+                            
+                    //         // menghitung tanggal berakhir magang
+                    //         $tanggalBerakhir = $tanggalMulai->copy()->addMonths($bulan);
+                            
+                    //         // tombol muncul jika magang sudah berakhir
+                    //         return Carbon::now() >= $tanggalBerakhir;
+                    //     }
+                        
+                    //     return true; // Default: visible jika tidak bisa menentukan
+                    // })
+                    // ->disabled(function ($record) {
+                    //     $lowongan = $record->pengajuan->lowongan;
+                    //     $periodeNama = $lowongan->periode->nama_periode;
+                    //     $waktuMagang = $lowongan->waktuMagang->waktu_magang;
+                        
+                    //     // Extract tahun dan jenis semester dari nama periode
+                    //     $pattern = '/(\d{4})\/(\d{4})\s+(Ganjil|Genap|Antara)/';
+                        
+                    //     if (preg_match($pattern, $periodeNama, $matches)) {
+                    //         $tahunAwal = (int)$matches[1];
+                    //         $tahunAkhir = (int)$matches[2];
+                    //         $jenisSemester = $matches[3];
+                            
+                    //         // menentukan tanggal mulai berdasarkan jenis semester
+                    //         if ($jenisSemester == 'Ganjil') {
+                    //             $tanggalMulai = Carbon::create($tahunAwal, 7, 1);
+                    //         } elseif ($jenisSemester == 'Genap') {
+                    //             $tanggalMulai = Carbon::create($tahunAkhir, 1, 1);
+                    //         } else {
+                    //             $tanggalMulai = Carbon::create($tahunAwal, 6, 1);
+                    //         }
+                            
+                    //         // mengambil durasi magang dalam bulan
+                    //         preg_match('/(\d+)/', $waktuMagang, $matches);
+                    //         $bulan = isset($matches[1]) ? (int)$matches[1] : 0;
+                            
+                    //         // menghitung tanggal berakhir magang
+                    //         $tanggalBerakhir = $tanggalMulai->copy()->addMonths($bulan);
+                            
+                    //         // tombol dinonaktifkan jika magang sudah berakhir
+                    //         return Carbon::now() < $tanggalBerakhir;
+                    //     }
+                        
+                    //     return false;
+                    // }),
                 
                 Tables\Actions\ViewAction::make()
                     ->url(fn ($record) => $record->hasilMagang()->exists()

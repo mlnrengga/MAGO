@@ -19,4 +19,15 @@ class ViewEvaluasiHasilMagang extends ViewRecord
         // Ambil data penempatan untuk ditampilkan di form
         $this->penempatan = $this->record->penempatanMagang;
     }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\Action::make('back')
+                ->label('Kembali')
+                ->icon('heroicon-o-arrow-left')
+                ->color('gray')
+                ->url($this->getResource()::getUrl('index')),
+        ];
+    }
 }
