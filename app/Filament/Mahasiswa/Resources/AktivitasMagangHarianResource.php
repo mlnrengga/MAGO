@@ -675,22 +675,31 @@ class AktivitasMagangHarianResource extends Resource
                             'warning' => 'izin',
                             'danger' => 'sakit',
                             'info' => 'cuti',
-                        ]),
-                    
-                    Tables\Columns\TextColumn::make('keterangan')
-                        ->limit(60)
-                        ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
-                            $state = $column->getState();
-                            if (strlen($state) <= $column->getCharacterLimit()) {
-                                return null;
-                            }
-                            return $state;
+                        ])
+                        ->icon(fn ($record) => match($record->status) {
+                            'masuk' => 'heroicon-o-check-circle',
+                            'izin' => 'heroicon-o-exclamation',
+                            'sakit' => 'heroicon-o-x-circle',
+                            'cuti' => 'heroicon-o-briefcase',
+                            default => 'heroicon-o-information-circle',
                         }),
-                    
-                    Tables\Columns\TextColumn::make('feedback')
+
+                    Tables\Columns\TextColumn::make('keterangan')
+                        ->label('Deskripsi')
+                        ->icon('heroicon-o-document-text')
+                        ->limit(30)
+                        ->tooltip(fn ($state, $record) => strlen($state) > 60 ? $state : null),
+
+                    Tables\Columns\TextColumn::make('feedback_progres')
+                        ->label('Feedback')
+                        ->icon('heroicon-o-chat-bubble-left-ellipsis')
+                        ->color('gray')
                         ->placeholder('Belum ada feedback')
-                        ->limit(40),
-                ]),
+                        ->limit(35)
+                        ->tooltip(fn ($state) => strlen($state) > 35 ? $state : null)
+
+
+                ])
             ])
             ->filters([
                 // Filter builder kompleks untuk lowongan magang
@@ -992,7 +1001,7 @@ class AktivitasMagangHarianResource extends Resource
                         
                         Components\Section::make('Feedback Pembimbing')
                             ->schema([
-                                Components\TextEntry::make('feedback')
+                                Components\TextEntry::make('feedback_progres')
                                     ->label('Feedback')
                                     ->placeholder('Belum ada feedback')
                                     ->prose()
