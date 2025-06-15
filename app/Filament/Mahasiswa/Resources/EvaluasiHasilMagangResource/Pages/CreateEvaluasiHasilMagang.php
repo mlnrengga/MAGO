@@ -51,10 +51,42 @@ class CreateEvaluasiHasilMagang extends CreateRecord
         ]);
     }
 
+    protected function getCreatedNotification(): ?Notification
+    {
+        return null;
+    }
+
+    protected function afterCreate(): void
+    {
+        // mengubah status penempatan magang menjadi "Selesai"
+        if ($this->penempatan) {
+            $this->penempatan->update([
+                'status' => 'Selesai'
+            ]);
+            
+            // notifikasi
+            Notification::make()
+                ->title('Magang berhasil diselesaikan')
+                ->success()
+                ->send();
+        }
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['id_penempatan'] = $this->id_penempatan;
         return $data;
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\Action::make('back')
+                ->label('Kembali')
+                ->icon('heroicon-o-arrow-left')
+                ->color('gray')
+                ->url($this->getResource()::getUrl('index')),
+        ];
     }
     
     // override untuk menghilangkan breadcrumb "Create"
