@@ -695,8 +695,8 @@ class AktivitasMagangHarianResource extends Resource
                         ->icon('heroicon-o-chat-bubble-left-ellipsis')
                         ->color('gray')
                         ->placeholder('Belum ada feedback')
-                        ->limit(35)
-                        ->tooltip(fn ($state) => strlen($state) > 35 ? $state : null)
+                        ->limit(40)
+                        ->tooltip(fn ($state) => strlen($state) > 40 ? $state : null)
 
 
                 ])
