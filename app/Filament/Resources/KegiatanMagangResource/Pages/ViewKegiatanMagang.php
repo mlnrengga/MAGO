@@ -13,8 +13,16 @@ class ViewKegiatanMagang extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('back')
+                ->label('Kembali')
+                ->url(function () {
+                    return url()->previous();
+                })
+                ->color('gray')
+                ->icon('heroicon-o-arrow-left'),
             Actions\EditAction::make()
-                ->label('Edit Status')
+                ->label('Edit Status'),
+            
         ];
     }
 }

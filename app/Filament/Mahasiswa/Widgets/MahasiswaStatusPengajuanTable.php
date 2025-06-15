@@ -40,11 +40,11 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                 PengajuanMagangModel::query()
                     ->where('id_mahasiswa', $userId)
                     ->with([
-                        'mahasiswa', 
-                        'lowongan.perusahaan', 
-                        'lowongan.jenisMagang', 
-                        'lowongan.daerahMagang', 
-                        'penempatan.dosenPembimbing.user', 
+                        'mahasiswa',
+                        'lowongan.perusahaan',
+                        'lowongan.jenisMagang',
+                        'lowongan.daerahMagang',
+                        'penempatan.dosenPembimbing.user',
                         'penempatan.dosenPembimbing.bidangKeahlian'
                     ])
             )
@@ -56,7 +56,7 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                     ->label('Lowongan')
                     ->searchable()
                     ->limit(30)
-                    ->tooltip(fn ($record) => $record->lowongan->judul_lowongan ?? '-'),
+                    ->tooltip(fn($record) => $record->lowongan->judul_lowongan ?? '-'),
 
                 Tables\Columns\TextColumn::make('lowongan.jenisMagang.nama_jenis_magang')
                     ->label('Jenis Magang')
@@ -65,7 +65,7 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                 Tables\Columns\TextColumn::make('lowongan.daerahMagang.namaLengkap')
                     ->label('Lokasi Magang')
                     ->limit(10)
-                    ->tooltip(fn ($record) => $record->lowongan->daerahMagang->namaLengkap ?? '-'),
+                    ->tooltip(fn($record) => $record->lowongan->daerahMagang->namaLengkap ?? '-'),
 
                 // Kolom tersembunyi untuk pencarian
                 Tables\Columns\TextColumn::make('lowongan.daerahMagang.nama_daerah')
@@ -208,26 +208,43 @@ class MahasiswaStatusPengajuanTable extends BaseWidget
                                     ->label('Nama Dosen'),
                                 Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.nip')
                                     ->label('NIP'),
+                                Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.user.no_telepon')
+                                    ->label('No Telepon Dosen'),
                                 Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.bidangKeahlian')
                                     ->label('Bidang Keahlian')
                                     ->state(function ($record) {
                                         if (!$record->penempatan || !$record->penempatan->dosenPembimbing) {
                                             return '-';
                                         }
-                                        
+
                                         $dospem = $record->penempatan->dosenPembimbing->first();
-                                        
+
                                         if (!$dospem || !$dospem->bidangKeahlian || $dospem->bidangKeahlian->isEmpty()) {
                                             return '-';
                                         }
-                                        
+
                                         // Mengembalikan array bidang keahlian, bukan string
                                         return $dospem->bidangKeahlian->pluck('nama_bidang_keahlian')->toArray();
                                     })
                                     ->listWithLineBreaks() // Gunakan ini sebagai pengganti bulleted()
                             ])
                             ->columns(3)
-                            ->visible(fn ($record) => $record->status === 'Diterima'),
+                            ->visible(fn($record) => $record->status === 'Diterima'),
+
+                        Infolists\Components\Section::make('Alasan Penolakan')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('alasan_penolakan')
+                                    ->label('Alasan Penolakan')
+                                    ->state(function ($record) {
+                                        if (empty($record->alasan_penolakan)) {
+                                            return 'Tidak memenuhi syarat atau alasan lainnya.';
+                                        }
+
+                                        return strip_tags($record->alasan_penolakan);
+                                    }),
+                            ])
+                            ->visible(fn($record) => $record->status === 'Ditolak')
+                            ->collapsible(),
                     ]),
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation()

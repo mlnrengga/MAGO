@@ -10,6 +10,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\RepeatableEntry;
 
 class ViewPengajuanMagangMandiri extends ViewRecord
 {
@@ -46,6 +47,52 @@ class ViewPengajuanMagangMandiri extends ViewRecord
                             ->visible(fn($record) => $record->status !== 'Diajukan'),
                     ])
                     ->columns(3),
+
+                Section::make('Informasi Dosen Pembimbing')
+                    ->visible(fn($record) => $record->status === 'Diterima' && $record->penempatan && $record->penempatan->dosenPembimbing->count() > 0)
+                    ->schema([
+                        RepeatableEntry::make('penempatan.dosenPembimbing')
+                            ->hiddenLabel()
+                            ->schema([
+                                TextEntry::make('user.nama')
+                                    ->label('Nama Dosen')
+                                    ->weight('bold'),
+
+                                TextEntry::make('nip')
+                                    ->label('NIP')
+                                    ->visible(fn($record) => !empty($record->nip)),
+
+                                TextEntry::make('user.no_telepon')
+                                    ->label('No Telepon Dosen')
+                                    ->icon('heroicon-m-phone'),
+
+                                TextEntry::make('bidang_keahlian')
+                                    ->label('Bidang Keahlian')
+                                    ->state(function ($record) {
+                                        if ($record->bidangKeahlian && $record->bidangKeahlian->count() > 0) {
+                                            return $record->bidangKeahlian->pluck('nama_bidang_keahlian')->filter()->implode(', ');
+                                        }
+                                        return '-';
+                                    })
+                                    ->visible(fn($record) => $record->bidangKeahlian && $record->bidangKeahlian->count() > 0),
+                            ])
+                            ->columns(3),
+                    ]),
+
+                Section::make('Alasan Penolakan')
+                    ->schema([
+                        TextEntry::make('alasan_penolakan')
+                            ->label('Alasan Penolakan')
+                            ->state(function ($record) {
+                                if (empty($record->alasan_penolakan)) {
+                                    return 'Tidak memenuhi syarat atau alasan lainnya.';
+                                }
+
+                                return strip_tags($record->alasan_penolakan);
+                            }),
+                    ])
+                    ->visible(fn($record) => $record->status === 'Ditolak')
+                    ->collapsible(),
 
                 Section::make('Informasi Perusahaan')
                     ->schema([

@@ -85,9 +85,17 @@ class RekomendasiMagang extends BaseWidget
                     )),
                 Tables\Columns\TextColumn::make('perusahaan.nama')
                     ->searchable()
+                    ->limit(20)
+                    ->tooltip(fn($record) => new HtmlString(
+                        $record->perusahaan->nama
+                    ))
                     ->label('Perusahaan'),
                 Tables\Columns\TextColumn::make('jenisMagang.nama_jenis_magang')
                     ->searchable()
+                    ->limit(15)
+                    ->tooltip(fn($record) => new HtmlString(
+                        $record->jenisMagang->nama_jenis_magang
+                    ))
                     ->label('Jenis Magang'),
                 Tables\Columns\TextColumn::make('daerahMagang.namaLengkapDenganProvinsi')
                     ->limit(15)

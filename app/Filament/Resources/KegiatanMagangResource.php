@@ -241,6 +241,38 @@ class KegiatanMagangResource extends Resource
                             ->html()
                             ->columnSpanFull(),
                     ])->columns(3),
+
+                Infolists\Components\Section::make('Dosen Pembimbing')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.user.nama')
+                            ->label('Nama Dosen Pembimbing'),
+                        
+                        Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.nip')
+                            ->label('NIP Dosen Pembimbing'),
+
+                        Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.user.no_telepon')
+                            ->label('Nomor Telepon Dosen Pembimbing')
+                            ->icon('heroicon-m-phone'),
+
+                        Infolists\Components\TextEntry::make('penempatan.dosenPembimbing.bidangKeahlian.nama_bidang_keahlian')
+                            ->label('Bidang Keahlian Dosen Pembimbing'),
+                    ])
+                    ->columns(2)
+                    ->visible(fn($record) => $record->status === 'Diterima'),
+
+                Infolists\Components\Section::make('Catatan Penolakan')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('alasan_penolakan')
+                            ->label('Alasan Penolakan')
+                            ->state(function ($record) {
+                                if (empty($record->alasan_penolakan)) {
+                                    return 'Tidak memenuhi syarat atau alasan lainnya.';
+                                }
+
+                                return strip_tags($record->alasan_penolakan);
+                            }),
+                    ])->columns(1)
+                    ->visible(fn($record) => $record->status === 'Ditolak'),
             ]);
     }
     public static function form(Form $form): Form
