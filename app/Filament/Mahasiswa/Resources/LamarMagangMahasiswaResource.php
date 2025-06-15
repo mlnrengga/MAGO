@@ -158,6 +158,7 @@ class LamarMagangMahasiswaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('tanggal_pengajuan', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('lowongan.judul_lowongan')
                     ->label('Posisi Magang')
@@ -202,7 +203,8 @@ class LamarMagangMahasiswaResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 // Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn ($record) => $record->status !== 'Diterima'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -82,12 +82,13 @@ class ViewLamarMagangMahasiswa extends ViewRecord
                     ->schema([
                         TextEntry::make('alasan_penolakan')
                             ->label('Alasan Penolakan')
+                            ->html()
                             ->state(function ($record) {
                                 if (empty($record->alasan_penolakan)) {
                                     return 'Tidak memenuhi syarat atau alasan lainnya.';
                                 }
 
-                                return strip_tags($record->alasan_penolakan);
+                                return $record->alasan_penolakan;
                             }),
                     ])
                     ->visible(fn($record) => $record->status === 'Ditolak')
