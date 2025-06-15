@@ -112,6 +112,7 @@ class ViewMahasiswaBimbingan extends ViewRecord
                             ->label('Bidang Keahlian'),
                         TextEntry::make('pengajuan.lowongan.deskripsi_lowongan')
                             ->label('Deskripsi Lowongan')
+                            ->html(true)
                             ->columnSpan(3),
 
                     ])
