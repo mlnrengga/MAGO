@@ -49,6 +49,12 @@ class EditEvaluasiHasilMagang extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('back')
+                ->label('Kembali')
+                ->icon('heroicon-o-arrow-left')
+                ->color('gray')
+                ->url($this->getResource()::getUrl('index')),
+            
             Actions\DeleteAction::make()
                 ->before(function () {
                     // mengambil ID penempatan sebelum dihapus
