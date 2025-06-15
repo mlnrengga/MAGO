@@ -30,6 +30,19 @@ class PengajuanMagangSeeder extends Seeder
             throw new \Exception("TIDAK ADA MAHASISWA!");
         }
 
+        $alasan_penolakan_profesional = [
+            'Motivasi yang disampaikan pada surat pengantar belum menunjukkan minat yang kuat terhadap posisi magang ini.',
+            'Hasil evaluasi menunjukkan kemampuan komunikasi perlu ditingkatkan untuk mendukung peran yang dituju.',
+            'Proposal pengajuan magang yang diajukan kurang menggambarkan pemahaman terhadap bidang kerja di perusahaan.',
+            'Belum ada pengalaman organisasi atau kegiatan yang relevan untuk mendukung pelaksanaan tugas magang.',
+            'Terdapat kandidat lain yang lebih sesuai dengan kebutuhan dan profil posisi magang saat ini.',
+            'Surat pengantar atau dokumen yang diberikan belum secara jelas menjabarkan tujuan dan harapan selama magang.',
+            'Pengetahuan dasar terkait bidang magang dinilai masih kurang memadai.',
+            'Kesiapan waktu pelaksanaan magang tidak sesuai dengan jadwal yang telah ditetapkan oleh perusahaan.',
+            'Rekomendasi dari dosen pembimbing belum mendukung aspek softskill yang diperlukan.',
+            'Kandidat diharapkan dapat memperbaiki dan meningkatkan keterampilan interpersonal sebelum mengajukan kembali.',
+        ];
+
         $counter = 1;
         $data = [];
         $existing = [];
@@ -54,11 +67,14 @@ class PengajuanMagangSeeder extends Seeder
                 else $status = 'Ditolak';
 
                 $tanggal_diterima = null;
+                $alasan_penolakan = null;
                 if ($status == 'Diterima') {
                     $tanggal_diterima = $tanggal_pengajuan->copy()->addDays(rand(1, 10));
                     if ($tanggal_diterima->month > $tanggal_pengajuan->month) {
                         $tanggal_diterima = $tanggal_pengajuan->copy()->endOfMonth();
                     }
+                } elseif ($status == 'Ditolak') {
+                    $alasan_penolakan = $alasan_penolakan_profesional[array_rand($alasan_penolakan_profesional)];
                 }
 
                 $data[] = [
@@ -68,6 +84,7 @@ class PengajuanMagangSeeder extends Seeder
                     'tanggal_pengajuan' => $tanggal_pengajuan->format('Y-m-d'),
                     'status' => $status,
                     'tanggal_diterima' => $tanggal_diterima ? $tanggal_diterima->format('Y-m-d') : null,
+                    'alasan_penolakan' => $alasan_penolakan,
                     'created_at' => $tanggal_pengajuan->format('Y-m-d H:i:s'),
                     'updated_at' => $tanggal_diterima ? $tanggal_diterima->format('Y-m-d H:i:s') : $tanggal_pengajuan->format('Y-m-d H:i:s'),
                 ];
@@ -88,8 +105,11 @@ class PengajuanMagangSeeder extends Seeder
             else $status = 'Ditolak';
 
             $tanggal_diterima = null;
+            $alasan_penolakan = null;
             if ($status == 'Diterima') {
                 $tanggal_diterima = $tanggal_pengajuan->copy()->addDays(rand(1, 10));
+            } elseif ($status == 'Ditolak') {
+                $alasan_penolakan = $alasan_penolakan_profesional[array_rand($alasan_penolakan_profesional)];
             }
             $data[] = [
                 'id_pengajuan' => $counter++,
@@ -98,6 +118,7 @@ class PengajuanMagangSeeder extends Seeder
                 'tanggal_pengajuan' => $tanggal_pengajuan->format('Y-m-d'),
                 'status' => $status,
                 'tanggal_diterima' => $tanggal_diterima ? $tanggal_diterima->format('Y-m-d') : null,
+                'alasan_penolakan' => $alasan_penolakan,
                 'created_at' => $tanggal_pengajuan->format('Y-m-d H:i:s'),
                 'updated_at' => $tanggal_diterima ? $tanggal_diterima->format('Y-m-d H:i:s') : $tanggal_pengajuan->format('Y-m-d H:i:s'),
             ];
