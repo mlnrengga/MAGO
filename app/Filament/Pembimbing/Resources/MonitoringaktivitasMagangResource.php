@@ -175,20 +175,28 @@ class MonitoringaktivitasMagangResource extends Resource
                     }),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('id_penempatan')
-                    ->label('Filter Mahasiswa')
-                    ->searchable()
-                    ->options(function () {
-                        $user = auth()->user();
-                        $dosen = $user->dosenPembimbing;
-                        
-                        return $dosen->mahasiswaBimbingan()
-                            ->with('mahasiswa.user')
-                            ->get()
-                            ->pluck('mahasiswa.user.nama', 'id_penempatan');
-                    })
-                    ->placeholder('Semua Mahasiswa'),
-                    
+              Tables\Filters\SelectFilter::make('id_penempatan')
+    ->label('Filter Mahasiswa')
+    ->searchable()
+    ->options(function () {
+        $user = auth()->user();
+        $dosen = $user->dosenPembimbing;
+
+        if (!$dosen) return [];
+
+        return $dosen->mahasiswaBimbingan()
+            ->with('mahasiswa.user')
+            ->get()
+            ->filter(fn ($penempatan) => $penempatan->mahasiswa && $penempatan->mahasiswa->user)
+            ->mapWithKeys(function ($penempatan) {
+                return [
+                    $penempatan->id_penempatan => $penempatan->mahasiswa->user->nama,
+                ];
+            })
+            ->toArray();
+    })
+    ->placeholder('Pilih Mahasiswa'),
+      
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status Kehadiran')
                     ->options([
