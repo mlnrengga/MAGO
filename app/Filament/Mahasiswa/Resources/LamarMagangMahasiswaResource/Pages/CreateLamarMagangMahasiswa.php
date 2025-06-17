@@ -44,7 +44,7 @@ class CreateLamarMagangMahasiswa extends CreateRecord
 
         if ($lowongan_id) {
             $lowongan = LowonganMagangModel::find($lowongan_id);
-            
+
             if ($lowongan) {
                 $this->form->fill([
                     'id_lowongan' => $lowongan_id,
@@ -53,6 +53,24 @@ class CreateLamarMagangMahasiswa extends CreateRecord
                     'id_mahasiswa' => auth()->user()->mahasiswa->id_mahasiswa,
                     'status' => 'Diajukan',
                 ]);
+
+                $sectionComponent = $this->form->getComponents()[0];
+                $childComponents = $sectionComponent->getChildComponents();
+
+                collect($childComponents)->first(fn($component) => $component->getName() === 'id_perusahaan')
+                    ->disabled();
+
+                collect($childComponents)->first(fn($component) => $component->getName() === 'id_lowongan')
+                    ->disabled();
+                    
+                foreach ($childComponents as $component) {
+                    if (method_exists($component, 'getLabel')) {
+                        if ($component->getLabel() == 'Tanggal Pengajuan') {
+                            $component->disabled();
+                            break;
+                        }
+                    }
+                }
 
                 $lowonganPreview = $this->form->getComponent('lowongan_preview');
                 if ($lowonganPreview) {
