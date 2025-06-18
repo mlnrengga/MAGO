@@ -64,6 +64,28 @@ class CreateLamarMagangMahasiswa extends CreateRecord
                     'status' => 'Diajukan',
                 ]);
 
+                $sectionComponent = $this->form->getComponents()[0];
+                $childComponents = $sectionComponent->getChildComponents();
+
+                $idPerusahaanComponent = collect($childComponents)->first(fn($component) => $component->getName() === 'id_perusahaan');
+                if ($idPerusahaanComponent) {
+                    $idPerusahaanComponent->disabled();
+                }
+
+                $idLowonganComponent = collect($childComponents)->first(fn($component) => $component->getName() === 'id_lowongan');
+                if ($idLowonganComponent) {
+                    $idLowonganComponent->disabled();
+                }
+                    
+                foreach ($childComponents as $component) {
+                    if (method_exists($component, 'getLabel')) {
+                        if ($component->getLabel() == 'Tanggal Pengajuan') {
+                            $component->disabled();
+                            break;
+                        }
+                    }
+                }
+
                 $lowonganPreview = $this->form->getComponent('lowongan_preview');
                 if ($lowonganPreview) {
                     $lowonganPreview->schema([
