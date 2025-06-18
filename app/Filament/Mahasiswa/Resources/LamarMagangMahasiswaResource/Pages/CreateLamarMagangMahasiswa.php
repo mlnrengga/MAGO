@@ -4,8 +4,10 @@ namespace App\Filament\Mahasiswa\Resources\LamarMagangMahasiswaResource\Pages;
 
 use App\Filament\Mahasiswa\Resources\LamarMagangMahasiswaResource;
 use App\Models\Reference\LowonganMagangModel;
+use App\Models\Reference\PengajuanMagangModel;
 use Filament\Actions;
 use Filament\Forms\Components\Placeholder;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Http\Request;
 
@@ -33,6 +35,14 @@ class CreateLamarMagangMahasiswa extends CreateRecord
         }
 
         return $data;
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getCreateFormAction(),
+            $this->getCancelFormAction(),
+        ];
     }
 
     public function mount(): void
@@ -127,6 +137,24 @@ class CreateLamarMagangMahasiswa extends CreateRecord
             }
         }
     }
+
+    protected function beforeCreate(): void
+{
+    $idMahasiswa = auth()->user()->mahasiswa->id_mahasiswa;
+    $existingLamaran = PengajuanMagangModel::where('id_mahasiswa', $idMahasiswa)
+        ->whereIn('status', ['Diajukan', 'Diterima'])
+        ->first();
+
+    if ($existingLamaran) {
+        Notification::make()
+            ->title('Gagal Mengajukan Lamaran')
+            ->body('Anda sudah memiliki satu lamaran magang aktif. Anda hanya bisa melamar lagi jika lamaran sebelumnya telah ditolak.')
+            ->danger()
+            ->send();
+
+        $this->halt(); // Hentikan proses pengajuan
+    }
+}
 
     protected function afterMount(): void
     {
