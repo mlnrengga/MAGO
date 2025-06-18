@@ -67,11 +67,15 @@ class CreateLamarMagangMahasiswa extends CreateRecord
                 $sectionComponent = $this->form->getComponents()[0];
                 $childComponents = $sectionComponent->getChildComponents();
 
-                collect($childComponents)->first(fn($component) => $component->getName() === 'id_perusahaan')
-                    ->disabled();
+                $idPerusahaanComponent = collect($childComponents)->first(fn($component) => $component->getName() === 'id_perusahaan');
+                if ($idPerusahaanComponent) {
+                    $idPerusahaanComponent->disabled();
+                }
 
-                collect($childComponents)->first(fn($component) => $component->getName() === 'id_lowongan')
-                    ->disabled();
+                $idLowonganComponent = collect($childComponents)->first(fn($component) => $component->getName() === 'id_lowongan');
+                if ($idLowonganComponent) {
+                    $idLowonganComponent->disabled();
+                }
                     
                 foreach ($childComponents as $component) {
                     if (method_exists($component, 'getLabel')) {
