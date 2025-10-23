@@ -616,7 +616,6 @@ class AktivitasMagangHarianResource extends Resource
                     ->disk('cloudinary')
                     ->directory('bukti-magang')
                     ->visibility('public')
-                    ->required()
                     ->image()
                     ->imagePreviewHeight('250')
                     ->loadingIndicatorPosition('left')
